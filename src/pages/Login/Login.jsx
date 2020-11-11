@@ -3,7 +3,13 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { loginIllustrator } from "../../assets/images";
 import "./Login.css";
 
-export default function Login() {
+/**
+ * Login page.
+ * Author : Abdurraziq Bachmid
+ * Date   : 11/11/2020
+ */
+const Login = () => {
+
   return (
     <Container>
       <Row className="vh-100 align-items-center row-login">
@@ -43,3 +49,5 @@ export default function Login() {
     </Container>
   );
 }
+
+export default Login
