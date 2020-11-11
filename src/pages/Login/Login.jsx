@@ -1,14 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { loginIllustrator } from "../../assets/images";
 import "./Login.css";
 
 /**
  * Login page.
+ * Halaman untuk login.
  * Author : Abdurraziq Bachmid
  * Date   : 11/11/2020
  */
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  /**
+   * Fungsi untuk menangani proses ketika user mensubmit permintaan login.
+   * @param {object} e Element
+   */
+  const submitHandler = (e) => {
+    e.preventDefault();
+    alert(`Emai: ${email}\nPass: ${password}`);
+  };
 
   return (
     <Container>
@@ -27,18 +39,30 @@ const Login = () => {
             <br />
             Login dulu yuk...
           </p>
-          <Form>
+          <Form onSubmit={submitHandler}>
             <Form.Group controlId="formEmail">
-              <Form.Control type="email" placeholder="Enter email" />
+              <Form.Control
+                required
+                type="email"
+                placeholder="Masukkan email"
+                name="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </Form.Group>
-            <Form.Group controlId="formPassword">
-              <Form.Control type="password" placeholder="Password" />
+            <Form.Group controlId="password">
+              <Form.Control
+                required
+                type="password"
+                placeholder="Password"
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Form.Group>
             <p>
               Lupa password? <a href="./">Klik disini</a>
             </p>
             <Button className="mt-5 mb-3" variant="primary" type="submit" block>
-              Login
+              Masuk
             </Button>
             <p>
               Belum punya akun? <a href="./">Klik disini</a>
@@ -48,6 +72,6 @@ const Login = () => {
       </Row>
     </Container>
   );
-}
+};
 
-export default Login
+export default Login;
