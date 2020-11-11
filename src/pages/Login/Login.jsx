@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import loginIllustrator from "../assets/img/login-illustrator.svg";
+import { loginIllustrator } from "../../assets/images";
 import "./Login.css";
 
 export default function Login() {
@@ -17,7 +17,9 @@ export default function Login() {
         <Col md={4} lg={3}>
           <h1 className="mb-5">Login</h1>
           <p className="mb-4">
-            Hai Selemat datang!<br />Login dulu yuk...
+            Hai Selemat datang!
+            <br />
+            Login dulu yuk...
           </p>
           <Form>
             <Form.Group controlId="formEmail">
