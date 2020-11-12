@@ -6,30 +6,99 @@ import {
   Form,
   Row,
   InputGroup,
-  FormControl
+  FormControl,
+  Card,
+  ListGroup,
+  Carousel,
+  CarouselItem
 } from "react-bootstrap";
+import {
+  homeLogo,
+  carouselFirst,
+  carouselSecond,
+  carouselThird
+} from "../../assets/images";
 
 const Home = () => {
   return (
-    <Container
-      fluid
-      style={{ backgroundColor: "#F1F6F9", padding: 0, height: 2000 }}
-    >
+    <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
       <Container fluid style={{ backgroundColor: "#14274E" }}>
-        <Row style={{}}>
-          <Col md={8}>Logo</Col>
-          <Col md={4}>Register/login</Col>
+        <Row className="align-items-center" style={{ padding: 10 }}>
+          <Col md={8}>
+            <img style={{ height: "80%" }} src={homeLogo} alt="Home Logo" />
+          </Col>
+          <Col md={4} className="align-middle">
+            <div className="d-flex flex-row-reverse">
+              <div className="" style={{ display: "inline" }}>
+                <Button className="inline">Register</Button>
+                <Button>Login</Button>
+              </div>
+            </div>
+          </Col>
         </Row>
-        <Row style={{}}>
-          <Col style={{ backgroundColor: "#FFF", margin: 100, height: 300 }}>
-            <h1>Carousel</h1>
+        <Row className="align-items-middle m-2" style={{}}>
+          <Col style={{}}>
+            <Carousel ClassName="">
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src={carouselFirst}
+                  alt="First slide"
+                />
+                <Carousel.Caption>
+                  <h3>First slide label</h3>
+                  <p>
+                    Nulla vitae elit libero, a pharetra augue mollis interdum.
+                  </p>
+                </Carousel.Caption>
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src={carouselSecond}
+                  alt="Second slide"
+                />
+
+                <Carousel.Caption>
+                  <h3>Second slide label</h3>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </p>
+                </Carousel.Caption>
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src={carouselThird}
+                  alt="Third slide"
+                />
+
+                <Carousel.Caption>
+                  <h3>Third slide label</h3>
+                  <p>
+                    Praesent commodo cursus magna, vel scelerisque nisl
+                    consectetur.
+                  </p>
+                </Carousel.Caption>
+              </Carousel.Item>
+            </Carousel>
           </Col>
         </Row>
         <Row style={{}}>
-          <h1>Sosmed</h1>
+          <div className="mx-auto">
+            <Button style={{ marginLeft: 3 }} className="my-2">
+              Instagram
+            </Button>
+            <Button style={{ marginLeft: 3 }} className="my-2">
+              Facebook
+            </Button>
+            <Button style={{ marginLeft: 3 }} className="my-2">
+              Twitter
+            </Button>
+          </div>
         </Row>
       </Container>
-      <Row style={{ height: "100vh" }}>
+      <Row style={{}}>
         <Col
           md={3}
           style={{
@@ -37,38 +106,83 @@ const Home = () => {
           }}
         >
           <Row>
-            <Col style={{ backgroundColor: "green", height: 300 }}>
-              <h1>Menu-Menu</h1>
+            <Col style={{}}>
+              <div class="d-flex flex-column">
+                <div class="p-2">
+                  <Button style={{ width: "100%" }}>Home</Button>
+                </div>
+                <div class="p-2">
+                  <Button style={{ width: "100%" }}>About</Button>
+                </div>
+                <div class="p-2">
+                  <Button style={{ width: "100%" }}>Profil</Button>
+                </div>
+                <div class="p-2">
+                  <Button style={{ width: "100%" }}>Menu</Button>
+                </div>
+                <div class="p-2">
+                  <Button style={{ width: "100%" }}>Menu</Button>
+                </div>
+              </div>
+              <hr />
             </Col>
           </Row>
           <Row>
-            <Col style={{ backgroundColor: "blue", height: 300 }}>
-              <h1>Event</h1>
+            <Col style={{}}>
+              <Card style={{}}>
+                <Card.Header as="h4">My Event</Card.Header>
+                <ListGroup variant="flush">
+                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
+                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
+                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                </ListGroup>
+              </Card>
+              <hr />
             </Col>
           </Row>
           <Row>
-            <Col style={{ backgroundColor: "pink", height: 300 }}>
+            <Col style={{}}>
               <h1>Calendar</h1>
             </Col>
           </Row>
         </Col>
-        <Col md={9} style={{ padding: 50 }}>
+        <Col md={9} style={{ paddingTop: 50, paddingRight: 50 }}>
           <Row>
-            <Col style={{ backgroundColor: "red", height: 50 }}>
-              <Form inline>
-                <FormControl
-                  type="text"
-                  placeholder="Search"
-                  className=" mr-sm-2"
-                  style={{ width: "90%" }}
-                />
-                <Button type="submit">Submit</Button>
-              </Form>
+            <Col style={{}}>
+              <div className="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search" />
+                <div className="input-group-append">
+                  <Button class="btn btn-outline-secondary" type="button">
+                    Input
+                  </Button>
+                </div>
+              </div>
             </Col>
           </Row>
           <Row>
-            <Col style={{ backgroundColor: "yellow", height: 1000 }}>
-              Konten
+            <Col style={{}}>
+              <Card className="mb-2">
+                <Card.Header as="h5">Featured</Card.Header>
+                <Card.Body>
+                  <Card.Title>Special title treatment</Card.Title>
+                  <Card.Text>
+                    With supporting text below as a natural lead-in to
+                    additional content.
+                  </Card.Text>
+                  <Button variant="primary">Go somewhere</Button>
+                </Card.Body>
+              </Card>
+              <Card ClassName="mb-2">
+                <Card.Header as="h5">Featured</Card.Header>
+                <Card.Body>
+                  <Card.Title>Special title treatment</Card.Title>
+                  <Card.Text>
+                    With supporting text below as a natural lead-in to
+                    additional content.
+                  </Card.Text>
+                  <Button variant="primary">Go somewhere</Button>
+                </Card.Body>
+              </Card>
             </Col>
           </Row>
         </Col>
