@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { MDBCol, MDBFormInline, MDBBtn, MDBNavbarToggler, MDBNavbar, MDBCollapse, MDBNavbarNav } from
 "mdbreact";
 
+
 class HeaderPage extends Component {
 state = {
 collapsed: true
