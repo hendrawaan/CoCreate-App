@@ -1,5 +1,4 @@
 import Home from "./Home/Home";
-import Regis from "./Home/Regis";
 import Regis from "./Regis/Regis";
 
 

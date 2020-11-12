@@ -12,12 +12,6 @@ import {
   Carousel,
   CarouselItem
 } from "react-bootstrap";
-import {
-  homeLogo,
-  carouselFirst,
-  carouselSecond,
-  carouselThird
-} from "../../assets/images";
 
 const Regis = () => {
   return (
