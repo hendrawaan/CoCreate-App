@@ -8,29 +8,28 @@ exports[`Test Halaman Login Halaman Login Harus sesuai dengan snapshot komponen 
     className="vh-100 align-items-center row-login row"
   >
     <div
-      className="d-none d-md-block col-lg-9 col-md-8"
+      className="d-none d-lg-block col-lg-9"
     >
       <img
         alt="Login Illustration"
-        className="w-100"
-        src="login-illustrator.svg"
+        className="w-100 login-illustration"
+        src="login-illustration.svg"
       />
     </div>
     <div
-      className="col-lg-3 col-md-4"
+      className="col-lg-3"
     >
+      <img
+        alt="logo"
+        className="mx-auto d-block mb-4"
+        src="logo-small.png"
+      />
       <h1
-        className="mb-5"
+        className="mb-4 text-center"
       >
         Login
       </h1>
-      <p
-        className="mb-4"
-      >
-        Hai Selemat datang!
-        <br />
-        Login dulu yuk...
-      </p>
+      <hr />
       <form
         className=""
         onSubmit={[Function]}
@@ -39,19 +38,21 @@ exports[`Test Halaman Login Halaman Login Harus sesuai dengan snapshot komponen 
           className="form-group"
         >
           <input
+            autoComplete="username"
             className="form-control"
-            id="formEmail"
-            name="email"
+            id="name"
+            name="name"
             onChange={[Function]}
-            placeholder="Masukkan email"
+            placeholder="Masukkan nama/email"
             required={true}
-            type="email"
+            type="text"
           />
         </div>
         <div
           className="form-group"
         >
           <input
+            autoComplete="current-password"
             className="form-control"
             id="password"
             name="password"
@@ -69,12 +70,21 @@ exports[`Test Halaman Login Halaman Login Harus sesuai dengan snapshot komponen 
             Klik disini
           </a>
         </p>
+        <small
+          className="text-danger "
+        >
+          
+        </small>
         <button
-          className="mt-5 mb-3 btn btn-primary btn-block"
+          className="mt-4 mb-3 btn btn-primary btn-block"
           disabled={false}
           type="submit"
         >
-          Masuk
+          <span
+            className="ml-2"
+          >
+            Masuk
+          </span>
         </button>
         <p>
           Belum punya akun? 
