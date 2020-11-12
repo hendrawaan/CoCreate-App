@@ -1,5 +1,8 @@
-import loginIllustrator from './illustrator/login-illustrator.svg'
+import loginIllustration from './illustration/login-illustration.svg'
+import logoSmall from './logo/logo-small.png'
 
 export {
-  loginIllustrator
+  loginIllustration,
+  logoSmall
 }
+
