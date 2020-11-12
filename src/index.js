@@ -4,11 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-// bagian regis rian
-import Regis from "./Regis/Regis";
-export{Regis};
-
-
 ReactDOM.render(
   <React.StrictMode>
     <App />
