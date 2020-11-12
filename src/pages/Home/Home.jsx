@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
 import {
   Button,
   Col,
@@ -21,6 +20,21 @@ import {
 } from "../../assets/images";
 
 const Home = () => {
+  const [isLogin, setLogin] = useState(localStorage.getItem("token"));
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setLogin(null);
+  };
+
+  const login = () => {
+    window.location = "/login";
+  };
+
+  const register = () => {
+    window.location = "/register";
+  };
+
   return (
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
       <Container fluid style={{ backgroundColor: "#14274E" }}>
@@ -31,15 +45,23 @@ const Home = () => {
           <Col md={4} className="align-middle">
             <div className="d-flex flex-row-reverse">
               <div className="" style={{ display: "inline" }}>
-                <Button className="inline">Register</Button>
-                <Button>Login</Button>
+                <Button variant="primary" type="submit" onClick={register}>
+                  {isLogin ? "Username" : "Register"}
+                </Button>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  onClick={isLogin ? logout : login}
+                >
+                  {isLogin ? "Logout" : "Login"}
+                </Button>
               </div>
             </div>
           </Col>
         </Row>
         <Row className="align-items-middle m-2" style={{}}>
           <Col style={{}}>
-            <Carousel ClassName="">
+            <Carousel className="">
               <Carousel.Item>
                 <img
                   className="d-block w-100"
@@ -108,20 +130,20 @@ const Home = () => {
         >
           <Row>
             <Col style={{}}>
-              <div class="d-flex flex-column">
-                <div class="p-2">
+              <div className="d-flex flex-column">
+                <div className="p-2">
                   <Button style={{ width: "100%" }}>Home</Button>
                 </div>
-                <div class="p-2">
+                <div className="p-2">
                   <Button style={{ width: "100%" }}>About</Button>
                 </div>
-                <div class="p-2">
+                <div className="p-2">
                   <Button style={{ width: "100%" }}>Profil</Button>
                 </div>
-                <div class="p-2">
+                <div className="p-2">
                   <Button style={{ width: "100%" }}>Menu</Button>
                 </div>
-                <div class="p-2">
+                <div className="p-2">
                   <Button style={{ width: "100%" }}>Menu</Button>
                 </div>
               </div>
@@ -151,9 +173,13 @@ const Home = () => {
           <Row>
             <Col style={{}}>
               <div className="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Search" />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Search"
+                />
                 <div className="input-group-append">
-                  <Button class="btn btn-outline-secondary" type="button">
+                  <Button className="btn btn-outline-secondary" type="button">
                     Input
                   </Button>
                 </div>
@@ -173,7 +199,7 @@ const Home = () => {
                   <Button variant="primary">Go somewhere</Button>
                 </Card.Body>
               </Card>
-              <Card ClassName="mb-2">
+              <Card className="mb-2">
                 <Card.Header as="h5">Featured</Card.Header>
                 <Card.Body>
                   <Card.Title>Special title treatment</Card.Title>
@@ -193,32 +219,3 @@ const Home = () => {
 };
 
 export default Home;
-=======
-import { Button } from "react-bootstrap";
-export default function Home() {
-  const [isLogin, setLogin] = useState(localStorage.getItem("token"));
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    setLogin(null);
-  };
-
-  const login = () => {
-    window.location = "/login";
-  };
-
-  return (
-    <div className="text-center m-5">
-      <h1>Ini Halaman Home</h1>
-      <br />
-      <Button
-        variant="primary"
-        type="submit"
-        onClick={isLogin ? logout : login}
-      >
-        {isLogin ? "Logout" : "Login"}
-      </Button>
-    </div>
-  );
-}
->>>>>>> f4432e1e9715e25331310804e3783a31c32ac6ac
