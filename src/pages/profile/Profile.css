@@ -1,0 +1,22 @@
+.profile-login {
+    max-width: 40px;
+}
+
+.profile-container {
+    padding: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .logo-instance {
+        display: none;
+    }
+}
+
+.search-bar {
+    border-radius: 10px;
+}
+
+.nav-container {
+    padding: 10px;
+}
