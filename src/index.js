@@ -1,12 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+// import App from './App';
+import Admin from './Admin';
+import HeaderPage from './HeaderPage';
 import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css';
+
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <HeaderPage />
+    <Admin />
+    {/* <App /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
