@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Halaman Login Halaman Login Harus sesuai dengan snapshot komponen login 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="vh-100 align-items-center row-login row"
+  >
+    <div
+      className="d-none d-lg-block col-lg-9"
+    >
+      <img
+        alt="Login Illustration"
+        className="w-100 login-illustration"
+        src="login-illustration.svg"
+      />
+    </div>
+    <div
+      className="col-lg-3"
+    >
+      <img
+        alt="logo"
+        className="mx-auto d-block mb-4"
+        src="logo-small.png"
+      />
+      <h1
+        className="mb-4 text-center"
+      >
+        Login
+      </h1>
+      <hr />
+      <form
+        className=""
+        onSubmit={[Function]}
+      >
+        <div
+          className="form-group"
+        >
+          <input
+            autoComplete="username"
+            className="form-control"
+            id="name"
+            name="name"
+            onChange={[Function]}
+            placeholder="Masukkan nama/email"
+            required={true}
+            type="text"
+          />
+        </div>
+        <div
+          className="form-group"
+        >
+          <input
+            autoComplete="current-password"
+            className="form-control"
+            id="password"
+            name="password"
+            onChange={[Function]}
+            placeholder="Password"
+            required={true}
+            type="password"
+          />
+        </div>
+        <p>
+          Lupa password? 
+          <a
+            href="./"
+          >
+            Klik disini
+          </a>
+        </p>
+        <small
+          className="text-danger "
+        >
+          
+        </small>
+        <button
+          className="mt-4 mb-3 btn btn-primary btn-block"
+          disabled={false}
+          type="submit"
+        >
+          <span
+            className="ml-2"
+          >
+            Masuk
+          </span>
+        </button>
+        <p>
+          Belum punya akun? 
+          <a
+            href="./"
+          >
+            Klik disini
+          </a>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+`;

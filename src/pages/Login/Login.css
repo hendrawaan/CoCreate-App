@@ -1,0 +1,10 @@
+.login-illustration {
+  max-width: 640px;
+}
+
+@media (max-width: 991.98px) {
+  .row-login {
+    max-width: 320px;
+    margin: auto;
+  }
+}
