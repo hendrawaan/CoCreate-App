@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import { login } from "../../actions/user";
 import { loginIllustration, logoSmall } from "../../assets/images";
 import "./Login.css";
 
@@ -24,15 +25,9 @@ const Login = () => {
     setErrorMsg();
     setActionLogin(true);
 
-    fetch("http://54.158.203.226:8081/api/v1/login", {
-      method: "POST",
-      body: JSON.stringify({
-        name: name,
-        password: password,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
+    login({
+      name: name,
+      password: password,
     })
       .then((res) => res.json())
       .then((res) => {

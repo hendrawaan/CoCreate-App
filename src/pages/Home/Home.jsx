@@ -1,16 +1,8 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
+import { logout } from "../../actions/user";
 export default function Home() {
   const [isLogin, setLogin] = useState(localStorage.getItem("token"));
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    setLogin(null);
-  };
-
-  const login = () => {
-    window.location = "/login";
-  };
 
   return (
     <div className="text-center m-5">
@@ -19,7 +11,9 @@ export default function Home() {
       <Button
         variant="primary"
         type="submit"
-        onClick={isLogin ? logout : login}
+        onClick={
+          isLogin ? () => setLogin(logout) : () => (window.location = "/login")
+        }
       >
         {isLogin ? "Logout" : "Login"}
       </Button>
