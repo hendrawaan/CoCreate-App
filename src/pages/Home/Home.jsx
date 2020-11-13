@@ -3,14 +3,10 @@ import {
   Button,
   Col,
   Container,
-  Form,
   Row,
-  InputGroup,
-  FormControl,
   Card,
   ListGroup,
-  Carousel,
-  CarouselItem
+  Carousel
 } from "react-bootstrap";
 import {
   homeLogo,
