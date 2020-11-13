@@ -1,11 +1,11 @@
-import './Content.css';
-import React, { Component } from "react";
-import logo from './assets/images/logo.jpg';
+import React, { Fragment } from "react";
+import logo from '../../assets/images/logo.jpg';
 import { Card } from 'react-bootstrap'
+import './ComponentAdmin.css'
 
-class Content extends Component {
-    render() {
+const ContentPost = ()=>  {
     return (
+        <Fragment>
         <Card className="container-fluid rounded text-dark">
             <Card.ImgOverlay>
                 <Card.Img className="shadow-box-example z-depth-2" src={logo} alt="Card image"
@@ -13,7 +13,7 @@ class Content extends Component {
                 <Card.Text>
                 <div className="imgProfile">
                     <img
-                        src="https://mdbootstrap.com/img/Photos/Avatars/img%20(9).jpg"
+                        src="https://placeimg.com/640/480/any"
                         alt=""
                         className="avatar m-1 z-depth-2" rounded
                     />
@@ -21,9 +21,7 @@ class Content extends Component {
                 </Card.Text>
             </Card.ImgOverlay>
         </Card>
+        </Fragment>
     );
 }
-}
-
-
-export default Content;
+export default ContentPost;
