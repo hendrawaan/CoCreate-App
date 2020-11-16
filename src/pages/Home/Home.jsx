@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { getUserDetail } from '../../api';
 import { logout } from "../../store/user";
 
 /* Hanya untuk testing */
 export default function Home() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  const { token } = user;
+
+  useEffect(() => {
+    console.log(getUserDetail(token));
+  }, [token])
 
   return (
     <div className="text-center m-5">
