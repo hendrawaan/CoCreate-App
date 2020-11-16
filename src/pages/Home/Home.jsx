@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "react-bootstrap";
-import { logout } from "../../actions/user";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/user";
+
+/* Hanya untuk testing */
 export default function Home() {
-  const [isLogin, setLogin] = useState(localStorage.getItem("token"));
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
 
   return (
     <div className="text-center m-5">
@@ -12,10 +16,10 @@ export default function Home() {
         variant="primary"
         type="submit"
         onClick={
-          isLogin ? () => setLogin(logout) : () => (window.location = "/login")
+          user ? () => dispatch(logout()) : () => (window.location = "/login")
         }
       >
-        {isLogin ? "Logout" : "Login"}
+        {user ? "Logout" : "Login"}
       </Button>
     </div>
   );
