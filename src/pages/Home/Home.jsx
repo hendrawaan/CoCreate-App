@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserDetail } from '../../api';
+import { getProfile } from "../../store/profile";
 import { logout } from "../../store/user";
 
 /* Hanya untuk testing */
 export default function Home() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const { token } = user;
-
+  const { profile } = useSelector((state) => state.profile);
   useEffect(() => {
-    console.log(getUserDetail(token));
-  }, [token])
+    if (user) {
+      dispatch(getProfile(user.token));
+    }
+  }, [dispatch, user]);
 
   return (
     <div className="text-center m-5">
@@ -27,6 +28,13 @@ export default function Home() {
       >
         {user ? "Logout" : "Login"}
       </Button>
+      <br />
+      {profile && (
+        <div className="mt-5">
+          Hai {profile.user.name} <br /> Anda{" "}
+          {profile.user.verification === "False" ? " belum " : " sudah "} terverifikasi
+        </div>
+      )}
     </div>
   );
 }
