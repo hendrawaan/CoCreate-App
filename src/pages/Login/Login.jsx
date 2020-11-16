@@ -49,7 +49,11 @@ const Login = () => {
     if (isLogin) {
       dispatch(login(formData));
     } else {
-      dispatch(addUser(formData));
+      if (formData.password === formData.passwordConfirm) {
+        dispatch(addUser(formData));
+      } else {
+        alert("Password tidak sama!");
+      }
     }
   };
 
