@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import profile from '../../assets/images/profile-default.jpg'
 import logo from '../../assets/images/logo.png'
 import './Profile.css'
@@ -12,8 +12,6 @@ import {
   FormControl,
   Form,
   Nav,
-  NavItem,
-  Navbar,
   Button,
 } from "react-bootstrap";
 import {
@@ -22,6 +20,7 @@ import {
   FaPhone, FaMapPin, FaBars
 } from 'react-icons/fa';
 import InputGroupCustom from '../../components/InputGroupCustom'
+import { getDataProfile } from '../../api/ProfileAction'
 const listGender = [{ name: 'Male', key: 0 },
 { name: 'Female', key: 1 }]
 const listNav = [{ name: "Edit Profile", key: 1 },
@@ -30,14 +29,12 @@ const listNav = [{ name: "Edit Profile", key: 1 },
 const listMenu = [{ name: "Home", icon: <FaHome />, link: '' },
 { name: "List Project", icon: <FaList />, link: '' },
 { name: "Collaboration", icon: <FaUserFriends />, link: '' }]
-
+const url = 'http://kelompok6.dtstakelompok1.com/api/v1/'
 const Profile = () => {
-
   const [search, setSearch] = useState('')
   const [username, setUserName] = useState('hendrawaan')
   const [email, setEmail] = useState('hendrawaan@gmail.com')
   const [name, setName] = useState('Arif Hendrawan')
-  const [occupation, setOccupation] = useState('Universitas')
   const [gender, setGender] = useState('Male')
   const [dob, setDob] = useState('1998-07-29')
   const [phone, setPhone] = useState('08766621212')
@@ -48,7 +45,6 @@ const Profile = () => {
   const [pass, setPass] = useState('')
   //edit state
   const [changeName, setChangeName] = useState(name)
-  const [changeOccupation, setChangeOccupation] = useState(occupation)
   const [changeGender, setChangeGender] = useState(gender)
   const [changeDob, setChangeDob] = useState(dob)
   const [changePhone, setChangePhone] = useState(phone)
@@ -60,6 +56,29 @@ const Profile = () => {
   const [newPass, setNewPass] = useState('')
   //other state
   const [hiddenbar, setHiddenBar] = useState(false)
+  useEffect(() => {
+    fetch(url + `user/detail/`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imhhcmxhbm9yb2hAZ21haWwuY29tIiwiaWQiOjN9.YSXxy-90RdONGhrumIFHNpKZE1G-fVSVSFL64KVy7aw"
+      },
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data.data.user)
+        let datas = data.data.user
+        setName(datas.name)
+        setUserName(datas.username)
+        setEmail(datas.email)
+        setPostalCode(datas.postcode)
+        setDob(datas.birth)
+        setPhone(datas.phone)
+        setGender(datas.gender)
+        setAddress(datas.address)
+        setBio(datas.short_bio)
+      })
+      .catch(error => console.error(error))
+  })
   //Handler sementara
   const editToggle = () => {
     setShowEdit(!showEdit)
@@ -112,16 +131,15 @@ const Profile = () => {
                 <InputGroupCustom icon={<FaUser />} setFunc={setChangeName} type="text" placeholder="Name" defValue={name} />
                 <Form.Label>Date of Birth</Form.Label>
                 <InputGroupCustom icon={<FaCalendar />} setFunc={setChangeDob} type="date" placeholder="Date of Birth" defValue={dob} />
-                <Form.Label>Phone</Form.Label>
-                <InputGroupCustom icon={<FaPhone />} setFunc={setChangePhone} placeholder="Phone Number" type="text" defValue={phone} />
+
               </Col>
               <Col md={6} >
                 <Form.Label>Email</Form.Label>
                 <InputGroupCustom icon={<FaEnvelope />} setFunc={setEmail} placeholder={email} type="text" value={email} disabled={true} />
-                <Form.Label>Occupation</Form.Label>
-                <InputGroupCustom icon={<FaUser />} setFunc={setChangeOccupation} type="text" placeholder="Occupation" defValue={occupation} />
                 <Form.Label>Gender</Form.Label>
                 <InputGroupCustom icon={<FaRestroom />} setFunc={setChangeGender} type="text" placeholder="Gender" as="select" defValue={gender} children={listGender} />
+                <Form.Label>Phone</Form.Label>
+                <InputGroupCustom icon={<FaPhone />} setFunc={setChangePhone} placeholder="Phone Number" type="text" defValue={phone} />
               </Col>
             </Form.Row>
             <h5>Location</h5>
@@ -195,7 +213,7 @@ const Profile = () => {
   }
   return (
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0, minHeight: 700 }}>
-
+      {/*Navbar*/}
       <Container fluid style={{ backgroundColor: "#14274E" }}>
         <Row className="nav-container">
           <Col md={4}>
@@ -223,6 +241,7 @@ const Profile = () => {
           })}
         </div>
       </Container>
+      {/*Container atas */}
       <Container fluid>
         <Row className="profile-container">
           <Col md={1}></Col>
@@ -246,7 +265,6 @@ const Profile = () => {
                   </Col>
                 </Row>
                 <br />
-                <p style={{ color: 'grey' }}>Occupation: {occupation}</p>
                 <p style={{ color: 'grey' }}><FaEnvelope /> {email}</p>
                 <p style={{ color: 'grey' }}><FaMapMarkerAlt /> {address}</p>
               </Col>
@@ -258,8 +276,10 @@ const Profile = () => {
           </Col>
         </Row>
       </Container>
+      {/*Container fungsi*/}
       <Container>
         <Row>
+          {/*Menu Konten*/}
           {showEdit === false ?
             <Col md={4} className="card-menu">
               {contentMenu()}
@@ -273,6 +293,7 @@ const Profile = () => {
                   </Nav.Item>)
                 })}
               </Nav>
+              {/*Menu Edit*/}
               {navKey === 1 ? contentEditProfile() :
                 // navKey === 2 ? contentUploadPhoto() :
                 navKey === 3 ? contentUpdatePassword() :
