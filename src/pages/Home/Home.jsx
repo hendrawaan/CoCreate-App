@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Col,
@@ -21,18 +21,20 @@ import { CgProfile } from "react-icons/cg";
 import { GrTechnology } from "react-icons/gr";
 import { BiMoney } from "react-icons/bi";
 import { GiLifeInTheBalance } from "react-icons/gi";
+import { useDispatch, useSelector } from "react-redux";
+import { getProfile } from "../../store/profile";
+import { logout } from "../../store/user";
 
-const Home = () => {
-  const [isLogin, setLogin] = useState(localStorage.getItem("token"));
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    setLogin(null);
-  };
-
-  const login = () => {
-    window.location = "/login";
-  };
+/* Hanya untuk testing */
+export default function Home() {
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.user);
+  const { profile } = useSelector(state => state.profile);
+  useEffect(() => {
+    if (user) {
+      dispatch(getProfile(user.token));
+    }
+  }, [dispatch, user]);
 
   const register = () => {
     window.location = "/register";
@@ -48,15 +50,19 @@ const Home = () => {
           <Col md={4} className="align-middle">
             <div className="d-flex flex-row-reverse">
               <div className="" style={{ display: "inline" }}>
-                <Button variant="primary" type="submit" onClick={register}>
+                {/* <Button variant="primary" type="submit" onClick={register}>
                   {isLogin ? "Username" : "Register"}
-                </Button>
+                </Button> */}
                 <Button
                   variant="primary"
                   type="submit"
-                  onClick={isLogin ? logout : login}
+                  onClick={
+                    user
+                      ? () => dispatch(logout())
+                      : () => (window.location = "/login")
+                  }
                 >
-                  {isLogin ? "Logout" : "Login"}
+                  {user ? "Logout" : "Login"}
                 </Button>
               </div>
             </div>
@@ -127,8 +133,18 @@ const Home = () => {
                       <CgProfile size={100} />
                     </Card.Header>
                     <ListGroup variant="flush">
-                      <ListGroup.Item>Username</ListGroup.Item>
-                      <ListGroup.Item>Email</ListGroup.Item>
+                      {profile && (
+                        <div>
+                          <ListGroup.Item>{profile.user.name}</ListGroup.Item>
+                          <ListGroup.Item>
+                            {profile.user.verification === "False"
+                              ? " belum "
+                              : " sudah "}{" "}
+                            terverifikasi
+                          </ListGroup.Item>
+                          <ListGroup.Item>{profile.user.email}</ListGroup.Item>
+                        </div>
+                      )}
                     </ListGroup>
                   </Card>
                 </div>
@@ -256,6 +272,4 @@ const Home = () => {
       </Row>
     </Container>
   );
-};
-
-export default Home;
+}
