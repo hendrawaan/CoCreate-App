@@ -3,7 +3,7 @@ import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import { FaEnvelope } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { loginIllustration, logoSmall } from "../../assets/images";
-import { FacebookLoginBtn, GoogleLoginBtn } from "../../components";
+import { GoogleLoginBtn } from "../../components";
 import { login } from "../../store/user";
 import "./Login.css";
 
@@ -111,7 +111,7 @@ const Login = () => {
           <div className="hr-text">
             <span>atau</span>
           </div>
-          <FacebookLoginBtn callback={responseFacebook} />
+          {/* <FacebookLoginBtn callback={responseFacebook} /> */}
           <GoogleLoginBtn callback={responseGoogle} />
         </Col>
       </Row>
