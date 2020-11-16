@@ -6,21 +6,15 @@ import './ComponentAdmin.css'
 const ContentPost = ()=>  {
     return (
         <Fragment>
-        <Card className="container-fluid rounded text-dark">
-            <Card.ImgOverlay>
-                <Card.Img className="shadow-box-example z-depth-2" src={logo} alt="Card image"
-                style={{height: "150px"}} />
+            <Card>
+                <Card.Img variant="top" src={logo} />
+                <Card.Body>
                 <Card.Text>
-                <div className="imgProfile">
-                    <img
-                        src="https://placeimg.com/640/480/any"
-                        alt=""
-                        className="avatar m-1 z-depth-2" rounded
-                    />
-                </div>
+                    Some quick example text to build on the card title and make up the bulk
+                    of the card's content.
                 </Card.Text>
-            </Card.ImgOverlay>
-        </Card>
+                </Card.Body>
+            </Card>
         </Fragment>
     );
 }

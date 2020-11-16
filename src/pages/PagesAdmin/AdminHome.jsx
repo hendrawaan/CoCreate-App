@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ContentPost from '../../components/Admin/ContentPost'
 import Header from '../../components/Admin/Header'
 import TableUser from '../../components/Admin/TableUser'
+import ListAdminHome from '../../components/Admin/ListAdminHome'
 
 
 function AdminHome() {
@@ -19,9 +20,9 @@ return (
                     <Tabs className="conatiner mx-auto" defaultActiveKey="home">
                     <Tab eventKey="home" title="Home">
                         <div className="tab-item-wrapper">
-                        <h5>Home Dashbord</h5>
+                        <h5>Home Dashbord List</h5>
                         </div>
-                        
+                        <ListAdminHome />
                     </Tab>
                     <Tab className="conatiner mx-auto" eventKey="content" title="Content">
                         <div className="tab-item-wrapper">
