@@ -37,15 +37,25 @@ const api = {
 };
 
 /**
- * Digunkan untuk melakukan login ke API
+ * Login ke API
  * @param {objek} dataLogin Data autentikasi yang akan dikirim
  * @returns json objek
  */
 export const loginToApi = async (dataLogin) =>
   await api.post(LOGIN, JSON.stringify(dataLogin));
 
+/**
+ * Mendaftarkan user
+ * @param {objek} dataReg Data registrasi user yang akan dikirim
+ * @returns json objek
+ */
 export const registeringUser = async (dataReg) =>
   await api.post(ADD_USER, JSON.stringify(dataReg));
 
-export const getUserDetail = async (token) =>
-  await api.get(GET_PROFILE, { "Authorization": token });
+/**
+ * Mengambil informasi profil user
+ * @param {string} token Data token yang akan digunakan untuk Authorization
+ * @returns json objek
+ */
+export const getUserProfile = async (token) =>
+  await api.get(GET_PROFILE, { Authorization: token });
