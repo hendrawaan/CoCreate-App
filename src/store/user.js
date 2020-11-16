@@ -6,7 +6,7 @@ const initialUser = localStorage.getItem("user")
   : null;
 
 // Slice
-const slice = createSlice({
+const userSlice = createSlice({
   name: "user",
   initialState: {
     user: initialUser,
@@ -27,15 +27,15 @@ const slice = createSlice({
     },
     logOutSucces: (state, action) => {
       state.user = null;
+      window.location.reload();
     },
     registSuccess: (state, action) => {
       state.loading = false;
-      console.log(action.payload)
     },
   },
 });
 
-export default slice.reducer;
+export default userSlice.reducer;
 
 const {
   onProcess,
@@ -43,7 +43,7 @@ const {
   logOutSucces,
   onFailed,
   registSuccess,
-} = slice.actions;
+} = userSlice.actions;
 
 /**
  * Digunakan untuk login.
@@ -84,6 +84,11 @@ export const logout = () => async (dispatch) => {
   }
 };
 
+/**
+ * Digunakan untuk registrasi.
+ * Ketika registrasi berhasil maka akan dilanjutkan dengan login otomatis.
+ * @param {object} param name, username, email, password
+ */
 export const addUser = ({ name, username, email, password }) => async (
   dispatch
 ) => {
@@ -99,7 +104,7 @@ export const addUser = ({ name, username, email, password }) => async (
     switch (registResponse.code) {
       case 200:
         dispatch(registSuccess());
-        dispatch(login({email, password }))
+        dispatch(login({ email, password }));
         break;
       case 400:
         throw new Error("Tampaknya akun sudah ada");
