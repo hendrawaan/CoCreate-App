@@ -6,7 +6,8 @@ import {
   Row,
   Card,
   ListGroup,
-  Carousel
+  Carousel,
+  Dropdown
 } from "react-bootstrap";
 import {
   homeLogo,
@@ -14,6 +15,12 @@ import {
   carouselSecond,
   carouselThird
 } from "../../assets/images";
+import { FaHome } from "react-icons/fa";
+import { MdEvent } from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
+import { GrTechnology } from "react-icons/gr";
+import { BiMoney } from "react-icons/bi";
+import { GiLifeInTheBalance } from "react-icons/gi";
 
 const Home = () => {
   const [isLogin, setLogin] = useState(localStorage.getItem("token"));
@@ -36,7 +43,7 @@ const Home = () => {
       <Container fluid style={{ backgroundColor: "#14274E" }}>
         <Row className="align-items-center" style={{ padding: 10 }}>
           <Col md={8}>
-            <img style={{ height: "80%" }} src={homeLogo} alt="Home Logo" />
+            <img style={{ height: 70 }} src={homeLogo} alt="Home Logo" />
           </Col>
           <Col md={4} className="align-middle">
             <div className="d-flex flex-row-reverse">
@@ -55,9 +62,9 @@ const Home = () => {
             </div>
           </Col>
         </Row>
-        <Row className="align-items-middle m-2" style={{}}>
-          <Col style={{}}>
-            <Carousel className="">
+        {/* <Row className="align-items-center" style={{}}>
+          <Col className="m-5 align-items-center">
+            <Carousel className="" style={{ margin: "auto" }}>
               <Carousel.Item>
                 <img
                   className="d-block w-100"
@@ -73,7 +80,7 @@ const Home = () => {
               </Carousel.Item>
               <Carousel.Item>
                 <img
-                  className="d-block w-100"
+                  className="d-block"
                   src={carouselSecond}
                   alt="Second slide"
                 />
@@ -87,7 +94,7 @@ const Home = () => {
               </Carousel.Item>
               <Carousel.Item>
                 <img
-                  className="d-block w-100"
+                  className="d-block"
                   src={carouselThird}
                   alt="Third slide"
                 />
@@ -102,20 +109,7 @@ const Home = () => {
               </Carousel.Item>
             </Carousel>
           </Col>
-        </Row>
-        <Row style={{}}>
-          <div className="mx-auto">
-            <Button style={{ marginLeft: 3 }} className="my-2">
-              Instagram
-            </Button>
-            <Button style={{ marginLeft: 3 }} className="my-2">
-              Facebook
-            </Button>
-            <Button style={{ marginLeft: 3 }} className="my-2">
-              Twitter
-            </Button>
-          </div>
-        </Row>
+        </Row> */}
       </Container>
       <Row style={{}}>
         <Col
@@ -127,20 +121,27 @@ const Home = () => {
           <Row>
             <Col style={{}}>
               <div className="d-flex flex-column">
-                <div className="p-2">
-                  <Button style={{ width: "100%" }}>Home</Button>
+                <div className="mx-auto text-center w-100">
+                  <Card style={{}}>
+                    <Card.Header>
+                      <CgProfile size={100} />
+                    </Card.Header>
+                    <ListGroup variant="flush">
+                      <ListGroup.Item>Username</ListGroup.Item>
+                      <ListGroup.Item>Email</ListGroup.Item>
+                    </ListGroup>
+                  </Card>
                 </div>
                 <div className="p-2">
-                  <Button style={{ width: "100%" }}>About</Button>
+                  <Button variant="light" style={{ width: "100%" }}>
+                    <FaHome /> Home
+                  </Button>
                 </div>
                 <div className="p-2">
-                  <Button style={{ width: "100%" }}>Profil</Button>
-                </div>
-                <div className="p-2">
-                  <Button style={{ width: "100%" }}>Menu</Button>
-                </div>
-                <div className="p-2">
-                  <Button style={{ width: "100%" }}>Menu</Button>
+                  <Button variant="light" style={{ width: "100%" }}>
+                    <MdEvent />
+                    Event
+                  </Button>
                 </div>
               </div>
               <hr />
@@ -167,6 +168,45 @@ const Home = () => {
         </Col>
         <Col md={9} style={{ paddingTop: 50, paddingRight: 50 }}>
           <Row>
+            <Col>
+              {/* <Dropdown>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  Choose Category
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item href="#/action-1">Keuangan</Dropdown.Item>
+                  <Dropdown.Item href="#/action-2">IT</Dropdown.Item>
+                  <Dropdown.Item href="#/action-3">Lifestyle</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown> */}
+              <div className="d-flex flex-row">
+                <div>
+                  <Button variant="light">
+                    <GrTechnology />
+                    <p className="px-2" style={{ float: "right" }}>
+                      Technology
+                    </p>
+                  </Button>
+                </div>
+                <div>
+                  <Button variant="light">
+                    <BiMoney />
+                    <p className="px-2" style={{ float: "right" }}>
+                      Keuangan
+                    </p>
+                  </Button>
+                </div>
+                <div>
+                  <Button variant="light">
+                    <GiLifeInTheBalance />
+                    <p className="px-2" style={{ float: "right" }}>
+                      Lifestyle
+                    </p>
+                  </Button>
+                </div>
+              </div>
+            </Col>
             <Col style={{}}>
               <div className="input-group mb-3">
                 <input
@@ -185,25 +225,29 @@ const Home = () => {
           <Row>
             <Col style={{}}>
               <Card className="mb-2">
-                <Card.Header as="h5">Featured</Card.Header>
+                <Card.Header as="h5">Title #1</Card.Header>
                 <Card.Body>
-                  <Card.Title>Special title treatment</Card.Title>
+                  <Card.Title>
+                    <CgProfile /> <p>Username</p>
+                  </Card.Title>
                   <Card.Text>
                     With supporting text below as a natural lead-in to
                     additional content.
                   </Card.Text>
-                  <Button variant="primary">Go somewhere</Button>
+                  <Button variant="primary">Read More</Button>
                 </Card.Body>
               </Card>
               <Card className="mb-2">
-                <Card.Header as="h5">Featured</Card.Header>
+                <Card.Header as="h5">Title #2</Card.Header>
                 <Card.Body>
-                  <Card.Title>Special title treatment</Card.Title>
+                  <Card.Title>
+                    <CgProfile /> <p>Username</p>
+                  </Card.Title>
                   <Card.Text>
                     With supporting text below as a natural lead-in to
                     additional content.
                   </Card.Text>
-                  <Button variant="primary">Go somewhere</Button>
+                  <Button variant="primary">Read More</Button>
                 </Card.Body>
               </Card>
             </Col>

@@ -14,28 +14,29 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [actionLogin, setActionLogin] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [username, setUsername] = useState("");
 
   /**
    * Fungsi untuk menangani proses ketika user mensubmit permintaan login.
    * @param {object} e Element
    */
-  const submitHandler = (e) => {
+  const submitHandler = e => {
     e.preventDefault();
     setErrorMsg();
     setActionLogin(true);
 
-    fetch("http://54.158.203.226:8081/api/v1/login", {
+    fetch("http://54.158.203.226:80/api/v1/login", {
       method: "POST",
       body: JSON.stringify({
         name: name,
-        password: password,
+        password: password
       }),
       headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
+        "Content-type": "application/json; charset=UTF-8"
+      }
     })
-      .then((res) => res.json())
-      .then((res) => {
+      .then(res => res.json())
+      .then(res => {
         const { code, data } = res;
         if (code === 200) {
           localStorage.setItem("token", data.token);
@@ -46,12 +47,13 @@ const Login = () => {
           throw new Error("Error");
         }
       })
-      .catch((err) => {
+      .catch(err => {
         setErrorMsg("Upss... Sepertinya terjadi kesalahan.");
         console.log(err);
       })
       .finally(() => {
         setActionLogin(false);
+        setUsername(username);
       });
   };
 
@@ -77,7 +79,7 @@ const Login = () => {
                 placeholder="Masukkan nama/email"
                 name="name"
                 autoComplete="username"
-                onChange={(e) => setName(e.target.value)}
+                onChange={e => setName(e.target.value)}
               />
             </Form.Group>
             <Form.Group controlId="password">
@@ -87,7 +89,7 @@ const Login = () => {
                 placeholder="Password"
                 name="password"
                 autoComplete="current-password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
               />
             </Form.Group>
             <p>
