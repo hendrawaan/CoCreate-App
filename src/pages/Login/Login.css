@@ -8,14 +8,3 @@
     margin: auto;
   }
 }
-
-.hr-text {
-  text-align: center;
-  border-bottom: 0.1px solid #6c757d;
-  line-height: 0.1em;
-  margin: 24px 0px;
-}
-.hr-text span {
-  background: #fff;
-  padding: 0 10px;
-}
