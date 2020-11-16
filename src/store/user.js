@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginToApi } from "../api/";
+import { loginToApi, registeringUser } from "../api/";
 
 const initialUser = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
@@ -12,28 +12,38 @@ const slice = createSlice({
     user: initialUser,
   },
   reducers: {
-    loginProcess: (state, { payload }) => {
+    onProcess: (state, { payload }) => {
       state.error = null;
       state.loading = true;
+    },
+    onFailed: (state, { payload }) => {
+      state.error = payload;
+      state.loading = false;
     },
     loginSucces: (state, { payload }) => {
       localStorage.setItem("user", JSON.stringify(payload));
       state.user = payload;
       state.loading = false;
     },
-    loginFailed: (state, { payload }) => {
-      state.error = payload;
-      state.loading = false;
-    },
     logOutSucces: (state, action) => {
       state.user = null;
+    },
+    registSuccess: (state, action) => {
+      state.loading = false;
+      console.log(action.payload)
     },
   },
 });
 
 export default slice.reducer;
 
-const { loginProcess, loginSucces, logOutSucces, loginFailed } = slice.actions;
+const {
+  onProcess,
+  loginSucces,
+  logOutSucces,
+  onFailed,
+  registSuccess,
+} = slice.actions;
 
 /**
  * Digunakan untuk login.
@@ -41,10 +51,10 @@ const { loginProcess, loginSucces, logOutSucces, loginFailed } = slice.actions;
  * storage.
  * @param {object} param Nama dan password
  */
-export const login = ({ name, password }) => async (dispatch) => {
+export const login = ({ email, password }) => async (dispatch) => {
   try {
-    dispatch(loginProcess());
-    const loginResponse = await loginToApi({ name, password });
+    dispatch(onProcess());
+    const loginResponse = await loginToApi({ email, password });
 
     switch (loginResponse.code) {
       case 200:
@@ -52,12 +62,12 @@ export const login = ({ name, password }) => async (dispatch) => {
         window.location = "/";
         break;
       case 400:
-        throw new Error("Usernama atau password salah.");
+        throw new Error("Username atau password salah.");
       default:
         throw new Error("Uppss.. Terjadi kesalahan.");
     }
   } catch (e) {
-    dispatch(loginFailed(e.message));
+    dispatch(onFailed(e.message));
   }
 };
 
@@ -71,5 +81,32 @@ export const logout = () => async (dispatch) => {
     return dispatch(logOutSucces());
   } catch (e) {
     return console.error(e.message);
+  }
+};
+
+export const addUser = ({ name, username, email, password }) => async (
+  dispatch
+) => {
+  try {
+    dispatch(onProcess());
+    const registResponse = await registeringUser({
+      name,
+      username,
+      email,
+      password,
+    });
+
+    switch (registResponse.code) {
+      case 200:
+        dispatch(registSuccess());
+        dispatch(login({email, password }))
+        break;
+      case 400:
+        throw new Error("Tampaknya akun sudah ada");
+      default:
+        throw new Error("Uppss.. Terjadi kesalahan.");
+    }
+  } catch (e) {
+    dispatch(onFailed(e.message));
   }
 };
