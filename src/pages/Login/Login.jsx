@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import { FaEnvelope } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { loginIllustration, logoSmall } from "../../assets/images";
+import { loginIllustration } from "../../assets/images";
 import { GoogleLoginBtn } from "../../components";
-import { login } from "../../store/user";
+import { addUser, login } from "../../store/user";
+import FormLogin from "./FormLogin";
 import "./Login.css";
 
 /**
@@ -17,10 +18,12 @@ const Login = () => {
   const dispatch = useDispatch();
   const { error, loading } = useSelector((state) => state.user);
 
-  const [dataLogin, setDataLogin] = useState();
+  const [isLogin, setLogin] = useState(true);
+  const [formData, setFormData] = useState();
+
   const updateField = (e) => {
-    setDataLogin({
-      ...dataLogin,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value,
     });
   };
@@ -43,7 +46,11 @@ const Login = () => {
    */
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(login(dataLogin));
+    if (isLogin) {
+      dispatch(login(formData));
+    } else {
+      dispatch(addUser(formData));
+    }
   };
 
   return (
@@ -56,30 +63,51 @@ const Login = () => {
             alt="Login Illustration"
           />
         </Col>
-        <Col lg={3}>
-          <img className="mx-auto d-block mb-3" src={logoSmall} alt="logo" />
-          <h1 className="mb-4 text-center">Login</h1>
+        <Col lg={3} className="my-4">
+          <h1 className="mb-4 text-center">{isLogin ? "Login" : "Daftar"}</h1>
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId="name">
-              <Form.Control
-                required
-                type="text"
-                placeholder="Masukkan nama/email"
-                name="name"
-                autoComplete="username"
-                onChange={updateField}
-              />
-            </Form.Group>
-            <Form.Group controlId="password">
-              <Form.Control
-                required
+            {!isLogin && (
+              <>
+                <FormLogin
+                  type="text"
+                  placeholder="Masukkan username"
+                  name="username"
+                  autoComplete={isLogin ? "username" : "off"}
+                  onChange={updateField}
+                />
+
+                <FormLogin
+                  type="text"
+                  placeholder="Masukkan nama"
+                  name="name"
+                  autoComplete={isLogin ? "name" : "off"}
+                  onChange={updateField}
+                />
+              </>
+            )}
+            <FormLogin
+              type="email"
+              placeholder="Masukkan email"
+              name="email"
+              autoComplete={isLogin ? "email" : "off"}
+              onChange={updateField}
+            />
+            <FormLogin
+              type="password"
+              placeholder="Masukkan password"
+              name="password"
+              autoComplete={isLogin ? "current-password" : "new-password"}
+              onChange={updateField}
+            />
+            {!isLogin && (
+              <FormLogin
                 type="password"
-                placeholder="Password"
-                name="password"
-                autoComplete="current-password"
+                placeholder="Konfirmasi password"
+                name="passwordConfirm"
+                autoComplete="new-password"
                 onChange={updateField}
               />
-            </Form.Group>
+            )}
             <small>
               Lupa password? <a href="./">Klik disini</a> <br />
               <span className="text-danger ">{error}</span>
@@ -104,15 +132,25 @@ const Login = () => {
               ) : (
                 <FaEnvelope className="mr-2" />
               )}
-              <span>Masuk dengan Email</span>
+              <span>
+                {isLogin ? "Masuk dengan Email" : "Daftar dengan Email"}
+              </span>
             </Button>
           </Form>
 
-          <div className="hr-text">
-            <span>atau</span>
-          </div>
           {/* <FacebookLoginBtn callback={responseFacebook} /> */}
           <GoogleLoginBtn callback={responseGoogle} />
+          <small>
+            {isLogin ? "Belum punya akun? " : "Sudah punya akun? "}
+            <span
+              className="text-primary"
+              type="button"
+              onClick={() => setLogin(!isLogin)}
+            >
+              Klik disini
+            </span>
+            <br />
+          </small>
         </Col>
       </Row>
     </Container>
