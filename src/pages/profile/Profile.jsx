@@ -12,12 +12,14 @@ import {
   FormControl,
   Form,
   Nav,
+  NavItem,
+  Navbar,
   Button,
 } from "react-bootstrap";
 import {
   FaHome, FaKey, FaList, FaUserFriends, FaUser,
   FaEnvelope, FaMapMarkerAlt, FaCalendar, FaRestroom,
-  FaPhone, FaMapPin
+  FaPhone, FaMapPin, FaBars
 } from 'react-icons/fa';
 import InputGroupCustom from '../../components/InputGroupCustom'
 const listGender = [{ name: 'Male', key: 0 },
@@ -56,6 +58,8 @@ const Profile = () => {
   const [showEdit, setShowEdit] = useState(false)
   const [oldPass, setOldPass] = useState('')
   const [newPass, setNewPass] = useState('')
+  //other state
+  const [hiddenbar, setHiddenBar] = useState(false)
   //Handler sementara
   const editToggle = () => {
     setShowEdit(!showEdit)
@@ -191,27 +195,33 @@ const Profile = () => {
   }
   return (
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0, minHeight: 700 }}>
+
       <Container fluid style={{ backgroundColor: "#14274E" }}>
         <Row className="nav-container">
           <Col md={4}>
             <Image src={logo} alt="logo" roundedCircle className='profile-login logo-instance' /></Col>
-          <Col md={4} >
+          <Col md={6} >
             <Form inline>
+              <FaBars color="white" className="burger-button" onClick={() => setHiddenBar(!hiddenbar)} />
               <FormControl
                 type="text"
                 placeholder="Search"
                 className=" mr-sm-2"
-                style={{ width: "90%" }}
+                style={{ width: "80%" }}
               />
             </Form>
           </Col>
-          <Col md={2}></Col>
-          <Col md={2}>
-            <Button variant='outline-light'>
+          <Col md={2} className="logo-instance">
+            <Button variant='outline-light '>
               <Image src={profile} alt="profile" roundedCircle className='profile-login' />
             </Button>
           </Col>
         </Row>
+        <div className={`${!hiddenbar ? 'collapse' : ''} navbar-collapse`} id="navbarsExample09">
+          {listMenu.map(function (item, i) {
+            return <a key={i} className="nav-link text-light" href='/{ item.link }' >{item.name}</a>
+          })}
+        </div>
       </Container>
       <Container fluid>
         <Row className="profile-container">

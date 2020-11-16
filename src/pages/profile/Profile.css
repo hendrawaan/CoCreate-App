@@ -1,5 +1,9 @@
 /*Nav Bar*/
 
+.burger-button {
+    display: none;
+}
+
 .search-bar {
     border-radius: 10px;
 }
@@ -52,6 +56,10 @@ body,
     /* For mobile phones: */
     .logo-instance {
         display: none;
+    }
+    .burger-button {
+        display: inline;
+        margin-right: auto;
     }
     .card-menu {
         display: none;
