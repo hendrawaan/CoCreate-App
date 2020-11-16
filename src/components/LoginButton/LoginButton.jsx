@@ -7,13 +7,12 @@ import { ButtonWithIcon } from "../ButtonWithIcon/ButtonWithIcon";
 
 const FACEBOOK_APP_ID = "3709480149091130";
 const GOOGLE_CLIENT_ID =
-  "159468599880-jg7h0rjjpsre487gnf99mc1it2qtb3iu.apps.googleusercontent.com";
-
+  "1023361548623-dlhhdd7da8pi28fhgmjkd7qo4eesg50o.apps.googleusercontent.com";
+  
 export const FacebookLoginBtn = (props) => {
   return (
     <FacebookLogin
       appId={FACEBOOK_APP_ID}
-      fields="name,email,picture"
       callback={props.callback}
       disableMobileRedirect={true}
       render={(renderProps) => (
