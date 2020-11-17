@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
-import profile from "../../assets/images/profile-default.jpg";
+import profileimg from "../../assets/images/profile-default.jpg";
 import logo from "../../assets/images/logo.png";
+import { useDispatch, useSelector } from "react-redux";
 import "./Profile.css";
 import {
   Container,
@@ -15,10 +16,7 @@ import {
   Button
 } from "react-bootstrap";
 import {
-  FaHome,
   FaKey,
-  FaList,
-  FaUserFriends,
   FaUser,
   FaEnvelope,
   FaMapMarkerAlt,
@@ -26,87 +24,77 @@ import {
   FaRestroom,
   FaPhone,
   FaMapPin,
-  FaBars
+  FaBars,
+  FaIdCard
 } from "react-icons/fa";
 import InputGroupCustom from "../../components/InputGroupCustom";
-import { getDataProfile } from "../../api/ProfileAction";
-const listGender = [
-  { name: "Male", key: 0 },
-  { name: "Female", key: 1 }
-];
-const listNav = [
-  { name: "Edit Profile", key: 1 },
-  // { name: "Change Profile Picture", key: 2 },
-  { name: "Update Password", key: 3 }
-];
-const listMenu = [
-  { name: "Home", icon: <FaHome />, link: "" },
-  { name: "List Project", icon: <FaList />, link: "" },
-  { name: "Collaboration", icon: <FaUserFriends />, link: "" }
-];
-const url = "http://kelompok6.dtstakelompok1.com/api/v1/";
+import { listGender, listNav, listMenu } from './List'
+import { getProfile } from "../../store/profile";
 const Profile = () => {
+
+  const dispatch = useDispatch();
+  const { profile } = useSelector(state => state.profile);
+  const { user } = useSelector((state) => state.user);
   const [search, setSearch] = useState("");
-  const [username, setUserName] = useState("hendrawaan");
-  const [email, setEmail] = useState("hendrawaan@gmail.com");
-  const [name, setName] = useState("Arif Hendrawan");
-  const [gender, setGender] = useState("Male");
-  const [dob, setDob] = useState("1998-07-29");
-  const [phone, setPhone] = useState("08766621212");
-  const [postalcode, setPostalCode] = useState("56678");
-  const [address, setAddress] = useState("Jakarta Selatan");
-  const [bio, setBio] = useState("Ini Adalah Bio dari Arif Hendrawan");
+  // const [username, setUserName] = useState("hendrawaan");
+  // const [email, setEmail] = useState("hendrawaan@gmail.com");
+  // const [name, setName] = useState("Arif Hendrawan");
+  // const [gender, setGender] = useState("Male");
+  // const [dob, setDob] = useState("1998-07-29");
+  // const [phone, setPhone] = useState("08766621212");
+  // const [postalcode, setPostalCode] = useState("56678");
+  // const [address, setAddress] = useState("Jakarta Selatan");
+  // const [bio, setBio] = useState("Ini Adalah Bio dari Arif Hendrawan");
   const [navKey, setKey] = useState(1);
-  const [pass, setPass] = useState("");
+  const [formProfile, setFormProfile] = useState();
+  const [formPassword, setFormPassword] = useState();
+  const updateProfile = e => {
+    setFormProfile({
+      ...formProfile,
+      [e.target.name]: e.target.value
+    });
+  };
+  const updatePassword = e => {
+    setFormPassword({
+      ...formProfile,
+      [e.target.name]: e.target.value
+    });
+  };
   //edit state
-  const [changeName, setChangeName] = useState(name);
-  const [changeGender, setChangeGender] = useState(gender);
-  const [changeDob, setChangeDob] = useState(dob);
-  const [changePhone, setChangePhone] = useState(phone);
-  const [changePostalcode, setChangePostalcode] = useState(postalcode);
-  const [changeAddress, setChangeAddress] = useState(address);
-  const [changeBio, setChangeBio] = useState(bio);
+  // const [changeName, setChangeName] = useState(name);
+  // const [changeGender, setChangeGender] = useState(gender);
+  // const [changeDob, setChangeDob] = useState(dob);
+  // const [changePhone, setChangePhone] = useState(phone);
+  // const [changePostalcode, setChangePostalcode] = useState(postalcode);
+  // const [changeAddress, setChangeAddress] = useState(address);
+  // const [changeBio, setChangeBio] = useState(bio);
+  // const [oldPass, setOldPass] = useState("");
+  // const [newPass, setNewPass] = useState("");
   const [showEdit, setShowEdit] = useState(false);
-  const [oldPass, setOldPass] = useState("");
-  const [newPass, setNewPass] = useState("");
+
   //other state
   const [hiddenbar, setHiddenBar] = useState(false);
+
   useEffect(() => {
-    fetch(url + `user/detail/`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-        Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imhhcmxhbm9yb2hAZ21haWwuY29tIiwiaWQiOjN9.YSXxy-90RdONGhrumIFHNpKZE1G-fVSVSFL64KVy7aw"
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.data.user);
-        let datas = data.data.user;
-        setName(datas.name);
-        setUserName(datas.username);
-        setEmail(datas.email);
-        setPostalCode(datas.postcode);
-        setDob(datas.birth);
-        setPhone(datas.phone);
-        setGender(datas.gender);
-        setAddress(datas.address);
-        setBio(datas.short_bio);
-      })
-      .catch(error => console.error(error));
-  });
-  //Handler sementara
-  const editToggle = () => {
-    setShowEdit(!showEdit);
-  };
-  const editProfileHandler = () => {};
-  const uploadPhotoHandler = () => {};
-  const updatePasswordHandler = () => {
-    if (oldPass !== newPass) {
-      alert("salah");
+    if (user) {
+      dispatch(getProfile(user.token));
+    }
+  }, [dispatch, user]);
+
+
+  useEffect(() => {
+    console.log(profile?.user)
+  }, [profile])
+  const dataProfile = profile?.user
+  //Handler untuk menangani proses
+  const editProfileHandler = e => { };
+  const uploadPhotoHandler = e => { };
+  const updatePasswordHandler = e => {
+    e.preventDefault();
+    if (formPassword.old_pass === formPassword.new_pass) {
+      //dispatch(setPassword(formPassword));
     } else {
-      alert("benar");
+      alert('Password tidak cocok')
     }
   };
   const contentBio = () => {
@@ -114,7 +102,7 @@ const Profile = () => {
       <Card>
         <Card.Header as="h5">Short Bio</Card.Header>
         <Card.Body>
-          <Card.Text>{bio}</Card.Text>
+          <Card.Text>{dataProfile?.short_bio}</Card.Text>
         </Card.Body>
       </Card>
     );
@@ -124,7 +112,7 @@ const Profile = () => {
       <Card style={{ width: "18rem" }}>
         <Card.Header>Menu</Card.Header>
         <ButtonGroup vertical>
-          {listMenu.map(function(item, i) {
+          {listMenu.map(function (item, i) {
             return (
               <Button className="text-left" key={i} variant="light">
                 {item.icon} {item.name}
@@ -147,56 +135,62 @@ const Profile = () => {
                 <Form.Label>Username</Form.Label>
                 <InputGroupCustom
                   icon="@"
-                  setFunc={setUserName}
-                  placeholder={username}
+                  name="username"
+                  onChange={updateProfile}
+                  placeholder={dataProfile?.username}
                   type="text"
-                  value={username}
+                  value={dataProfile?.username}
                   disabled={true}
                 />
                 <Form.Label>Name</Form.Label>
                 <InputGroupCustom
                   icon={<FaUser />}
-                  setFunc={setChangeName}
+                  name="name"
+                  onChange={updateProfile}
                   type="text"
                   placeholder="Name"
-                  defValue={name}
+                  defValue={dataProfile?.name}
                 />
                 <Form.Label>Date of Birth</Form.Label>
                 <InputGroupCustom
                   icon={<FaCalendar />}
-                  setFunc={setChangeDob}
+                  name="birth"
+                  onChange={updateProfile}
                   type="date"
                   placeholder="Date of Birth"
-                  defValue={dob}
+                  defValue={dataProfile?.birth}
                 />
               </Col>
               <Col md={6}>
                 <Form.Label>Email</Form.Label>
                 <InputGroupCustom
                   icon={<FaEnvelope />}
-                  setFunc={setEmail}
-                  placeholder={email}
+                  name="email"
+                  onChange={updateProfile}
+                  placeholder={dataProfile?.email}
                   type="text"
-                  value={email}
+                  value={dataProfile?.email}
                   disabled={true}
                 />
                 <Form.Label>Gender</Form.Label>
                 <InputGroupCustom
                   icon={<FaRestroom />}
-                  setFunc={setChangeGender}
+                  name="gender"
+                  onChange={updateProfile}
                   type="text"
                   placeholder="Gender"
                   as="select"
-                  defValue={gender}
+                  defValue={dataProfile?.gender}
                   children={listGender}
                 />
                 <Form.Label>Phone</Form.Label>
                 <InputGroupCustom
                   icon={<FaPhone />}
-                  setFunc={setChangePhone}
+                  name="phone"
+                  onChange={updateProfile}
                   placeholder="Phone Number"
                   type="text"
-                  defValue={phone}
+                  defValue={dataProfile?.phone}
                 />
               </Col>
             </Form.Row>
@@ -207,20 +201,22 @@ const Profile = () => {
                 <InputGroupCustom
                   as="textarea"
                   icon={<FaMapMarkerAlt />}
-                  setFunc={setChangeAddress}
+                  name="address"
+                  onChange={updateProfile}
                   type="text"
                   placeholder="Address"
-                  defValue={address}
+                  defValue={dataProfile?.address}
                 />
               </Col>
               <Col md={6}>
                 <Form.Label>Postal Code</Form.Label>
                 <InputGroupCustom
                   icon={<FaMapMarkerAlt />}
-                  setFunc={setChangePostalcode}
+                  name="email"
+                  onChange={updateProfile}
                   type="text"
                   placeholder="Postal Code"
-                  defValue={postalcode}
+                  defValue={dataProfile?.postcode}
                 />
               </Col>
             </Form.Row>
@@ -230,12 +226,12 @@ const Profile = () => {
                 <Form.Label>Short Bio</Form.Label>
                 <InputGroupCustom
                   as="textarea"
-                  icon={<FaMapMarkerAlt />}
-                  value={bio}
-                  setFunc={setChangeBio}
+                  icon={<FaIdCard />}
+                  name="short_bio"
+                  onChange={updateProfile}
                   type="text"
                   placeholder="Bio"
-                  defValue={bio}
+                  defValue={dataProfile?.short_bio}
                 />
               </Col>
             </Form.Row>
@@ -293,7 +289,8 @@ const Profile = () => {
               <Col md={6}>
                 <InputGroupCustom
                   icon={<FaKey />}
-                  setFunc={setOldPass}
+                  name="old_pass"
+                  onChange={updatePassword}
                   type="password"
                   placeholder="Old Password"
                 />
@@ -301,7 +298,8 @@ const Profile = () => {
               <Col md={6}>
                 <InputGroupCustom
                   icon={<FaKey />}
-                  setFunc={setNewPass}
+                  name="new_pass"
+                  onChange={updatePassword}
                   type="password"
                   placeholder="New Password"
                 />
@@ -353,7 +351,7 @@ const Profile = () => {
           <Col md={2} className="logo-instance">
             <Button variant="outline-light ">
               <Image
-                src={profile}
+                src={profileimg}
                 alt="profile"
                 roundedCircle
                 className="profile-login"
@@ -365,7 +363,7 @@ const Profile = () => {
           className={`${!hiddenbar ? "collapse" : ""} navbar-collapse`}
           id="navbarsExample09"
         >
-          {listMenu.map(function(item, i) {
+          {listMenu.map(function (item, i) {
             return (
               <a key={i} className="nav-link text-light" href="/{ item.link }">
                 {item.name}
@@ -383,39 +381,39 @@ const Profile = () => {
               <Col md={1}></Col>
               <Col md={2}>
                 <Image
-                  src={profile}
+                  src={profileimg}
                   alt="profile"
                   roundedCircle
                   style={{ maxWidth: 60 }}
                 />
               </Col>
               <Col md={6} className="personal-info">
-                <h2>{name}</h2>
-                <p style={{ color: "grey" }}>@{username}</p>
+                <h2>{dataProfile?.name}</h2>
+                <p style={{ color: "grey" }}>@{dataProfile?.username}</p>
                 <Row>
                   <Col md={6}>
                     <p style={{ color: "grey" }}>
-                      <FaRestroom /> {gender}
+                      <FaRestroom /> {dataProfile?.gender}
                     </p>
                     <p style={{ color: "grey" }}>
-                      <FaPhone /> {phone}
+                      <FaPhone /> {dataProfile?.phone}
                     </p>
                   </Col>
                   <Col md={6}>
                     <p style={{ color: "grey" }}>
-                      <FaCalendar /> {dob}
+                      <FaCalendar /> {dataProfile?.birth}
                     </p>
                     <p style={{ color: "grey" }}>
-                      <FaMapPin /> {postalcode}
+                      <FaMapPin /> {dataProfile?.postcode}
                     </p>
                   </Col>
                 </Row>
                 <br />
                 <p style={{ color: "grey" }}>
-                  <FaEnvelope /> {email}
+                  <FaEnvelope /> {dataProfile?.email}
                 </p>
                 <p style={{ color: "grey" }}>
-                  <FaMapMarkerAlt /> {address}
+                  <FaMapMarkerAlt /> {dataProfile?.address}
                 </p>
               </Col>
             </Row>
@@ -433,8 +431,8 @@ const Profile = () => {
                 Logout
               </Button>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </Col>
         </Row>
       </Container>
@@ -447,12 +445,12 @@ const Profile = () => {
               {contentMenu()}
             </Col>
           ) : (
-            ""
-          )}
+              ""
+            )}
           {showEdit === true ? (
             <Col md={12}>
               <Nav fill variant="tabs" defaultActiveKey={navKey}>
-                {listNav.map(function(item, i) {
+                {listNav.map(function (item, i) {
                   return (
                     <Nav.Item key={i}>
                       <Nav.Link
@@ -469,15 +467,15 @@ const Profile = () => {
               {navKey === 1 ? (
                 contentEditProfile()
               ) : // navKey === 2 ? contentUploadPhoto() :
-              navKey === 3 ? (
-                contentUpdatePassword()
-              ) : (
-                <div></div>
-              )}
+                navKey === 3 ? (
+                  contentUpdatePassword()
+                ) : (
+                    <div></div>
+                  )}
             </Col>
           ) : (
-            <Col md={6}> {contentBio()}</Col>
-          )}
+              <Col md={6}> {contentBio()}</Col>
+            )}
         </Row>
       </Container>
     </Container>
