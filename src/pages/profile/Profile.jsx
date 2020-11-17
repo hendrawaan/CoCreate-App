@@ -103,7 +103,6 @@ const Profile = () => {
         <Card.Header as="h5">Short Bio</Card.Header>
         <Card.Body>
           <Card.Text>{dataProfile?.short_bio}</Card.Text>
-          <Card.Text>{dataProfile?.short_bio}</Card.Text>
         </Card.Body>
       </Card>
       
