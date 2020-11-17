@@ -1,16 +1,26 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Home, Login, Regis, PagesAdmin, Profile, Admin } from "../pages";
+import { NavApp } from "../components";
+import { Admin, Home, Login, NotFound, Profile, Trending } from "../pages";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 const Router = () => {
+  const navItems = [
+    { label: "Home", link: "/", isProtected: false },
+    { label: "Profile", link: "/profile", isProtected: true },
+    { label: "Trending", link: "/trending", isProtected: true },
+  ];
+
   return (
     <BrowserRouter>
+      <NavApp navItems={navItems} />
       <Switch>
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Regis} />
-        <Route exact path="/admin" component={PagesAdmin} />
-        <Route exact path="/profile" component={Profile} />
         <Route exact path="/" component={Home} />
+        <Route exact path="/login" component={Login} />
+        <ProtectedRoute exact path="/profile" component={Profile} />
+        <ProtectedRoute exact path="/trending" component={Trending} />
+        <ProtectedRoute exact path="/admin" component={Admin} />
+        <Route component={NotFound} />
       </Switch>
     </BrowserRouter>
   );

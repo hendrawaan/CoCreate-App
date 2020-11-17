@@ -1,22 +1,26 @@
+import jwt_decode from "jwt-decode";
 import React, { useState } from "react";
 import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import { FaEnvelope } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { loginIllustration } from "../../assets/images";
 import { GoogleLoginBtn } from "../../components";
 import { addUser, login } from "../../store/user";
 import FormLogin from "./FormLogin";
 import "./Login.css";
 
+
 /**
- * Login page.
+ * Login and Registration page.
  * Halaman untuk login.
  * Author : Abdurraziq Bachmid
+ *          Muhammad Febriansyah
  * Date   : 11/11/2020
  */
-const Login = () => {
+export const Login = () => {
   const dispatch = useDispatch();
-  const { error, loading } = useSelector(state => state.user);
+  const { user, error, loading } = useSelector((state) => state.user);
 
   const [isLogin, setLogin] = useState(true);
   const [formData, setFormData] = useState();
@@ -49,13 +53,20 @@ const Login = () => {
     if (isLogin) {
       dispatch(login(formData));
     } else {
-      if (formData.password === formData.passwordConfirm) {
-        dispatch(addUser(formData));
-      } else {
-        alert("Password tidak sama!");
-      }
+      formData.password === formData.passwordConfirm
+        ? dispatch(addUser(formData))
+        : alert("Password tidak sama!");
     }
   };
+
+  if (user) {
+    const {token} = user
+    const decode = jwt_decode(token);
+
+    return decode.type_user === 2
+      ? <Redirect to="/" />
+      : <Redirect to="/admin" />
+  }
 
   return (
     <Container>
@@ -160,5 +171,3 @@ const Login = () => {
     </Container>
   );
 };
-
-export default Login;

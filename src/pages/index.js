@@ -1,6 +1,7 @@
-import Home from "./Home/Home";
-import Regis from "./Regis/Regis";
-import Login from "./Login/Login";
-import PagesAdmin from "./PagesAdmin/AdminHome";
-import Profile from './profile/Profile';
-export { Login, Home, Regis, PagesAdmin, Profile };
+export * from "./Admin/Admin";
+export * from "./Home/Home";
+export * from "./Login/Login";
+export * from "./NotFound/NotFound";
+export * from "./Profile/Profile";
+export * from "./Trending/Trending";
+

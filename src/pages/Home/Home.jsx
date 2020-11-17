@@ -24,7 +24,6 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { GiLifeInTheBalance } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../store/profile";
-import { logout } from "../../store/user";
 
 export default function Home() {
   const dispatch = useDispatch();
