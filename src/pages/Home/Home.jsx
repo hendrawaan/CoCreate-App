@@ -32,7 +32,7 @@ export default function Home() {
       {profile && (
         <div className="mt-5">
           Hai {profile.user.name} <br /> Anda{" "}
-          {profile.user.verification === "False" ? " belum " : " sudah "} terverifikasi
+          {profile.user.verification ? " sudah " : " belum "} terverifikasi
         </div>
       )}
     </div>
