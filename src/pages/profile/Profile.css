@@ -1,0 +1,67 @@
+/*Nav Bar*/
+
+.burger-button {
+    display: none;
+}
+
+.search-bar {
+    border-radius: 10px;
+}
+
+.margin-between {
+    margin-bottom: 10px;
+}
+
+.personal-info p {
+    margin: 0;
+}
+
+.nav-container {
+    padding: 10px;
+}
+
+.profile-login {
+    max-width: 40px;
+}
+
+.profile-container {
+    padding: 20px;
+}
+
+html,
+body,
+#app,
+#app>div {
+    height: 100%
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited {
+    background-color: #14274E !important;
+    color: #F1F6F9;
+    border-color: #394867;
+}
+
+.text-style {
+    color: #394867;
+    font-size: 12px;
+}
+
+
+/*Mobile*/
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .logo-instance {
+        display: none;
+    }
+    .burger-button {
+        display: inline;
+        margin-right: auto;
+    }
+    .card-menu {
+        display: none;
+    }
+}

@@ -33,6 +33,8 @@ export default function Home() {
   useEffect(() => {
     if (user) {
       dispatch(getProfile(user.token));
+    } else if (!user) {
+      window.location = "/login";
     }
   }, [dispatch, user]);
 
@@ -136,13 +138,13 @@ export default function Home() {
                       {profile && (
                         <div>
                           <ListGroup.Item>{profile.user.name}</ListGroup.Item>
+                          <ListGroup.Item>{profile.user.email}</ListGroup.Item>
                           <ListGroup.Item>
                             {profile.user.verification === "False"
                               ? " belum "
                               : " sudah "}{" "}
                             terverifikasi
                           </ListGroup.Item>
-                          <ListGroup.Item>{profile.user.email}</ListGroup.Item>
                         </div>
                       )}
                     </ListGroup>
