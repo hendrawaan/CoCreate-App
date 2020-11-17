@@ -1,3 +1,4 @@
+import jwt_decode from "jwt-decode";
 import React, { useState } from "react";
 import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import { FaEnvelope } from "react-icons/fa";
@@ -9,10 +10,12 @@ import { addUser, login } from "../../store/user";
 import FormLogin from "./FormLogin";
 import "./Login.css";
 
+
 /**
- * Login page.
+ * Login and Registration page.
  * Halaman untuk login.
  * Author : Abdurraziq Bachmid
+ *          Muhammad Febriansyah
  * Date   : 11/11/2020
  */
 export const Login = () => {
@@ -57,7 +60,12 @@ export const Login = () => {
   };
 
   if (user) {
-    return <Redirect to="/" />;
+    const {token} = user
+    const decode = jwt_decode(token);
+
+    return decode.type_user === 2
+      ? <Redirect to="/" />
+      : <Redirect to="/admin" />
   }
 
   return (
