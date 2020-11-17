@@ -1,42 +1,41 @@
 import React, { Component } from "react";
-import { Table } from 'react-bootstrap'
+import { Table } from "react-bootstrap";
 
 class TableUser extends Component {
-    render() {
+  render() {
     return (
-        <Table responsive>
+      <Table responsive>
         <thead>
-            <tr>
+          <tr>
             <th>#</th>
             {Array.from({ length: 5 }).map((_, index) => (
-                <th key={index}>Nama Lengkap</th>
+              <th key={index}>Nama Lengkap</th>
             ))}
-            </tr>
+          </tr>
         </thead>
         <tbody>
-            <tr>
+          <tr>
             <td>1</td>
             {Array.from({ length: 5 }).map((_, index) => (
-                <td key={index}>User 1 {index}</td>
+              <td key={index}>User 1 {index}</td>
             ))}
-            </tr>
-            <tr>
+          </tr>
+          <tr>
             <td>2</td>
             {Array.from({ length: 5 }).map((_, index) => (
-                <td key={index}>User 2 {index}</td>
+              <td key={index}>User 2 {index}</td>
             ))}
-            </tr>
-            <tr>
+          </tr>
+          <tr>
             <td>3</td>
             {Array.from({ length: 5 }).map((_, index) => (
-                <td key={index}>User 3 {index}</td>
+              <td key={index}>User 3 {index}</td>
             ))}
-            </tr>
+          </tr>
         </tbody>
-        </Table>
+      </Table>
     );
+  }
 }
-}
-
 
 export default TableUser;

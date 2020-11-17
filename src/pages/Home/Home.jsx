@@ -20,6 +20,7 @@ import { MdEvent } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { GrTechnology } from "react-icons/gr";
 import { BiMoney } from "react-icons/bi";
+import { AiOutlineHeart } from "react-icons/ai";
 import { GiLifeInTheBalance } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../store/profile";
@@ -143,7 +144,7 @@ export default function Home() {
                             {profile.user.verification === "False"
                               ? " belum "
                               : " sudah "}{" "}
-                            terverifikasi test
+                            terverifikasi
                           </ListGroup.Item>
                         </div>
                       )}
@@ -254,19 +255,11 @@ export default function Home() {
                   </Card.Text>
                   <Button variant="primary">Read More</Button>
                 </Card.Body>
-              </Card>
-              <Card className="mb-2">
-                <Card.Header as="h5">Title #2</Card.Header>
-                <Card.Body>
-                  <Card.Title>
-                    <CgProfile /> <p>Username</p>
-                  </Card.Title>
-                  <Card.Text>
-                    With supporting text below as a natural lead-in to
-                    additional content.
-                  </Card.Text>
-                  <Button variant="primary">Read More</Button>
-                </Card.Body>
+                <Card.Footer>
+                  <Button style={{ backgroundColor: "transparent" }}>
+                    <AiOutlineHeart />
+                  </Button>
+                </Card.Footer>
               </Card>
             </Col>
           </Row>
