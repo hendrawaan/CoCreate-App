@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import logo from '../../assets/images/logo.jpg';
+// import logo from '../../assets/images/logo.jpg';
 import { Card } from 'react-bootstrap'
 import './ComponentAdmin.css'
 
@@ -7,7 +7,7 @@ const ContentPost = ()=>  {
     return (
         <Fragment>
             <Card>
-                <Card.Img variant="top" src={logo} />
+                {/* <Card.Img variant="top" src={logo} /> */}
                 <Card.Body>
                 <Card.Text>
                     Some quick example text to build on the card title and make up the bulk

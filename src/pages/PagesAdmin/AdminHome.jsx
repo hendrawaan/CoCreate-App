@@ -1,5 +1,4 @@
 import React,  {Fragment} from 'react';
-import 'mdbreact/dist/css/mdb.css';
 import { Tabs, Tab } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ContentPost from '../../components/Admin/ContentPost'
