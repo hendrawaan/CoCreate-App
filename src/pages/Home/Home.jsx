@@ -143,7 +143,7 @@ export default function Home() {
                             {profile.user.verification === "False"
                               ? " belum "
                               : " sudah "}{" "}
-                            terverifikasi
+                            terverifikasi test
                           </ListGroup.Item>
                         </div>
                       )}
