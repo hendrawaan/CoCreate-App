@@ -27,7 +27,6 @@ const userSlice = createSlice({
     },
     logOutSucces: (state) => {
       state.user = null;
-      window.location.reload();
     },
     registSuccess: (state) => {
       state.loading = false;
