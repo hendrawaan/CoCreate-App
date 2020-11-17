@@ -1,4 +1,5 @@
 import {
+    Form,
     FormControl,
     InputGroup
 } from "react-bootstrap";
@@ -6,16 +7,16 @@ import {
 const InputGroupCustom = ({ children, disabled, ...props }) => {
     let form_control = ""
     if (disabled) {
-        form_control = <FormControl disabled as={props.as} defaultValue={props.defValue} onChange={(e) => props.setFunc(e.target.value)} type={props.type} placeholder={props.placeholder} />
+        form_control = <Form.Control disabled {...props} />
     } else {
-        form_control = <FormControl as={props.as} onChange={(e) => props.setFunc(e.target.value)} type={props.type} placeholder={props.placeholder} defaultValue={props.defValue} />
+        form_control = <Form.Control {...props} />
     }
     if (props.as === "select") {
-        form_control = <FormControl as={props.as} onChange={(e) => props.setFunc(e.target.value)} type={props.type} placeholder={props.placeholder} >
+        form_control = <Form.Control {...props}  >
             {children.map(function (item, i) {
                 return (<option key={i} value={item.key}>{item.name}</option>)
             })}
-        </FormControl >;
+        </Form.Control >;
     }
     return (
         <InputGroup >
