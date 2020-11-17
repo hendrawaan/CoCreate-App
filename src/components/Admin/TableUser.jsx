@@ -4,33 +4,33 @@ import { Table } from 'react-bootstrap'
 class TableUser extends Component {
     render() {
     return (
-        <Table responsive>
+        <Table striped bordered hover>
         <thead>
             <tr>
             <th>#</th>
-            {Array.from({ length: 5 }).map((_, index) => (
-                <th key={index}>Nama Lengkap</th>
-            ))}
+            <th>Nama</th>
+            <th>Email</th>
+            <th>Status</th>
             </tr>
         </thead>
         <tbody>
             <tr>
             <td>1</td>
-            {Array.from({ length: 5 }).map((_, index) => (
-                <td key={index}>User 1 {index}</td>
-            ))}
+            <td>Mark</td>
+            <td>Otto@gmail.com</td>
+            <td>Aktif</td>
             </tr>
             <tr>
             <td>2</td>
-            {Array.from({ length: 5 }).map((_, index) => (
-                <td key={index}>User 2 {index}</td>
-            ))}
+            <td>Jacob</td>
+            <td>Thornton@gmail.com</td>
+            <td>Noaktif</td>
             </tr>
             <tr>
             <td>3</td>
-            {Array.from({ length: 5 }).map((_, index) => (
-                <td key={index}>User 3 {index}</td>
-            ))}
+            <td>Bob</td>
+            <td>Bob65@gmail.com</td>
+            <td>Aktif</td>
             </tr>
         </tbody>
         </Table>
