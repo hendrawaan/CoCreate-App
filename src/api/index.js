@@ -13,7 +13,11 @@ const api = {
       method: methode,
       body: data,
       headers: { ...header, "Content-type": "application/json" },
-    }).then((res) => res.json());
+    })
+      .then((res) => res.json())
+      .catch(() => {
+        throw new Error("Uppss.. Terjadi kesalahan.");
+      });
   },
 
   /**
