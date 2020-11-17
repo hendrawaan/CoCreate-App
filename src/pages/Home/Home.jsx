@@ -26,7 +26,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../store/profile";
 import { logout } from "../../store/user";
 
-/* Hanya untuk testing */
 export default function Home() {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.user);
@@ -42,6 +41,47 @@ export default function Home() {
   const register = () => {
     window.location = "/register";
   };
+
+  const feed = [
+    {
+      id: 1,
+      title: "Berkembang dalam Industri 4.0",
+      tag: "Teknologi",
+      posted_by: "Harits"
+    },
+    {
+      id: 2,
+      title: "Ayo mulai belajar React Redux",
+      tag: "Teknologi",
+      posted_by: "Arif"
+    },
+    {
+      id: 3,
+      title: "Bahaya duduk di depan komputer lebih dari 45 menit!",
+      tag: "Kesehatan",
+      posted_by: "Ruli"
+    },
+    {
+      id: 4,
+      title: "Jangan lupa sarapan!",
+      tag: "Kesehatan",
+      posted_by: "Rian"
+    },
+    {
+      id: 5,
+      title: "Menabung Emas. Halal dan kaya di masa tua",
+      tag: "Keuangan",
+      posted_by: "Raziq"
+    }
+  ];
+
+  var jwt = require("jwt-simple");
+  var secret = "your-256-bit-secret";
+  var decoded = jwt.decode(user.token, secret, true);
+  console.log(user.token);
+  console.log(secret);
+  console.log(decoded);
+  console.log(profile);
 
   return (
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
@@ -157,9 +197,14 @@ export default function Home() {
                   </Button>
                 </div>
                 <div className="p-2">
-                  <Button variant="light" style={{ width: "100%" }}>
+                  <Button
+                    variant="light"
+                    style={{ width: "100%" }}
+                    type="submit"
+                    onClick={() => (window.location = "/profile")}
+                  >
                     <MdEvent />
-                    Event
+                    Profile
                   </Button>
                 </div>
               </div>
@@ -177,11 +222,6 @@ export default function Home() {
                 </ListGroup>
               </Card>
               <hr />
-            </Col>
-          </Row>
-          <Row>
-            <Col style={{}}>
-              <h1>Calendar</h1>
             </Col>
           </Row>
         </Col>
@@ -243,24 +283,28 @@ export default function Home() {
           </Row>
           <Row>
             <Col style={{}}>
-              <Card className="mb-2">
-                <Card.Header as="h5">Title #1</Card.Header>
-                <Card.Body>
-                  <Card.Title>
-                    <CgProfile /> <p>Username</p>
-                  </Card.Title>
-                  <Card.Text>
-                    With supporting text below as a natural lead-in to
-                    additional content.
-                  </Card.Text>
-                  <Button variant="primary">Read More</Button>
-                </Card.Body>
-                <Card.Footer>
-                  <Button style={{ backgroundColor: "transparent" }}>
-                    <AiOutlineHeart />
-                  </Button>
-                </Card.Footer>
-              </Card>
+              {feed
+                .filter(feeding => feeding.tag === "Teknologi")
+                .map(filteredFeed => (
+                  <Card className="mb-2" key={filteredFeed.id}>
+                    <Card.Header as="h5">{filteredFeed.title}</Card.Header>
+                    <Card.Body>
+                      <Card.Title>
+                        <CgProfile /> <p>{filteredFeed.posted_by}</p>
+                      </Card.Title>
+                      <Card.Text>
+                        With supporting text below as a natural lead-in to
+                        additional content.
+                      </Card.Text>
+                      <Button variant="primary">Read More</Button>
+                    </Card.Body>
+                    <Card.Footer>
+                      <Button style={{ backgroundColor: "transparent" }}>
+                        <AiOutlineHeart />
+                      </Button>
+                    </Card.Footer>
+                  </Card>
+                ))}
             </Col>
           </Row>
         </Col>
