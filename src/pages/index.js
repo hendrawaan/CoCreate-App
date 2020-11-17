@@ -1,5 +1,5 @@
-import Home from "./Home/Home";
-import Login from "./Login/Login";
-
-export { Login, Home };
+export * from "./Home/Home";
+export * from "./Login/Login";
+export * from "./Profile/Profile";
+export * from "./Trending/Trending";
 
