@@ -12,7 +12,7 @@ const userSlice = createSlice({
     user: initialUser,
   },
   reducers: {
-    onProcess: (state, { payload }) => {
+    onProcess: (state) => {
       state.error = null;
       state.loading = true;
     },
@@ -25,11 +25,11 @@ const userSlice = createSlice({
       state.user = payload;
       state.loading = false;
     },
-    logOutSucces: (state, action) => {
+    logOutSucces: (state) => {
       state.user = null;
       window.location.reload();
     },
-    registSuccess: (state, action) => {
+    registSuccess: (state) => {
       state.loading = false;
     },
   },
@@ -59,7 +59,6 @@ export const login = ({ email, password }) => async (dispatch) => {
     switch (loginResponse.code) {
       case 200:
         dispatch(loginSucces(loginResponse.data));
-        window.location = "/";
         break;
       case 400:
         throw new Error("Username atau password salah.");
@@ -78,9 +77,9 @@ export const login = ({ email, password }) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   try {
     localStorage.removeItem("user");
-    return dispatch(logOutSucces());
+    dispatch(logOutSucces());
   } catch (e) {
-    return console.error(e.message);
+    console.error(e.message);
   }
 };
 
