@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getUserProfile } from "../api/";
+import { logout } from "./user";
 
 // Slice
 const profileSlice = createSlice({
@@ -29,12 +30,20 @@ const { onFailed, getProfileSuccess } = profileSlice.actions;
 export const getProfile = (token) => async (dispatch) => {
   try {
     const profileResponse = await getUserProfile(token);
-    switch (profileResponse.code) {
-      case 200:
-        dispatch(getProfileSuccess(profileResponse.data));
-        break;
-      default:
-        throw new Error("Uppss.. Terjadi kesalahan.");
+
+    // Cek apakah ada error
+    if (!profileResponse.error) {
+      switch (profileResponse.code) {
+        case 200:
+          dispatch(getProfileSuccess(profileResponse.data));
+          break;
+        default:
+          throw new Error("Uppss.. Terjadi kesalahan.");
+      }
+    } else {
+      // Ini artinya token sudah tidak valid jadi user di arahkan ke halaman
+      // login.
+      await dispatch(logout());
     }
   } catch (e) {
     dispatch(onFailed(e.message));
