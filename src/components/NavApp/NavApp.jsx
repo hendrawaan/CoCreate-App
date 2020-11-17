@@ -36,9 +36,12 @@ export const NavApp = (props) => {
             variant="primary"
             size="sm"
             className="ml-3"
-            onClick={() =>
-              user ? dispatch(logout()) : history.push("/login")
-            }
+            onClick={() => {
+              if (user) {
+                dispatch(logout());
+              }
+              history.push("/login");
+            }}
           >
             {user ? "Logout" : "Login"}
           </Button>
