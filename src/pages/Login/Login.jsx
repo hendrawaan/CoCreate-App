@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import { FaEnvelope } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { loginIllustration } from "../../assets/images";
 import { GoogleLoginBtn } from "../../components";
 import { addUser, login } from "../../store/user";
@@ -14,9 +15,9 @@ import "./Login.css";
  * Author : Abdurraziq Bachmid
  * Date   : 11/11/2020
  */
-const Login = () => {
+export const Login = () => {
   const dispatch = useDispatch();
-  const { error, loading } = useSelector((state) => state.user);
+  const { user, error, loading } = useSelector((state) => state.user);
 
   const [isLogin, setLogin] = useState(true);
   const [formData, setFormData] = useState();
@@ -49,13 +50,15 @@ const Login = () => {
     if (isLogin) {
       dispatch(login(formData));
     } else {
-      if (formData.password === formData.passwordConfirm) {
-        dispatch(addUser(formData));
-      } else {
-        alert("Password tidak sama!");
-      }
+      formData.password === formData.passwordConfirm
+        ? dispatch(addUser(formData))
+        : alert("Password tidak sama!");
     }
   };
+
+  if (user) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Container>
@@ -160,5 +163,3 @@ const Login = () => {
     </Container>
   );
 };
-
-export default Login;
