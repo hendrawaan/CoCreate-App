@@ -71,7 +71,7 @@ export const Login = () => {
 
   return (
     <Container>
-      <Row className="vh-90 pt-5 align-items-center row-login">
+      <Row className="align-items-center row-login">
         <Col lg={9} className="d-none d-lg-block">
           <img
             className="w-100 login-illustration"
