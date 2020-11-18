@@ -13,3 +13,5 @@ export const LIST_USERS = `/api/v1/users`;
 export const UPDATE_PROFILE = `/api/v1/user/detail/update`
     // Mengupdate password user
 export const UPDATE_PASSWORD = `/api/v1/user/password/update`
+    //Mendapatkan profile user lain
+export const GET_USER_PROFILE = `/api/v1/user/detail/`

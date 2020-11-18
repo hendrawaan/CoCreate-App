@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import profileimg from "../../assets/images/profile-default.jpg";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from 'react-router-dom';
 import moment from 'moment'
 import "./Profile.css";
 import {
@@ -27,13 +28,13 @@ import {
 } from "react-icons/fa";
 import InputGroupCustom from "../../components/InputGroupCustom";
 import { listGender, listNav, listMenu } from "./List";
-import { getProfile, updatePassword, updateProfile } from "../../store/profile";
+import { getProfile, updatePassword, updateProfile, getUserProfileID } from "../../store/profile";
 import { logout } from "../../store/user";
 export const Profile = () => {
   const dispatch = useDispatch();
-
   const { profile } = useSelector(state => state.profile);
   const { user } = useSelector(state => state.user);
+  const params = useParams();
   const [navKey, setKey] = useState(1);
   const [formProfile, setFormProfile] = useState({
     name: '',
@@ -45,64 +46,48 @@ export const Profile = () => {
     short_bio: ''
   });
   const [formPassword, setFormPassword] = useState();
-  const [isUser, setIsUser] = useState(true);
+  const [isUser, setIsuser] = useState(true);
+  const [hiddenbar, setHiddenBar] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const updateProfiles = e => {
+    let value = e.target.value
+    let name = e.target.name
     setFormProfile({
       ...formProfile,
-      [e.target.name]: e.target.value
+      [name]: value
     });
   };
   const updatePasswords = e => {
     let value = e.target.value
     let name = e.target.name
-    if (name === "birth") {
-      console.log(name)
-      value = moment(e.target.value).unix()
-    }
     setFormPassword({
       ...formPassword,
       [name]: value
     });
   };
-  //other state
-  const [hiddenbar, setHiddenBar] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
+
   useEffect(() => {
-    if (user) {
+    console.log(params)
+    // tambahkan logika, apabila menerima props dari halaman sebelumnya, maka akan mengubah state isUser
+    if (user && isUser ) {
       dispatch(getProfile(user.token));
+    } else {
+      // tambahkan id dari parameter
+      dispatch(getUserProfileID(user.token));
     }
   }, [dispatch, user]);
 
-
   const dataProfile = profile?.user;
-  // const [username, setUsername] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [name, setName] = useState('');
-  // const [gender, setGender] = useState('');
-  // const [birth, setDob] = useState('');
-  // const [phone, setPhone] = useState('');
-  // const [postcode, setPostalCode] = useState('');
-  // const [address, setAddress] = useState('');
-  // const [short_bio, setBio] = useState('');
   useEffect(() => {
     setFormProfile({
       name: dataProfile?.name,
-      birth: moment.unix(dataProfile?.birth).format("YYYY-MM-DD"),
+      birth: Number(moment.unix(dataProfile?.birth).format("YYYY-MM-DD")),
       gender: dataProfile?.gender,
       address: dataProfile?.address,
       phone: dataProfile?.phone,
       postcode: dataProfile?.postcode,
       short_bio: dataProfile?.short_bio
     })
-    // setUsername(dataProfile?.username)
-    // setEmail(dataProfile?.email)
-    // setName(dataProfile?.name);
-    // setGender(dataProfile?.gender);
-    // setDob(dataProfile?.birth);
-    // setPhone(dataProfile?.phone);
-    // setPostalCode(dataProfile?.postcode);
-    // setAddress(dataProfile?.address);
-    // setBio(dataProfile?.short_bio)
   }, [profile]);
   //Handler untuk menangani proses
   const logoutHandler = () => {
@@ -110,21 +95,10 @@ export const Profile = () => {
     window.location = "/login";
   };
   const editProfileHandler = e => {
-
-    // let profiles = [];
-    // profiles.push({
-    //   ...profiles,
-    //   name: name,
-    //   birth: new Date(birth).getTime() / 1000,
-    //   gender: gender,
-    //   address: address,
-    //   phone: phone,
-    //   postcode: parseInt(postcode),
-    //   short_bio: short_bio
-    // })
-    //setFormProfile({ ...formProfile, profiles });
-    console.log(typeof moment(formProfile.birth).unix())
-
+    formProfile.birth = moment(formProfile.birth).unix();
+    formProfile.postcode = parseInt(formProfile.postcode);
+    console.log("birth " + typeof formProfile.birth, formProfile.birth)
+    console.log("postcode " + typeof formProfile.postcode, formProfile.postcode)
     dispatch(updateProfile(formProfile, user.token));
     dispatch(getProfile(user.token));
     e.preventDefault();
@@ -200,8 +174,6 @@ export const Profile = () => {
                   name="name"
                   onChange={updateProfiles}
                   type="text"
-                  //value={name}
-
                   placeholder="Name"
                   defaultValue={dataProfile?.name}
                 />
@@ -211,7 +183,6 @@ export const Profile = () => {
                   name="birth"
                   onChange={updateProfiles}
                   type="date"
-                  //value={birth}
                   placeholder="Date of Birth"
                   defaultValue={moment.unix(dataProfile?.birth).format("YYYY-MM-DD")}
                 />
@@ -224,8 +195,6 @@ export const Profile = () => {
                   onChange={updateProfiles}
                   placeholder={dataProfile?.email}
                   type="text"
-
-                  //value={email}
                   defaultValue={dataProfile?.email}
                   disabled
                 />
@@ -237,8 +206,6 @@ export const Profile = () => {
                   type="text"
                   placeholder="Gender"
                   as="select"
-
-                  //value={gender}
                   defaultValue={dataProfile?.gender}
                   children={listGender}
                 />
@@ -246,10 +213,8 @@ export const Profile = () => {
                 <InputGroupCustom
                   icon={<FaPhone />}
                   name="phone"
-
                   onChange={updateProfiles}
                   placeholder="Phone Number"
-                  //value={phone}
                   type="text"
                   defaultValue={dataProfile?.phone}
                 />
@@ -263,10 +228,8 @@ export const Profile = () => {
                   as="textarea"
                   icon={<FaMapMarkerAlt />}
                   name="address"
-                  //value={address}
                   onChange={updateProfiles}
                   type="text"
-
                   placeholder="Address"
                   defaultValue={dataProfile?.address}
                 />
@@ -276,7 +239,6 @@ export const Profile = () => {
                 <InputGroupCustom
                   icon={<FaMapMarkerAlt />}
                   name="postcode"
-                  //value={postcode}
                   onChange={updateProfiles}
                   type="text"
                   placeholder="Postal Code"
@@ -290,10 +252,8 @@ export const Profile = () => {
                 <Form.Label>Short Bio</Form.Label>
                 <InputGroupCustom
                   as="textarea"
-
                   icon={<FaIdCard />}
                   name="short_bio"
-                  //value={short_bio}
                   onChange={updateProfiles}
                   type="text"
                   placeholder="Bio"
@@ -459,18 +419,18 @@ export const Profile = () => {
             >
               {showEdit === false ? "Edit Profile" : "Cancel"}
             </Button>
-            // {showEdit === false ? (
-            //   <Button
-            //     onClick={() => logoutHandler()}
-            //     variant="secondary"
-            //     size="sm"
-            //   >
-            //     Logout
-            //   </Button>
-            // ) : (
-            //     ""
-            //   )}
-            :""}
+              // {showEdit === false ? (
+              //   <Button
+              //     onClick={() => logoutHandler()}
+              //     variant="secondary"
+              //     size="sm"
+              //   >
+              //     Logout
+              //   </Button>
+              // ) : (
+              //     ""
+              //   )}
+              : ""}
 
           </Col>
         </Row>

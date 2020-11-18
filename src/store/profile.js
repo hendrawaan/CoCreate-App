@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUserProfile, updateUserPassword, updateUserProfile } from "../api/";
+import { getUserProfile, updateUserPassword, updateUserProfile, getAnotherUserProfile } from "../api/";
 
 // Slice
 
@@ -60,6 +60,29 @@ export const getProfile = (token) => async(dispatch) => {
         dispatch(onFailed(e.message));
     }
 };
+/**
+ * Mengambil profil singkat user lain.
+ * @param {string} token Data token yang akan digunakan untuk Authorization
+ */
+export const getUserProfileID = (token, id) => async(dispatch) => {
+    try {
+        const profileResponse = await getAnotherUserProfile(token, id);
+        switch (profileResponse.code) {
+            case 200:
+                dispatch(getProfileSuccess(profileResponse.data));
+                break;
+            default:
+                throw new Error("Uppss.. Terjadi kesalahan.");
+        }
+    } catch (e) {
+        dispatch(onFailed(e.message));
+    }
+};
+/**
+ * Mengupdate Profile.
+ * @param {string} token Data token yang akan digunakan untuk Authorization
+ * @param {object} data profile yang dikirimkan
+ */
 export const updateProfile = ({ name, birth, gender, address, phone, postcode, short_bio }, token) => async(dispatch) => {
     try {
         const response = await updateUserProfile({ name, birth, gender, address, phone, postcode, short_bio }, token);
@@ -76,6 +99,11 @@ export const updateProfile = ({ name, birth, gender, address, phone, postcode, s
         dispatch(onFailed(e.message));
     }
 };
+/**
+ * Mengupdate Profile.
+ * @param {string} token Data token yang akan digunakan untuk Authorization
+ * @param {object} data password yang dikirimkan
+ */
 export const updatePassword = ({ password_lama, password_baru }, token) => async(dispatch) => {
     try {
         const response = await updateUserPassword({ password_lama, password_baru }, token);
