@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from "react";
 import profileimg from "../../assets/images/profile-default.jpg";
 import { useDispatch, useSelector } from "react-redux";
@@ -5,31 +6,25 @@ import { useParams } from 'react-router-dom';
 import moment from 'moment'
 import "./Profile.css";
 import {
-  Container,
-  Col,
-  Row,
-  Image,
-  Card,
-  ButtonGroup,
-  Form,
-  Nav,
-  Button
+  Button, ButtonGroup, Card, Col, Container,
+  Form, Image,
+  Nav, Row
 } from "react-bootstrap";
 import {
-  FaKey,
-  FaUser,
-  FaEnvelope,
+  FaCalendar, FaEnvelope,
+  FaIdCard, FaKey,
   FaMapMarkerAlt,
-  FaCalendar,
-  FaRestroom,
-  FaPhone,
-  FaMapPin,
-  FaIdCard
+  FaMapPin, FaPhone, FaRestroom, FaUser
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import profileimg from "../../assets/images/profile-default.jpg";
 import InputGroupCustom from "../../components/InputGroupCustom";
 import { listGender, listNav, listMenu } from "./List";
 import { getProfile, updatePassword, updateProfile, getUserProfileID } from "../../store/profile";
+
 import { logout } from "../../store/user";
+import { listGender, listMenu, listNav } from "./List";
+import "./Profile.css";
 export const Profile = () => {
   const dispatch = useDispatch();
   const { profile } = useSelector(state => state.profile);
@@ -69,10 +64,11 @@ export const Profile = () => {
   useEffect(() => {
     console.log(params)
     // tambahkan logika, apabila menerima props dari halaman sebelumnya, maka akan mengubah state isUser
-    if (user && isUser ) {
+    if (user && isUser) {
       dispatch(getProfile(user.token));
     } else {
       // tambahkan id dari parameter
+      setIsuser(!isUser)
       dispatch(getUserProfileID(user.token));
     }
   }, [dispatch, user]);
@@ -95,6 +91,7 @@ export const Profile = () => {
     window.location = "/login";
   };
   const editProfileHandler = e => {
+
     formProfile.birth = moment(formProfile.birth).unix();
     formProfile.postcode = parseInt(formProfile.postcode);
     console.log("birth " + typeof formProfile.birth, formProfile.birth)
@@ -102,7 +99,7 @@ export const Profile = () => {
     dispatch(updateProfile(formProfile, user.token));
     dispatch(getProfile(user.token));
     e.preventDefault();
-    setTimeout(function () { window.location.reload() }, 2000);
+    // setTimeout(function () { window.location.reload() }, 2000);
 
   };
   const uploadPhotoHandler = e => { };
