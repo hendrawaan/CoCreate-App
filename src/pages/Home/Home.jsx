@@ -25,7 +25,7 @@ import { GiLifeInTheBalance } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../store/profile";
 
-export default function Home() {
+export function Home() {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.user);
   const { profile } = useSelector(state => state.profile);
@@ -74,17 +74,34 @@ export default function Home() {
     }
   ];
 
-  var jwt = require("jwt-simple");
-  var secret = "your-256-bit-secret";
-  var decoded = jwt.decode(user.token, secret, true);
-  console.log(user.token);
-  console.log(secret);
-  console.log(decoded);
-  console.log(profile);
+  const filterClickTech = () => {
+    return feed
+      .filter(feeding => feeding.tag === "Teknologi")
+      .map(filteredFeed => (
+        <Card className="mb-2" key={filteredFeed.id}>
+          <Card.Header as="h5">{filteredFeed.title}</Card.Header>
+          <Card.Body>
+            <Card.Title>
+              <CgProfile /> <p>{filteredFeed.posted_by}</p>
+            </Card.Title>
+            <Card.Text>
+              With supporting text below as a natural lead-in to additional
+              content.
+            </Card.Text>
+            <Button variant="primary">Read More</Button>
+          </Card.Body>
+          <Card.Footer>
+            <Button style={{ backgroundColor: "transparent" }}>
+              <AiOutlineHeart />
+            </Button>
+          </Card.Footer>
+        </Card>
+      ));
+  };
 
   return (
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
-      <Container fluid style={{ backgroundColor: "#14274E" }}>
+      {/* <Container fluid style={{ backgroundColor: "#14274E" }}>
         <Row className="align-items-center" style={{ padding: 10 }}>
           <Col md={8}>
             <img style={{ height: 70 }} src={homeLogo} alt="Home Logo" />
@@ -92,9 +109,9 @@ export default function Home() {
           <Col md={4} className="align-middle">
             <div className="d-flex flex-row-reverse">
               <div className="" style={{ display: "inline" }}>
-                {/* <Button variant="primary" type="submit" onClick={register}>
+                <Button variant="primary" type="submit" onClick={register}>
                   {isLogin ? "Username" : "Register"}
-                </Button> */}
+                </Button>
                 <Button
                   variant="primary"
                   type="submit"
@@ -110,7 +127,7 @@ export default function Home() {
             </div>
           </Col>
         </Row>
-        {/* <Row className="align-items-center" style={{}}>
+        <Row className="align-items-center" style={{}}>
           <Col className="m-5 align-items-center">
             <Carousel className="" style={{ margin: "auto" }}>
               <Carousel.Item>
@@ -157,8 +174,8 @@ export default function Home() {
               </Carousel.Item>
             </Carousel>
           </Col>
-        </Row> */}
-      </Container>
+        </Row>
+      </Container> */}
       <Row style={{}}>
         <Col
           md={3}
@@ -248,7 +265,7 @@ export default function Home() {
                   </Button>
                 </div>
                 <div>
-                  <Button variant="light">
+                  <Button variant="light" onClick={filterClickTech}>
                     <BiMoney />
                     <p className="px-2" style={{ float: "right" }}>
                       Keuangan
@@ -281,30 +298,7 @@ export default function Home() {
             </Col>
           </Row>
           <Row>
-            <Col style={{}}>
-              {feed
-                .filter(feeding => feeding.tag === "Teknologi")
-                .map(filteredFeed => (
-                  <Card className="mb-2" key={filteredFeed.id}>
-                    <Card.Header as="h5">{filteredFeed.title}</Card.Header>
-                    <Card.Body>
-                      <Card.Title>
-                        <CgProfile /> <p>{filteredFeed.posted_by}</p>
-                      </Card.Title>
-                      <Card.Text>
-                        With supporting text below as a natural lead-in to
-                        additional content.
-                      </Card.Text>
-                      <Button variant="primary">Read More</Button>
-                    </Card.Body>
-                    <Card.Footer>
-                      <Button style={{ backgroundColor: "transparent" }}>
-                        <AiOutlineHeart />
-                      </Button>
-                    </Card.Footer>
-                  </Card>
-                ))}
-            </Col>
+            <Col style={{}}>{}</Col>
           </Row>
         </Col>
       </Row>

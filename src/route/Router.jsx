@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { NavApp } from "../components";
-import { Admin, Home, Login, NotFound, Profile, Trending } from "../pages";
+import { Admin, Login, NotFound, Profile, Trending, Home } from "../pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 
 const Router = () => {
   const navItems = [
     { label: "Home", link: "/", isProtected: false },
     { label: "Profile", link: "/profile", isProtected: true },
-    { label: "Trending", link: "/trending", isProtected: true },
+    { label: "Trending", link: "/trending", isProtected: true }
   ];
 
   return (

@@ -1,12 +1,13 @@
 import React from "react";
-import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Nav, Navbar, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useHistory } from "react-router-dom";
 import { logout } from "../../store/user";
-export const NavApp = (props) => {
+import logo from "../../assets/images/logo.png";
+export const NavApp = props => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSelector(state => state.user);
 
   const { navItems } = props;
 
@@ -20,12 +21,15 @@ export const NavApp = (props) => {
       className="shadow-sm"
     >
       <Container>
-        <Navbar.Brand href="/">DigiStore</Navbar.Brand>
+        <Navbar.Brand href="/">
+          <Image src={logo} alt="logo" roundedCircle style={{ height: 70 }} />
+          CoCreate
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ml-auto">
             {navItems
-              .filter((item) => user || !item.isProtected)
+              .filter(item => user || !item.isProtected)
               .map((item, index) => (
                 <Nav.Link as={NavLink} exact to={item.link} key={index}>
                   {item.label}

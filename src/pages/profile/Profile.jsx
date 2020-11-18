@@ -28,13 +28,12 @@ import {
   FaIdCard
 } from "react-icons/fa";
 import InputGroupCustom from "../../components/InputGroupCustom";
-import { listGender, listNav, listMenu } from './List'
+import { listGender, listNav, listMenu } from "./List";
 import { getProfile } from "../../store/profile";
-const Profile = () => {
-
+export const Profile = () => {
   const dispatch = useDispatch();
   const { profile } = useSelector(state => state.profile);
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSelector(state => state.user);
   const [search, setSearch] = useState("");
   // const [username, setUserName] = useState("hendrawaan");
   // const [email, setEmail] = useState("hendrawaan@gmail.com");
@@ -81,20 +80,19 @@ const Profile = () => {
     }
   }, [dispatch, user]);
 
-
   useEffect(() => {
-    console.log(profile?.user)
-  }, [profile])
-  const dataProfile = profile?.user
+    console.log(profile?.user);
+  }, [profile]);
+  const dataProfile = profile?.user;
   //Handler untuk menangani proses
-  const editProfileHandler = e => { };
-  const uploadPhotoHandler = e => { };
+  const editProfileHandler = e => {};
+  const uploadPhotoHandler = e => {};
   const updatePasswordHandler = e => {
     e.preventDefault();
     if (formPassword.old_pass === formPassword.new_pass) {
       //dispatch(setPassword(formPassword));
     } else {
-      alert('Password tidak cocok')
+      alert("Password tidak cocok");
     }
   };
   const contentBio = () => {
@@ -105,7 +103,6 @@ const Profile = () => {
           <Card.Text>{dataProfile?.short_bio}</Card.Text>
         </Card.Body>
       </Card>
-      
     );
   };
   const contentMenu = () => {
@@ -113,7 +110,7 @@ const Profile = () => {
       <Card style={{ width: "18rem" }}>
         <Card.Header>Menu</Card.Header>
         <ButtonGroup vertical>
-          {listMenu.map(function (item, i) {
+          {listMenu.map(function(item, i) {
             return (
               <Button className="text-left" key={i} variant="light">
                 {item.icon} {item.name}
@@ -327,12 +324,12 @@ const Profile = () => {
       <Container fluid style={{ backgroundColor: "#14274E" }}>
         <Row className="nav-container">
           <Col md={4}>
-            <Image
+            {/* <Image
               src={logo}
               alt="logo"
               roundedCircle
               className="profile-login logo-instance"
-            />
+            /> */}
           </Col>
           <Col md={6}>
             <Form inline>
@@ -350,21 +347,21 @@ const Profile = () => {
             </Form>
           </Col>
           <Col md={2} className="logo-instance">
-            <Button variant="outline-light ">
+            {/* <Button variant="outline-light ">
               <Image
                 src={profileimg}
                 alt="profile"
                 roundedCircle
                 className="profile-login"
               />
-            </Button>
+            </Button> */}
           </Col>
         </Row>
         <div
           className={`${!hiddenbar ? "collapse" : ""} navbar-collapse`}
           id="navbarsExample09"
         >
-          {listMenu.map(function (item, i) {
+          {listMenu.map(function(item, i) {
             return (
               <a key={i} className="nav-link text-light" href="/{ item.link }">
                 {item.name}
@@ -432,8 +429,8 @@ const Profile = () => {
                 Logout
               </Button>
             ) : (
-                ""
-              )}
+              ""
+            )}
           </Col>
         </Row>
       </Container>
@@ -446,12 +443,12 @@ const Profile = () => {
               {contentMenu()}
             </Col>
           ) : (
-              ""
-            )}
+            ""
+          )}
           {showEdit === true ? (
             <Col md={12}>
               <Nav fill variant="tabs" defaultActiveKey={navKey}>
-                {listNav.map(function (item, i) {
+                {listNav.map(function(item, i) {
                   return (
                     <Nav.Item key={i}>
                       <Nav.Link
@@ -468,18 +465,17 @@ const Profile = () => {
               {navKey === 1 ? (
                 contentEditProfile()
               ) : // navKey === 2 ? contentUploadPhoto() :
-                navKey === 3 ? (
-                  contentUpdatePassword()
-                ) : (
-                    <div></div>
-                  )}
+              navKey === 3 ? (
+                contentUpdatePassword()
+              ) : (
+                <div></div>
+              )}
             </Col>
           ) : (
-              <Col md={6}> {contentBio()}</Col>
-            )}
+            <Col md={6}> {contentBio()}</Col>
+          )}
         </Row>
       </Container>
     </Container>
   );
 };
-export default Profile;

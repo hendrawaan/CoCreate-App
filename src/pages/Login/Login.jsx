@@ -10,7 +10,6 @@ import { addUser, login } from "../../store/user";
 import FormLogin from "./FormLogin";
 import "./Login.css";
 
-
 /**
  * Login and Registration page.
  * Halaman untuk login.
@@ -20,7 +19,7 @@ import "./Login.css";
  */
 export const Login = () => {
   const dispatch = useDispatch();
-  const { user, error, loading } = useSelector((state) => state.user);
+  const { user, error, loading } = useSelector(state => state.user);
 
   const [isLogin, setLogin] = useState(true);
   const [formData, setFormData] = useState();
@@ -60,17 +59,19 @@ export const Login = () => {
   };
 
   if (user) {
-    const {token} = user
+    const { token } = user;
     const decode = jwt_decode(token);
 
-    return decode.type_user === 2
-      ? <Redirect to="/" />
-      : <Redirect to="/admin" />
+    return decode.type_user === 2 ? (
+      <Redirect to="/" />
+    ) : (
+      <Redirect to="/admin" />
+    );
   }
 
   return (
     <Container>
-      <Row className="vh-100 align-items-center row-login">
+      <Row className="vh-90 pt-5 align-items-center row-login">
         <Col lg={9} className="d-none d-lg-block">
           <img
             className="w-100 login-illustration"
