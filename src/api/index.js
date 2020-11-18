@@ -10,10 +10,10 @@ const api = {
      */
     async fetchToApi(endPoint, methode, data, header = {}) {
         return fetch(endPoint, {
-            method: methode,
-            body: data,
-            headers: { ...header, "Content-type": "application/json" },
-        })
+                method: methode,
+                body: data,
+                headers: {...header, "Content-type": "application/json" },
+            })
             .then((res) => res.json())
             .catch(() => {
                 throw new Error("Uppss.. Terjadi kesalahan.");
@@ -48,7 +48,7 @@ const api = {
  * @param {objek} dataLogin Data autentikasi yang akan dikirim
  * @returns json objek
  */
-export const loginToApi = async (dataLogin) =>
+export const loginToApi = async(dataLogin) =>
     await api.post(LOGIN, JSON.stringify(dataLogin));
 
 /**
@@ -56,7 +56,7 @@ export const loginToApi = async (dataLogin) =>
  * @param {objek} dataReg Data registrasi user yang akan dikirim
  * @returns json objek
  */
-export const registeringUser = async (dataReg) =>
+export const registeringUser = async(dataReg) =>
     await api.post(ADD_USER, JSON.stringify(dataReg));
 
 /**
@@ -64,19 +64,19 @@ export const registeringUser = async (dataReg) =>
  * @param {string} token Data token yang akan digunakan untuk Authorization
  * @returns json objek
  */
-export const getUserProfile = async (token) =>
+export const getUserProfile = async(token) =>
     await api.get(GET_PROFILE, { Authorization: token });
 /**
  * Mengupdate profile user
  * @param {objek} dataProfil yang dikirimkan
  * @returns json objek
  */
-export const updateUserProfile = async (dataProf, token) =>
+export const updateUserProfile = async(dataProf, token) =>
     await api.put(UPDATE_PROFILE, JSON.stringify(dataProf), { Authorization: token });
 /**
-* Mengupdate password user
-* @param {objek} data password yang dikirimkan
-* @returns json objek
-*/
-export const updateUserPassword = async (dataPas, token) =>
+ * Mengupdate password user
+ * @param {objek} data password yang dikirimkan
+ * @returns json objek
+ */
+export const updateUserPassword = async(dataPas, token) =>
     await api.put(UPDATE_PASSWORD, JSON.stringify(dataPas), { Authorization: token });

@@ -20,7 +20,6 @@ import "./Login.css";
 export const Login = () => {
   const dispatch = useDispatch();
   const { user, error, loading } = useSelector(state => state.user);
-
   const [isLogin, setLogin] = useState(true);
   const [formData, setFormData] = useState();
 

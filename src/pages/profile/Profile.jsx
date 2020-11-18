@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import profileimg from "../../assets/images/profile-default.jpg";
-import logo from "../../assets/images/logo.png";
 import { useDispatch, useSelector } from "react-redux";
+import moment from 'moment'
 import "./Profile.css";
 import {
   Container,
@@ -10,7 +10,6 @@ import {
   Image,
   Card,
   ButtonGroup,
-  FormControl,
   Form,
   Nav,
   Button
@@ -24,7 +23,6 @@ import {
   FaRestroom,
   FaPhone,
   FaMapPin,
-  FaBars,
   FaIdCard
 } from "react-icons/fa";
 import InputGroupCustom from "../../components/InputGroupCustom";
@@ -33,37 +31,39 @@ import { getProfile, updatePassword, updateProfile } from "../../store/profile";
 import { logout } from "../../store/user";
 export const Profile = () => {
   const dispatch = useDispatch();
+
   const { profile } = useSelector(state => state.profile);
   const { user } = useSelector(state => state.user);
-
-  const [search, setSearch] = useState("");
-
   const [navKey, setKey] = useState(1);
-  const [formProfile, setFormProfile] = useState();
+  const [formProfile, setFormProfile] = useState({
+    name: '',
+    birth: 0,
+    gender: '',
+    address: '',
+    phone: '',
+    postcode: 0,
+    short_bio: ''
+  });
   const [formPassword, setFormPassword] = useState();
-
+  const [isUser, setIsUser] = useState(true);
   const updateProfiles = e => {
-    // setFormProfile({
-    //   ...formProfile,
-    //   [e.target.name]: e.target.value
-    // });
-  };
-  const updatePasswords = e => {
-    setFormPassword({
-      ...formPassword,
+    setFormProfile({
+      ...formProfile,
       [e.target.name]: e.target.value
     });
   };
-  //edit state
-  // const [changeName, setChangeName] = useState(name);
-  // const [changeGender, setChangeGender] = useState(gender);
-  // const [changeDob, setChangeDob] = useState(dob);
-  // const [changePhone, setChangePhone] = useState(phone);
-  // const [changePostalcode, setChangePostalcode] = useState(postalcode);
-  // const [changeAddress, setChangeAddress] = useState(address);
-  // const [changeBio, setChangeBio] = useState(bio);
-  // const [oldPass, setOldPass] = useState("");
-  // const [newPass, setNewPass] = useState("");
+  const updatePasswords = e => {
+    let value = e.target.value
+    let name = e.target.name
+    if (name === "birth") {
+      console.log(name)
+      value = moment(e.target.value).unix()
+    }
+    setFormPassword({
+      ...formPassword,
+      [name]: value
+    });
+  };
   //other state
   const [hiddenbar, setHiddenBar] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -73,54 +73,66 @@ export const Profile = () => {
     }
   }, [dispatch, user]);
 
-  useEffect(() => {
-    console.log(profile?.user);
-  }, [profile]);
+
   const dataProfile = profile?.user;
-  const [username, setUsername] = useState(dataProfile?.username);
-  const [email, setEmail] = useState(dataProfile?.email);
-  const [name, setName] = useState(dataProfile?.name);
-  const [gender, setGender] = useState(dataProfile?.gender);
-  const [tanggal_lahir, setDob] = useState(dataProfile?.birth);
-  const [phone, setPhone] = useState(dataProfile?.phone);
-  const [post_code, setPostalCode] = useState(dataProfile?.post_code);
-  const [address, setAddress] = useState(dataProfile?.address);
-  const [short_bio, setBio] = useState(dataProfile?.short_bio);
+  // const [username, setUsername] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [name, setName] = useState('');
+  // const [gender, setGender] = useState('');
+  // const [birth, setDob] = useState('');
+  // const [phone, setPhone] = useState('');
+  // const [postcode, setPostalCode] = useState('');
+  // const [address, setAddress] = useState('');
+  // const [short_bio, setBio] = useState('');
+  useEffect(() => {
+    setFormProfile({
+      name: dataProfile?.name,
+      birth: moment.unix(dataProfile?.birth).format("YYYY-MM-DD"),
+      gender: dataProfile?.gender,
+      address: dataProfile?.address,
+      phone: dataProfile?.phone,
+      postcode: dataProfile?.postcode,
+      short_bio: dataProfile?.short_bio
+    })
+    // setUsername(dataProfile?.username)
+    // setEmail(dataProfile?.email)
+    // setName(dataProfile?.name);
+    // setGender(dataProfile?.gender);
+    // setDob(dataProfile?.birth);
+    // setPhone(dataProfile?.phone);
+    // setPostalCode(dataProfile?.postcode);
+    // setAddress(dataProfile?.address);
+    // setBio(dataProfile?.short_bio)
+  }, [profile]);
   //Handler untuk menangani proses
   const logoutHandler = () => {
     dispatch(logout());
     window.location = "/login";
   };
   const editProfileHandler = e => {
-    console.log(
-      name,
-      username,
-      email,
-      address,
-      tanggal_lahir,
-      gender,
-      phone,
-      post_code,
-      short_bio
-    );
-    let profiles = [];
-    profiles.push({
-      name: name,
-      // username: username,
-      // email: email,
-      // address: address,
-      tanggal_lahir: new Date(tanggal_lahir).getTime() / 1000,
-      gender: gender,
-      phone: phone,
-      post_code: post_code,
-      short_bio: short_bio
-    });
-    dispatch(updateProfile(profiles, user.token));
-    //dispatch(getProfile(user.token));
-  };
-  const uploadPhotoHandler = e => {};
-  const updatePasswordHandler = e => {
+
+    // let profiles = [];
+    // profiles.push({
+    //   ...profiles,
+    //   name: name,
+    //   birth: new Date(birth).getTime() / 1000,
+    //   gender: gender,
+    //   address: address,
+    //   phone: phone,
+    //   postcode: parseInt(postcode),
+    //   short_bio: short_bio
+    // })
+    //setFormProfile({ ...formProfile, profiles });
+    console.log(typeof moment(formProfile.birth).unix())
+
+    dispatch(updateProfile(formProfile, user.token));
+    dispatch(getProfile(user.token));
     e.preventDefault();
+    setTimeout(function () { window.location.reload() }, 2000);
+
+  };
+  const uploadPhotoHandler = e => { };
+  const updatePasswordHandler = e => {
     if (formPassword !== null) {
       if (
         formPassword.password_lama !== "" ||
@@ -152,7 +164,7 @@ export const Profile = () => {
       <Card style={{ width: "18rem" }}>
         <Card.Header>Menu</Card.Header>
         <ButtonGroup vertical>
-          {listMenu.map(function(item, i) {
+          {listMenu.map(function (item, i) {
             return (
               <Button className="text-left" key={i} variant="light">
                 {item.icon} {item.name}
@@ -168,15 +180,15 @@ export const Profile = () => {
     return (
       <Card>
         <Card.Body>
-          <Form onClick={editProfileHandler}>
+          <Form onSubmit={editProfileHandler}>
             <h5>Personal Info</h5>
-            <Form.Row className="margin-between">
+            <Row className="margin-between">
               <Col md={6}>
                 <Form.Label>Username</Form.Label>
                 <InputGroupCustom
                   icon="@"
-                  // name="username"
-                  onChange={e => setUsername(e.target.value)}
+                  name="username"
+                  onChange={updateProfiles}
                   placeholder={dataProfile?.username}
                   type="text"
                   value={dataProfile?.username}
@@ -185,65 +197,76 @@ export const Profile = () => {
                 <Form.Label>Name</Form.Label>
                 <InputGroupCustom
                   icon={<FaUser />}
-                  // name="name"
-                  onChange={e => setName(e.target.value)}
+                  name="name"
+                  onChange={updateProfiles}
                   type="text"
+                  //value={name}
+
                   placeholder="Name"
                   defaultValue={dataProfile?.name}
                 />
                 <Form.Label>Date of Birth</Form.Label>
                 <InputGroupCustom
                   icon={<FaCalendar />}
-                  // name="tanggal_lahir"
-                  onChange={e => setDob(e.target.value)}
+                  name="birth"
+                  onChange={updateProfiles}
                   type="date"
+                  //value={birth}
                   placeholder="Date of Birth"
-                  defaultValue={dataProfile?.birth}
+                  defaultValue={moment.unix(dataProfile?.birth).format("YYYY-MM-DD")}
                 />
               </Col>
               <Col md={6}>
                 <Form.Label>Email</Form.Label>
                 <InputGroupCustom
                   icon={<FaEnvelope />}
-                  // name="email"
-                  onChange={e => setEmail(e.target.value)}
+                  name="email"
+                  onChange={updateProfiles}
                   placeholder={dataProfile?.email}
                   type="text"
-                  value={dataProfile?.email}
+
+                  //value={email}
+                  defaultValue={dataProfile?.email}
                   disabled
                 />
                 <Form.Label>Gender</Form.Label>
                 <InputGroupCustom
                   icon={<FaRestroom />}
-                  // name="gender"
-                  onChange={e => setGender(e.target.value)}
+                  name="gender"
+                  onChange={updateProfiles}
                   type="text"
                   placeholder="Gender"
                   as="select"
+
+                  //value={gender}
                   defaultValue={dataProfile?.gender}
                   children={listGender}
                 />
                 <Form.Label>Phone</Form.Label>
                 <InputGroupCustom
                   icon={<FaPhone />}
-                  // name="phone"
-                  onChange={e => setPhone(e.target.value)}
+                  name="phone"
+
+                  onChange={updateProfiles}
                   placeholder="Phone Number"
+                  //value={phone}
                   type="text"
                   defaultValue={dataProfile?.phone}
                 />
               </Col>
-            </Form.Row>
+            </Row>
             <h5>Location</h5>
-            <Form.Row>
+            <Row>
               <Col md={6}>
                 <Form.Label>Address</Form.Label>
                 <InputGroupCustom
                   as="textarea"
                   icon={<FaMapMarkerAlt />}
-                  // name="address"
-                  onChange={e => setAddress(e.target.value)}
+                  name="address"
+                  //value={address}
+                  onChange={updateProfiles}
                   type="text"
+
                   placeholder="Address"
                   defaultValue={dataProfile?.address}
                 />
@@ -252,30 +275,33 @@ export const Profile = () => {
                 <Form.Label>Postal Code</Form.Label>
                 <InputGroupCustom
                   icon={<FaMapMarkerAlt />}
-                  // name="post_code"
-                  onChange={e => setPostalCode(e.target.value)}
+                  name="postcode"
+                  //value={postcode}
+                  onChange={updateProfiles}
                   type="text"
                   placeholder="Postal Code"
                   defaultValue={dataProfile?.postcode}
                 />
               </Col>
-            </Form.Row>
+            </Row>
             <h5>More About You</h5>
-            <Form.Row className="margin-between">
+            <Row className="margin-between">
               <Col md={12}>
                 <Form.Label>Short Bio</Form.Label>
                 <InputGroupCustom
                   as="textarea"
+
                   icon={<FaIdCard />}
-                  // name="short_bio"
-                  onChange={e => setBio(e.target.value)}
+                  name="short_bio"
+                  //value={short_bio}
+                  onChange={updateProfiles}
                   type="text"
                   placeholder="Bio"
                   defaultValue={dataProfile?.short_bio}
                 />
               </Col>
-            </Form.Row>
-            <Button type="button" className="btn-primary">
+            </Row>
+            <Button type="submit" className="btn-primary">
               Update
             </Button>{" "}
           </Form>
@@ -370,7 +396,7 @@ export const Profile = () => {
           className={`${!hiddenbar ? "collapse" : ""} navbar-collapse`}
           id="navbarsExample09"
         >
-          {listMenu.map(function(item, i) {
+          {listMenu.map(function (item, i) {
             return (
               <a key={i} className="nav-link text-light" href="/{ item.link }">
                 {item.name}
@@ -408,7 +434,7 @@ export const Profile = () => {
                   </Col>
                   <Col md={6}>
                     <p style={{ color: "grey" }}>
-                      <FaCalendar /> {dataProfile?.birth}
+                      <FaCalendar /> {moment.unix(dataProfile?.birth).format("L")}
                     </p>
                     <p style={{ color: "grey" }}>
                       <FaMapPin /> {dataProfile?.postcode}
@@ -426,24 +452,26 @@ export const Profile = () => {
             </Row>
           </Col>
           <Col md={2}>
-            <Button
+            {isUser ? <Button
               variant={showEdit === false ? "primary" : "secondary"}
               size="sm"
               onClick={() => setShowEdit(!showEdit)}
             >
               {showEdit === false ? "Edit Profile" : "Cancel"}
-            </Button>{" "}
-            {showEdit === false ? (
-              <Button
-                onClick={() => logoutHandler()}
-                variant="secondary"
-                size="sm"
-              >
-                Logout
-              </Button>
-            ) : (
-              ""
-            )}
+            </Button>
+            // {showEdit === false ? (
+            //   <Button
+            //     onClick={() => logoutHandler()}
+            //     variant="secondary"
+            //     size="sm"
+            //   >
+            //     Logout
+            //   </Button>
+            // ) : (
+            //     ""
+            //   )}
+            :""}
+
           </Col>
         </Row>
       </Container>
@@ -456,12 +484,12 @@ export const Profile = () => {
               {contentMenu()}
             </Col>
           ) : (
-            ""
-          )}
+              ""
+            )}
           {showEdit === true ? (
             <Col md={12}>
               <Nav fill variant="tabs" defaultActiveKey={navKey}>
-                {listNav.map(function(item, i) {
+                {listNav.map(function (item, i) {
                   return (
                     <Nav.Item key={i}>
                       <Nav.Link
@@ -478,15 +506,15 @@ export const Profile = () => {
               {navKey === 1 ? (
                 contentEditProfile()
               ) : // navKey === 2 ? contentUploadPhoto() :
-              navKey === 3 ? (
-                contentUpdatePassword()
-              ) : (
-                <div></div>
-              )}
+                navKey === 3 ? (
+                  contentUpdatePassword()
+                ) : (
+                    <div></div>
+                  )}
             </Col>
           ) : (
-            <Col md={6}> {contentBio()}</Col>
-          )}
+              <Col md={6}> {contentBio()}</Col>
+            )}
         </Row>
       </Container>
     </Container>
