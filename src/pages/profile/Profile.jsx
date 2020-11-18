@@ -1,34 +1,41 @@
-import React, { useRef, useEffect, useState } from "react";
-import profileimg from "../../assets/images/profile-default.jpg";
-import { useDispatch, useSelector } from "react-redux";
-import moment from 'moment'
-import "./Profile.css";
+import moment from 'moment';
+import React, { useEffect, useState } from "react";
 import {
-  Container,
-  Col,
-  Row,
-  Image,
-  Card,
-  ButtonGroup,
-  Form,
-  Nav,
-  Button
+  Button, ButtonGroup, Card, Col, Container,
+
+
+
+
+
+  Form, Image,
+
+
+
+  Nav, Row
 } from "react-bootstrap";
 import {
-  FaKey,
-  FaUser,
-  FaEnvelope,
+  FaCalendar, FaEnvelope,
+
+
+
+
+
+  FaIdCard, FaKey,
+
+
   FaMapMarkerAlt,
-  FaCalendar,
-  FaRestroom,
-  FaPhone,
-  FaMapPin,
-  FaIdCard
+
+
+
+  FaMapPin, FaPhone, FaRestroom, FaUser
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import profileimg from "../../assets/images/profile-default.jpg";
 import InputGroupCustom from "../../components/InputGroupCustom";
-import { listGender, listNav, listMenu } from "./List";
 import { getProfile, updatePassword, updateProfile } from "../../store/profile";
 import { logout } from "../../store/user";
+import { listGender, listMenu, listNav } from "./List";
+import "./Profile.css";
 export const Profile = () => {
   const dispatch = useDispatch();
 
@@ -125,10 +132,13 @@ export const Profile = () => {
     //setFormProfile({ ...formProfile, profiles });
     console.log(typeof moment(formProfile.birth).unix())
 
+    formProfile.birth = moment(formProfile.birth).unix();
+    formProfile.postcode = parseInt(formProfile.postcode);
+    
     dispatch(updateProfile(formProfile, user.token));
     dispatch(getProfile(user.token));
     e.preventDefault();
-    setTimeout(function () { window.location.reload() }, 2000);
+    // setTimeout(function () { window.location.reload() }, 2000);
 
   };
   const uploadPhotoHandler = e => { };
