@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
 
-class Header extends React.Component {
+export default class Header extends React.Component {
   // state = {
   // collapsed: true
   // }
@@ -41,5 +41,3 @@ class Header extends React.Component {
     );
   }
 }
-
-export default Header;

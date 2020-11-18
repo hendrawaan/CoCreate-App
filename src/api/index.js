@@ -80,3 +80,11 @@ export const updateUserProfile = async (dataProf, token) =>
 */
 export const updateUserPassword = async (dataPas, token) =>
     await api.put(UPDATE_PASSWORD, JSON.stringify(dataPas), { Authorization: token });
+
+/**
+ * Mengambil data semua user
+ * @param {string} token Data token yang akan digunakan untuk Authorization
+ * @returns json objek
+ */
+export const getUserAllAdmin = async (token) =>
+    await api.get(LIST_USERS_ADMIN, { Authorization: token });

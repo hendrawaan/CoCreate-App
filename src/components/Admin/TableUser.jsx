@@ -10,28 +10,28 @@ export default class TableUser extends Component {
   }
 
   componentDidMount() {
-    fetch("https://randomuser.me/api/?results=10&nat=au")
+    fetch(
+      "http://kelompok6.dtstakelompok1.com/api/v1/user/verifikasi/daftar/all",
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          Authorization:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ1bGlAZ21haWwuY29tIiwiaWQiOjEsInR5cGVfdXNlciI6MSwidXNlcm5hbWUiOiIifQ.z1DITijZKn9TGxJuDJJIe1EhXTjs-Q_0DUY6KmRCrWU"
+        }
+      }
+    )
       .then(res => res.json())
-      .then(parsedJSON =>
-        parsedJSON.results.map(data => ({
-          id: `${data.id.name}`,
-          firstName: `${data.name.first}`,
-          lastName: `${data.name.last}`,
-          location: `${data.location.state}, ${data.nat}`,
-          thumbnail: `${data.picture.large}`
-        }))
-      )
-      .then(items =>
-        this.setState({
-          items,
-          isLoaded: false
-        })
-      )
-      .catch(error => console.log("parsing failed", error));
+      .then(data => {
+        this.setState({ items: data.data.users });
+      });
   }
 
   render() {
     const { items } = this.state;
+    {
+      console.log("test aja", items);
+    }
     // if(error){
     //     return <div>Error in loading</div>
     // }else if (!isLoaded) {
@@ -40,67 +40,33 @@ export default class TableUser extends Component {
     // {
     return (
       <div>
-        <ol className="item">
-          {items.length > 0
-            ? items.map(item => {
-                const { id, firstName, lastName, location, thumbnail } = item;
-                return (
-                  <div>
-                    <Table striped bordered hover>
-                      <thead>
-                        <tr>
-                          <div key={id}></div>
-                          <img src={thumbnail} />
-                          <tr>
-                            <h5>
-                              Nama: {firstName} {lastName}
-                            </h5>
-                          </tr>
-                          <tr>
-                            <p>Alamat: {location}</p>
-                          </tr>
-                          <tr>
-                            <button>Approved</button>
-                          </tr>
-                        </tr>
-                      </thead>
-                    </Table>
-                  </div>
-                );
-              })
-            : null}
+        <ol>
+          <Table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>email</th>
+                <th>nama</th>
+                <th>Approval</th>
+              </tr>
+            </thead>
+            {items.length > 0
+              ? items.map((item, index) => {
+                  return (
+                    <tbody key={index}>
+                      <tr>
+                        <th></th>
+                        <td>{item.email}</td>
+                        <td>{item.name}</td>
+                        <td>{item.verification.toString()}</td>
+                      </tr>
+                    </tbody>
+                  );
+                })
+              : null}
+          </Table>
         </ol>
       </div>
-      // <Table striped bordered hover>
-      // <thead>
-      //     <tr>
-      //     <th>#</th>
-      //     <th>Nama</th>
-      //     <th>Email</th>
-      //     <th>Status</th>
-      //     </tr>
-      // </thead>
-      // <tbody>
-      //     <tr>
-      //     <td>1</td>
-      //     <td>gj</td>
-      //     <td>hg</td>
-      //     <td>hh</td>
-      //     </tr>
-      //     <tr>
-      //     <td>2</td>
-      //     <td>Jacob</td>
-      //     <td>Thornton@gmail.com</td>
-      //     <td>Noaktif</td>
-      //     </tr>
-      //     <tr>
-      //     <td>3</td>
-      //     <td>Bob</td>
-      //     <td>Bob65@gmail.com</td>
-      //     <td>Aktif</td>
-      //     </tr>
-      // </tbody>
-      // </Table>
     );
   }
 }

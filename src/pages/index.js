@@ -4,4 +4,5 @@ export * from "./Login/Login";
 export * from "./NotFound/NotFound";
 export * from "./Profile/Profile";
 export * from "./Trending/Trending";
+export * from "./PagesAdmin/AdminHome";
 
