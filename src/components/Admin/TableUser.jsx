@@ -1,42 +1,74 @@
 import React, { Component } from "react";
-import { Table } from 'react-bootstrap'
+import { 
+    Table,
+    ListGroup,
+    Button
+} from 'react-bootstrap'
 
-class TableUser extends Component {
+export default class TableUser extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+        items: []
+        };
+    }
+
+    componentDidMount() {
+        fetch("https://randomuser.me/api/?results=10&nat=au")
+        .then(res => res.json())
+        .then(parsedJSON => parsedJSON.results.map(data => (
+            {
+            id: `${data.id.name}`,
+            firstName: `${data.name.first}`,
+            lastName: `${data.name.last}`,
+            location: `${data.location.state}, ${data.nat}`,
+            thumbnail: `${data.picture.large}`,
+
+            }
+        )))
+        .then(items => this.setState({
+            items,
+            isLoaded: false
+        }))
+        .catch(error => console.log('parsing failed', error))
+    }
+
     render() {
-    return (
-        <Table responsive>
-        <thead>
-            <tr>
-            <th>#</th>
-            {Array.from({ length: 5 }).map((_, index) => (
-                <th key={index}>Nama Lengkap</th>
-            ))}
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-            <td>1</td>
-            {Array.from({ length: 5 }).map((_, index) => (
-                <td key={index}>User 1 {index}</td>
-            ))}
-            </tr>
-            <tr>
-            <td>2</td>
-            {Array.from({ length: 5 }).map((_, index) => (
-                <td key={index}>User 2 {index}</td>
-            ))}
-            </tr>
-            <tr>
-            <td>3</td>
-            {Array.from({ length: 5 }).map((_, index) => (
-                <td key={index}>User 3 {index}</td>
-            ))}
-            </tr>
-        </tbody>
-        </Table>
-    );
-}
-}
-
-
-export default TableUser;
+        const {items } = this.state;
+        return (
+            <div>
+                <h2>Users</h2>
+                <hr/>
+                    <ol className="item">
+                    {
+                        items.length > 0 ? items.map(item => {
+                        const {id, firstName, lastName, location, thumbnail} = item;
+                        return (
+                        <div>
+                            <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <div key={id}></div>
+                                    
+                                    <ListGroup.Item>
+                                    <img className="mb-3" src={thumbnail}/>
+                                        <h5>Nama: {firstName} {lastName}</h5>
+                                        <p>Alamat: {location}</p>
+                                        <hr></hr>
+                                        <Button variant="outline-success">Approved</Button>{' '}
+                                    </ListGroup.Item>
+                                    
+                                </tr>
+                            </thead>
+                            </Table>
+                            
+                        </div>
+                        );
+                        }) : null
+                    }
+                    </ol>
+            </div>
+            
+            );
+        }
+    }
