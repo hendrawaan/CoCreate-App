@@ -65,7 +65,7 @@ export const Login = () => {
     return decode.type_user === 2 ? (
       <Redirect to="/" />
     ) : (
-      <Redirect to="/admin" />
+      <Redirect to="/adminpages" />
     );
   }
 

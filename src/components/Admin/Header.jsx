@@ -24,7 +24,7 @@ export default class Header extends React.Component {
       <div>
         <div className=" container justify-content-between">
           <Navbar bg="light" variant="light">
-            <Navbar.Brand href="#home">Co Create</Navbar.Brand>
+            <Navbar.Brand href="#home">Welcome Admin</Navbar.Brand>
             <div className="">
               <Form inline>
                 <FormControl

@@ -86,5 +86,5 @@ export const updateUserPassword = async (dataPas, token) =>
  * @param {string} token Data token yang akan digunakan untuk Authorization
  * @returns json objek
  */
-export const getUserAllAdmin = async (token) =>
-    await api.get(LIST_USERS_ADMIN, { Authorization: token });
+// export const getUserAllAdmin = async (token) =>
+//     await api.get(LIST_USERS_ADMIN, { Authorization: token });
