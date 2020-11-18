@@ -5,6 +5,7 @@ import ContentPost from '../../components/Admin/ContentPost'
 import Header from '../../components/Admin/Header'
 import Footer from '../../components/Admin/Footer'
 import TableUser from '../../components/Admin/TableUser'
+import UsersList from '../../components/Admin/UsersList'
 import ListAdminHome from '../../components/Admin/ListAdminHome'
 
 
@@ -20,20 +21,27 @@ return (
                     <Tabs className="conatiner mx-auto" defaultActiveKey="home">
                     <Tab eventKey="home" title="Home">
                         <div className="tab-item-wrapper">
-                        <h5>Home Dashbord List</h5>
+                        <h2>Home</h2>
+                        <hr/>
                         </div>
                         <ListAdminHome />
                     </Tab>
-                    <Tab className="conatiner mx-auto" eventKey="content" title="Content">
+                    {/* <Tab className="conatiner mx-auto" eventKey="content" title="Content">
                         <div className="tab-item-wrapper">
-                        <h5>Content</h5>
+                        
                         <ContentPost />
                         </div>
-                    </Tab>
+                    </Tab> */}
                     <Tab className="conatiner mx-auto" eventKey="table" title="Table">
                         <div className="tab-item-wrapper">
-                        <h5>Table User</h5>
+                        
                         <TableUser />
+                        </div>
+                    </Tab>
+                    <Tab className="conatiner mx-auto" eventKey="users" title="Users">
+                        <div className="tab-item-wrapper">
+                        
+                        <UsersList />
                         </div>
                     </Tab>
                     </Tabs>
@@ -42,7 +50,6 @@ return (
             </div>
         </div>
     </div>
-    <Footer />
     </Fragment>
 );
 }

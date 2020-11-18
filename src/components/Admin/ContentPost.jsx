@@ -6,6 +6,8 @@ import './ComponentAdmin.css'
 const ContentPost = ()=>  {
     return (
         <Fragment>
+            <h2>Content</h2>
+                <hr/>
             <Card>
                 {/* <Card.Img variant="top" src={logo} /> */}
                 <Card.Body>

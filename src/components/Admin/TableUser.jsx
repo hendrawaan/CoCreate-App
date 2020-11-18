@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { Table } from 'react-bootstrap'
+import { 
+    Table,
+    ListGroup,
+    Button
+} from 'react-bootstrap'
 
 export default class TableUser extends Component {
     constructor(props) {
@@ -31,14 +35,10 @@ export default class TableUser extends Component {
 
     render() {
         const {items } = this.state;
-        // if(error){
-        //     return <div>Error in loading</div>
-        // }else if (!isLoaded) {
-        //     return <div>Loading ...</div>
-        // }else
-        // {
         return (
             <div>
+                <h2>Users</h2>
+                <hr/>
                     <ol className="item">
                     {
                         items.length > 0 ? items.map(item => {
@@ -49,55 +49,26 @@ export default class TableUser extends Component {
                             <thead>
                                 <tr>
                                     <div key={id}></div>
-                                    <img src={thumbnail}/>
-                                    <tr>
+                                    
+                                    <ListGroup.Item>
+                                    <img className="mb-3" src={thumbnail}/>
                                         <h5>Nama: {firstName} {lastName}</h5>
-                                    </tr>
-                                    <tr>
                                         <p>Alamat: {location}</p>
-                                    </tr>
-                                    <tr>
-                                        <button>Approved</button>
-                                    </tr>
+                                        <hr></hr>
+                                        <Button variant="outline-success">Approved</Button>{' '}
+                                    </ListGroup.Item>
+                                    
                                 </tr>
                             </thead>
                             </Table>
+                            
                         </div>
                         );
                         }) : null
                     }
                     </ol>
             </div>
-            // <Table striped bordered hover>
-            // <thead>
-            //     <tr>
-            //     <th>#</th>
-            //     <th>Nama</th>
-            //     <th>Email</th>
-            //     <th>Status</th>
-            //     </tr>
-            // </thead>
-            // <tbody>
-            //     <tr>
-            //     <td>1</td>
-            //     <td>gj</td>
-            //     <td>hg</td>
-            //     <td>hh</td>
-            //     </tr>
-            //     <tr>
-            //     <td>2</td>
-            //     <td>Jacob</td>
-            //     <td>Thornton@gmail.com</td>
-            //     <td>Noaktif</td>
-            //     </tr>
-            //     <tr>
-            //     <td>3</td>
-            //     <td>Bob</td>
-            //     <td>Bob65@gmail.com</td>
-            //     <td>Aktif</td>
-            //     </tr>
-            // </tbody>
-            // </Table>
+            
             );
         }
     }

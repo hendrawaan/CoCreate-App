@@ -1,25 +1,8 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Navbar, Nav, Form, FormControl,Button } from 'react-bootstrap'
+import React from "react";
+import { Navbar, Form, FormControl,Button } from 'react-bootstrap'
 
 
 class Header extends React.Component {
-// state = {
-// collapsed: true
-// }
-
-// handleTogglerClick = () => {
-// this.setState({
-//     collapsed: !this.state.collapsed
-// });
-// }
-
-// handleNavbarClick = () => {
-// this.setState({
-//     collapsed: true
-// });
-// }
-
 render() {
 return (
     <div>
