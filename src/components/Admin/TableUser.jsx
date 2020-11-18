@@ -37,7 +37,7 @@ export default class TableUser extends Component {
         const {items } = this.state;
         return (
             <div>
-                <h2>Users</h2>
+                <h2>Users Test Api Get</h2>
                 <hr/>
                     <ol className="item">
                     {
@@ -52,7 +52,7 @@ export default class TableUser extends Component {
                                     
                                     <ListGroup.Item>
                                     <img className="mb-3" src={thumbnail}/>
-                                        <h5>Nama: {firstName} {lastName}</h5>
+                                        <h5>{firstName} {lastName}</h5>
                                         <p>Alamat: {location}</p>
                                         <hr></hr>
                                         <Button variant="outline-success">Approved</Button>{' '}

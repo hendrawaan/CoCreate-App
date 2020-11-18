@@ -4,10 +4,12 @@ import {
     Table
 } from 'react-bootstrap'
 
-const api = 'http://kelompok6.dtstakelompok1.com/api/v1/user/verifikasi/daftar'
+const api = 'http://kelompok6.dtstakelompok1.com/api/v1/user/verifikasi/daftar/'
 const requestOptions = {
-    methods: 'GET',
-    headers: { 'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtYWRoaWxtYW44ODVAZ21haWwuY29tIiwiaWQiOjExLCJ0eXBlX3VzZXIiOjIsInVzZXJuYW1lIjoiaGlsbWFuIn0.0VeEHjh_rHR7evz7fPJorUT5nme3t5uBoorKtd1DOwk' },
+    method: "GET",
+    headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11aGFtYWRoaWxtYW44ODVAZ21haWwuY29tIiwiaWQiOjExLCJ0eXBlX3VzZXIiOjIsInVzZXJuYW1lIjoiaGlsbWFuIn0.0VeEHjh_rHR7evz7fPJorUT5nme3t5uBoorKtd1DOwk" },
 };
 
 class UsersList extends Component {
@@ -20,7 +22,7 @@ class UsersList extends Component {
     }
 
     componentDidMount() {
-        axios.get(api + '/true' + requestOptions)
+        axios.get(api + 'true' + requestOptions)
         .then(res=>{
             this.setState({
                 items: res.data.users
@@ -43,12 +45,13 @@ class UsersList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.items.map(item =>
+                        {this.state.items.map(item => 
                             <tr key={item.id}>
                                 <td>{item.name}</td>
                                 <td>{item.username}</td>
                                 <td>{item.email}</td>
                             </tr>
+                            
                             )}
                     </tbody>
                 </Table>
