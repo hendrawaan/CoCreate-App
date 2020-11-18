@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+import "./App.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Router from "./route/Router";
+
+function App() {
+  return <Router />;
+=======
 import logo from './logo.svg';
 import './App.css';
 
@@ -20,6 +28,7 @@ function App() {
       </header>
     </div>
   );
+>>>>>>> hilman
 }
 
 export default App;

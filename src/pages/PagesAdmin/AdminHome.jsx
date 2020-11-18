@@ -1,3 +1,4 @@
+import ListAdminHome from "../../components/Admin/ListAdminHome";
 import React,  {Fragment} from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,10 +10,10 @@ import ListAdminHome from '../../components/Admin/ListAdminHome'
 
 
 function AdminHome() {
-return (
+  return (
     <Fragment>
-    <Header />
-    <div className="container justify-content-center">
+      <Header />
+      <div className="container justify-content-center">
         <div className="tab-wrapper">
             <div className='container-fluid' >
                 <div className="row justify-content-center ">
@@ -48,7 +49,7 @@ return (
                 </div>
             </div>
         </div>
-    </div>
+        </div>
     </Fragment>
 );
 }
