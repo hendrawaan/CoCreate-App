@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
-// import 'mdbreact/dist/css/mdb.css';
 import { Tabs, Tab } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ContentPost from "../../components/Admin/ContentPost";
 import Header from "../../components/Admin/Header";
+import Footer from "../../components/Admin/Footer";
 import TableUser from "../../components/Admin/TableUser";
 import ListAdminHome from "../../components/Admin/ListAdminHome";
 
@@ -49,6 +49,7 @@ function AdminHome() {
           </div>
         </div>
       </div>
+      <Footer />
     </Fragment>
   );
 }

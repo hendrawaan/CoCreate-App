@@ -1,76 +1,43 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import {
-  MDBCol,
-  MDBFormInline,
-  MDBBtn,
-  MDBNavbarToggler,
-  MDBNavbar,
-  MDBCollapse,
-  MDBNavbarNav
-} from "mdbreact";
+import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
 
-class Header extends Component {
-  state = {
-    collapsed: true
-  };
+class Header extends React.Component {
+  // state = {
+  // collapsed: true
+  // }
 
-  handleTogglerClick = () => {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
-  };
+  // handleTogglerClick = () => {
+  // this.setState({
+  //     collapsed: !this.state.collapsed
+  // });
+  // }
 
-  handleNavbarClick = () => {
-    this.setState({
-      collapsed: true
-    });
-  };
+  // handleNavbarClick = () => {
+  // this.setState({
+  //     collapsed: true
+  // });
+  // }
 
   render() {
     return (
-      <MDBCol md="12">
-        <MDBNavbar
-          color="unique-color-dark"
-          className="text-white"
-          dark
-          expand="md"
-        >
-          <div>
-            <img
-              src="https://mdbootstrap.com/img/Photos/Avatars/img%20(9).jpg"
-              alt=""
-              className="avatar z-depth-2"
-            />
-          </div>
-          <h5 className="m-3">Hallo, Admin</h5>
-          <MDBNavbarToggler onClick={this.handleTogglerClick} />
-          <Router>
-            <MDBCollapse isOpen={this.state.collapsed} navbar>
-              <MDBNavbarNav right onClick={this.handleNavbarClick}>
-                {/* <MDBFormInline className="md-form mr-auto m-0">
-                  <input
-                    className="form-control mr-sm-2"
-                    type="text"
-                    placeholder="Search"
-                    color="white"
-                    aria-label="Search"
-                  />
-                  <MDBBtn
-                    outline
-                    color="white"
-                    size="sm"
-                    type="submit"
-                    className="mr-auto"
-                  >
-                    Search
-                  </MDBBtn>
-                </MDBFormInline> */}
-              </MDBNavbarNav>
-            </MDBCollapse>
-          </Router>
-        </MDBNavbar>
-      </MDBCol>
+      <div>
+        <div className=" container justify-content-between">
+          <Navbar bg="light" variant="light">
+            <Navbar.Brand href="#home">Co Create</Navbar.Brand>
+            <div className="">
+              <Form inline>
+                <FormControl
+                  type="text"
+                  placeholder="Search"
+                  className="mr-sm-2"
+                />
+                <Button variant="outline-primary">Search</Button>
+              </Form>
+            </div>
+          </Navbar>
+        </div>
+      </div>
     );
   }
 }
