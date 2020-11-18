@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -29,6 +29,9 @@ export function Home() {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.user);
   const { profile } = useSelector(state => state.profile);
+
+  const [filter, setFilter] = useState("Teknologi");
+
   useEffect(() => {
     if (user) {
       dispatch(getProfile(user.token));
@@ -74,29 +77,8 @@ export function Home() {
     }
   ];
 
-  const filterClickTech = () => {
-    return feed
-      .filter(feeding => feeding.tag === "Teknologi")
-      .map(filteredFeed => (
-        <Card className="mb-2" key={filteredFeed.id}>
-          <Card.Header as="h5">{filteredFeed.title}</Card.Header>
-          <Card.Body>
-            <Card.Title>
-              <CgProfile /> <p>{filteredFeed.posted_by}</p>
-            </Card.Title>
-            <Card.Text>
-              With supporting text below as a natural lead-in to additional
-              content.
-            </Card.Text>
-            <Button variant="primary">Read More</Button>
-          </Card.Body>
-          <Card.Footer>
-            <Button style={{ backgroundColor: "transparent" }}>
-              <AiOutlineHeart />
-            </Button>
-          </Card.Footer>
-        </Card>
-      ));
+  const filterKesehatan = () => {
+    setFilter = "Kesehatan";
   };
 
   return (
@@ -257,7 +239,10 @@ export function Home() {
               </Dropdown> */}
               <div className="d-flex flex-row">
                 <div>
-                  <Button variant="light">
+                  <Button
+                    variant="light"
+                    onClick={() => setFilter("Teknologi")}
+                  >
                     <GrTechnology />
                     <p className="px-2" style={{ float: "right" }}>
                       Technology
@@ -265,7 +250,7 @@ export function Home() {
                   </Button>
                 </div>
                 <div>
-                  <Button variant="light" onClick={filterClickTech}>
+                  <Button variant="light" onClick={() => setFilter("Keuangan")}>
                     <BiMoney />
                     <p className="px-2" style={{ float: "right" }}>
                       Keuangan
@@ -273,7 +258,10 @@ export function Home() {
                   </Button>
                 </div>
                 <div>
-                  <Button variant="light">
+                  <Button
+                    variant="light"
+                    onClick={() => setFilter("Kesehatan")}
+                  >
                     <GiLifeInTheBalance />
                     <p className="px-2" style={{ float: "right" }}>
                       Lifestyle
@@ -298,7 +286,30 @@ export function Home() {
             </Col>
           </Row>
           <Row>
-            <Col style={{}}>{}</Col>
+            <Col style={{}}>
+              {feed
+                .filter(feeding => feeding.tag === filter)
+                .map(filteredFeed => (
+                  <Card className="mb-2" key={filteredFeed.id}>
+                    <Card.Header as="h5">{filteredFeed.title}</Card.Header>
+                    <Card.Body>
+                      <Card.Title>
+                        <CgProfile /> <p>{filteredFeed.posted_by}</p>
+                      </Card.Title>
+                      <Card.Text>
+                        With supporting text below as a natural lead-in to
+                        additional content.
+                      </Card.Text>
+                      <Button variant="primary">Read More</Button>
+                    </Card.Body>
+                    <Card.Footer>
+                      <Button style={{ backgroundColor: "transparent" }}>
+                        <AiOutlineHeart />
+                      </Button>
+                    </Card.Footer>
+                  </Card>
+                ))}
+            </Col>
           </Row>
         </Col>
       </Row>

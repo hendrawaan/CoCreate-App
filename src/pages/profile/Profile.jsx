@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import profileimg from "../../assets/images/profile-default.jpg";
 import logo from "../../assets/images/logo.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,33 +29,28 @@ import {
 } from "react-icons/fa";
 import InputGroupCustom from "../../components/InputGroupCustom";
 import { listGender, listNav, listMenu } from "./List";
-import { getProfile } from "../../store/profile";
+import { getProfile, updatePassword, updateProfile } from "../../store/profile";
+import { logout } from "../../store/user";
 export const Profile = () => {
   const dispatch = useDispatch();
   const { profile } = useSelector(state => state.profile);
   const { user } = useSelector(state => state.user);
+
   const [search, setSearch] = useState("");
-  // const [username, setUserName] = useState("hendrawaan");
-  // const [email, setEmail] = useState("hendrawaan@gmail.com");
-  // const [name, setName] = useState("Arif Hendrawan");
-  // const [gender, setGender] = useState("Male");
-  // const [dob, setDob] = useState("1998-07-29");
-  // const [phone, setPhone] = useState("08766621212");
-  // const [postalcode, setPostalCode] = useState("56678");
-  // const [address, setAddress] = useState("Jakarta Selatan");
-  // const [bio, setBio] = useState("Ini Adalah Bio dari Arif Hendrawan");
+
   const [navKey, setKey] = useState(1);
   const [formProfile, setFormProfile] = useState();
   const [formPassword, setFormPassword] = useState();
-  const updateProfile = e => {
-    setFormProfile({
-      ...formProfile,
-      [e.target.name]: e.target.value
-    });
+
+  const updateProfiles = e => {
+    // setFormProfile({
+    //   ...formProfile,
+    //   [e.target.name]: e.target.value
+    // });
   };
-  const updatePassword = e => {
+  const updatePasswords = e => {
     setFormPassword({
-      ...formProfile,
+      ...formPassword,
       [e.target.name]: e.target.value
     });
   };
@@ -69,11 +64,9 @@ export const Profile = () => {
   // const [changeBio, setChangeBio] = useState(bio);
   // const [oldPass, setOldPass] = useState("");
   // const [newPass, setNewPass] = useState("");
-  const [showEdit, setShowEdit] = useState(false);
-
   //other state
   const [hiddenbar, setHiddenBar] = useState(false);
-
+  const [showEdit, setShowEdit] = useState(false);
   useEffect(() => {
     if (user) {
       dispatch(getProfile(user.token));
@@ -84,15 +77,64 @@ export const Profile = () => {
     console.log(profile?.user);
   }, [profile]);
   const dataProfile = profile?.user;
+  const [username, setUsername] = useState(dataProfile?.username);
+  const [email, setEmail] = useState(dataProfile?.email);
+  const [name, setName] = useState(dataProfile?.name);
+  const [gender, setGender] = useState(dataProfile?.gender);
+  const [tanggal_lahir, setDob] = useState(dataProfile?.birth);
+  const [phone, setPhone] = useState(dataProfile?.phone);
+  const [post_code, setPostalCode] = useState(dataProfile?.post_code);
+  const [address, setAddress] = useState(dataProfile?.address);
+  const [short_bio, setBio] = useState(dataProfile?.short_bio);
   //Handler untuk menangani proses
-  const editProfileHandler = e => {};
+  const logoutHandler = () => {
+    dispatch(logout());
+    window.location = "/login";
+  };
+  const editProfileHandler = e => {
+    console.log(
+      name,
+      username,
+      email,
+      address,
+      tanggal_lahir,
+      gender,
+      phone,
+      post_code,
+      short_bio
+    );
+    let profiles = [];
+    profiles.push({
+      name: name,
+      // username: username,
+      // email: email,
+      // address: address,
+      tanggal_lahir: new Date(tanggal_lahir).getTime() / 1000,
+      gender: gender,
+      phone: phone,
+      post_code: post_code,
+      short_bio: short_bio
+    });
+    dispatch(updateProfile(profiles, user.token));
+    //dispatch(getProfile(user.token));
+  };
   const uploadPhotoHandler = e => {};
   const updatePasswordHandler = e => {
     e.preventDefault();
-    if (formPassword.old_pass === formPassword.new_pass) {
-      //dispatch(setPassword(formPassword));
+    if (formPassword !== null) {
+      if (
+        formPassword.password_lama !== "" ||
+        formPassword.password_baru !== ""
+      ) {
+        dispatch(updatePassword(formPassword, user.token));
+        alert("Password berhasil diubah, silahkan login kembali");
+        dispatch(logout());
+        window.location = "/login";
+      } else {
+        alert("Password tidak boleh kosong");
+      }
     } else {
-      alert("Password tidak cocok");
+      alert("Password tidak boleh kosong");
     }
   };
   const contentBio = () => {
@@ -126,69 +168,69 @@ export const Profile = () => {
     return (
       <Card>
         <Card.Body>
-          <Form onSubmit={editProfileHandler}>
+          <Form onClick={editProfileHandler}>
             <h5>Personal Info</h5>
             <Form.Row className="margin-between">
               <Col md={6}>
                 <Form.Label>Username</Form.Label>
                 <InputGroupCustom
                   icon="@"
-                  name="username"
-                  onChange={updateProfile}
+                  // name="username"
+                  onChange={e => setUsername(e.target.value)}
                   placeholder={dataProfile?.username}
                   type="text"
                   value={dataProfile?.username}
-                  disabled={true}
+                  disabled
                 />
                 <Form.Label>Name</Form.Label>
                 <InputGroupCustom
                   icon={<FaUser />}
-                  name="name"
-                  onChange={updateProfile}
+                  // name="name"
+                  onChange={e => setName(e.target.value)}
                   type="text"
                   placeholder="Name"
-                  defValue={dataProfile?.name}
+                  defaultValue={dataProfile?.name}
                 />
                 <Form.Label>Date of Birth</Form.Label>
                 <InputGroupCustom
                   icon={<FaCalendar />}
-                  name="birth"
-                  onChange={updateProfile}
+                  // name="tanggal_lahir"
+                  onChange={e => setDob(e.target.value)}
                   type="date"
                   placeholder="Date of Birth"
-                  defValue={dataProfile?.birth}
+                  defaultValue={dataProfile?.birth}
                 />
               </Col>
               <Col md={6}>
                 <Form.Label>Email</Form.Label>
                 <InputGroupCustom
                   icon={<FaEnvelope />}
-                  name="email"
-                  onChange={updateProfile}
+                  // name="email"
+                  onChange={e => setEmail(e.target.value)}
                   placeholder={dataProfile?.email}
                   type="text"
                   value={dataProfile?.email}
-                  disabled={true}
+                  disabled
                 />
                 <Form.Label>Gender</Form.Label>
                 <InputGroupCustom
                   icon={<FaRestroom />}
-                  name="gender"
-                  onChange={updateProfile}
+                  // name="gender"
+                  onChange={e => setGender(e.target.value)}
                   type="text"
                   placeholder="Gender"
                   as="select"
-                  defValue={dataProfile?.gender}
+                  defaultValue={dataProfile?.gender}
                   children={listGender}
                 />
                 <Form.Label>Phone</Form.Label>
                 <InputGroupCustom
                   icon={<FaPhone />}
-                  name="phone"
-                  onChange={updateProfile}
+                  // name="phone"
+                  onChange={e => setPhone(e.target.value)}
                   placeholder="Phone Number"
                   type="text"
-                  defValue={dataProfile?.phone}
+                  defaultValue={dataProfile?.phone}
                 />
               </Col>
             </Form.Row>
@@ -199,22 +241,22 @@ export const Profile = () => {
                 <InputGroupCustom
                   as="textarea"
                   icon={<FaMapMarkerAlt />}
-                  name="address"
-                  onChange={updateProfile}
+                  // name="address"
+                  onChange={e => setAddress(e.target.value)}
                   type="text"
                   placeholder="Address"
-                  defValue={dataProfile?.address}
+                  defaultValue={dataProfile?.address}
                 />
               </Col>
               <Col md={6}>
                 <Form.Label>Postal Code</Form.Label>
                 <InputGroupCustom
                   icon={<FaMapMarkerAlt />}
-                  name="email"
-                  onChange={updateProfile}
+                  // name="post_code"
+                  onChange={e => setPostalCode(e.target.value)}
                   type="text"
                   placeholder="Postal Code"
-                  defValue={dataProfile?.postcode}
+                  defaultValue={dataProfile?.postcode}
                 />
               </Col>
             </Form.Row>
@@ -225,15 +267,15 @@ export const Profile = () => {
                 <InputGroupCustom
                   as="textarea"
                   icon={<FaIdCard />}
-                  name="short_bio"
-                  onChange={updateProfile}
+                  // name="short_bio"
+                  onChange={e => setBio(e.target.value)}
                   type="text"
                   placeholder="Bio"
-                  defValue={dataProfile?.short_bio}
+                  defaultValue={dataProfile?.short_bio}
                 />
               </Col>
             </Form.Row>
-            <Button type="submit" className="btn-primary">
+            <Button type="button" className="btn-primary">
               Update
             </Button>{" "}
           </Form>
@@ -285,19 +327,21 @@ export const Profile = () => {
           <Form onSubmit={updatePasswordHandler}>
             <Form.Row>
               <Col md={6}>
+                <Form.Label>Password Lama</Form.Label>
                 <InputGroupCustom
                   icon={<FaKey />}
-                  name="old_pass"
-                  onChange={updatePassword}
+                  name="password_lama"
+                  onChange={updatePasswords}
                   type="password"
                   placeholder="Old Password"
                 />
               </Col>
               <Col md={6}>
+                <Form.Label>Password Baru</Form.Label>
                 <InputGroupCustom
                   icon={<FaKey />}
-                  name="new_pass"
-                  onChange={updatePassword}
+                  name="password_baru"
+                  onChange={updatePasswords}
                   type="password"
                   placeholder="New Password"
                 />
@@ -322,41 +366,6 @@ export const Profile = () => {
     >
       {/*Navbar*/}
       <Container fluid style={{ backgroundColor: "#14274E" }}>
-        <Row className="nav-container">
-          <Col md={4}>
-            {/* <Image
-              src={logo}
-              alt="logo"
-              roundedCircle
-              className="profile-login logo-instance"
-            /> */}
-          </Col>
-          <Col md={6}>
-            <Form inline>
-              <FaBars
-                color="white"
-                className="burger-button"
-                onClick={() => setHiddenBar(!hiddenbar)}
-              />
-              <FormControl
-                type="text"
-                placeholder="Search"
-                className=" mr-sm-2"
-                style={{ width: "80%" }}
-              />
-            </Form>
-          </Col>
-          <Col md={2} className="logo-instance">
-            {/* <Button variant="outline-light ">
-              <Image
-                src={profileimg}
-                alt="profile"
-                roundedCircle
-                className="profile-login"
-              />
-            </Button> */}
-          </Col>
-        </Row>
         <div
           className={`${!hiddenbar ? "collapse" : ""} navbar-collapse`}
           id="navbarsExample09"
@@ -425,7 +434,11 @@ export const Profile = () => {
               {showEdit === false ? "Edit Profile" : "Cancel"}
             </Button>{" "}
             {showEdit === false ? (
-              <Button variant="secondary" size="sm">
+              <Button
+                onClick={() => logoutHandler()}
+                variant="secondary"
+                size="sm"
+              >
                 Logout
               </Button>
             ) : (
