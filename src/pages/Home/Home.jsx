@@ -20,7 +20,7 @@ import { MdEvent } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { GrTechnology } from "react-icons/gr";
 import { BiMoney } from "react-icons/bi";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiOutlineComment } from "react-icons/ai";
 import { GiLifeInTheBalance } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../store/profile";
@@ -49,6 +49,7 @@ export function Home() {
       id: 1,
       title: "Berkembang dalam Industri 4.0",
       tag: "Teknologi",
+      konten: "jkgufyfyftyfhghffuygyu",
       posted_by: "Harits"
     },
     {
@@ -245,6 +246,17 @@ export function Home() {
                   >
                     <GrTechnology />
                     <p className="px-2" style={{ float: "right" }}>
+                      My Feed
+                    </p>
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    variant="light"
+                    onClick={() => setFilter("Teknologi")}
+                  >
+                    <GrTechnology />
+                    <p className="px-2" style={{ float: "right" }}>
                       Technology
                     </p>
                   </Button>
@@ -290,21 +302,31 @@ export function Home() {
               {feed
                 .filter(feeding => feeding.tag === filter)
                 .map(filteredFeed => (
-                  <Card className="mb-2" key={filteredFeed.id}>
-                    <Card.Header as="h5">{filteredFeed.title}</Card.Header>
+                  <Card className="my-4" key={filteredFeed.id}>
+                    <Card.Header as="h3">{filteredFeed.title}</Card.Header>
                     <Card.Body>
                       <Card.Title>
-                        <CgProfile /> <p>{filteredFeed.posted_by}</p>
+                        <div className="row">
+                          <div className="col-md-1 text-center">
+                            <CgProfile />
+                          </div>
+                          <div className="col-md-11">
+                            <p>{filteredFeed.posted_by}</p>
+                          </div>
+                        </div>
                       </Card.Title>
                       <Card.Text>
                         With supporting text below as a natural lead-in to
                         additional content.
                       </Card.Text>
-                      <Button variant="primary">Read More</Button>
+                      <Button variant="outline-primary">Read More</Button>
                     </Card.Body>
                     <Card.Footer>
-                      <Button style={{ backgroundColor: "transparent" }}>
+                      <Button variant="danger" className="m-1 btn-alert">
                         <AiOutlineHeart />
+                      </Button>
+                      <Button variant="warning" classname="m-1">
+                        <AiOutlineComment />
                       </Button>
                     </Card.Footer>
                   </Card>

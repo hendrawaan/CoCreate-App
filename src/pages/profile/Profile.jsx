@@ -1,29 +1,41 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import profileimg from "../../assets/images/profile-default.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from 'react-router-dom';
-import moment from 'moment'
+import { useParams } from "react-router-dom";
+import moment from "moment";
 import "./Profile.css";
 import {
-  Button, ButtonGroup, Card, Col, Container,
-  Form, Image,
-  Nav, Row
+  Button,
+  ButtonGroup,
+  Card,
+  Col,
+  Container,
+  Form,
+  Image,
+  Nav,
+  Row
 } from "react-bootstrap";
 import {
-  FaCalendar, FaEnvelope,
-  FaIdCard, FaKey,
+  FaCalendar,
+  FaEnvelope,
+  FaIdCard,
+  FaKey,
   FaMapMarkerAlt,
-  FaMapPin, FaPhone, FaRestroom, FaUser
+  FaMapPin,
+  FaPhone,
+  FaRestroom,
+  FaUser
 } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import profileimg from "../../assets/images/profile-default.jpg";
 import InputGroupCustom from "../../components/InputGroupCustom";
 import { listGender, listNav, listMenu } from "./List";
-import { getProfile, updatePassword, updateProfile, getUserProfileID } from "../../store/profile";
+import {
+  getProfile,
+  updatePassword,
+  updateProfile,
+  getUserProfileID
+} from "../../store/profile";
 
 import { logout } from "../../store/user";
-import { listGender, listMenu, listNav } from "./List";
 import "./Profile.css";
 export const Profile = () => {
   const dispatch = useDispatch();
@@ -32,29 +44,29 @@ export const Profile = () => {
   const params = useParams();
   const [navKey, setKey] = useState(1);
   const [formProfile, setFormProfile] = useState({
-    name: '',
+    name: "",
     birth: 0,
-    gender: '',
-    address: '',
-    phone: '',
+    gender: "",
+    address: "",
+    phone: "",
     postcode: 0,
-    short_bio: ''
+    short_bio: ""
   });
   const [formPassword, setFormPassword] = useState();
   const [isUser, setIsuser] = useState(true);
   const [hiddenbar, setHiddenBar] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const updateProfiles = e => {
-    let value = e.target.value
-    let name = e.target.name
+    let value = e.target.value;
+    let name = e.target.name;
     setFormProfile({
       ...formProfile,
       [name]: value
     });
   };
   const updatePasswords = e => {
-    let value = e.target.value
-    let name = e.target.name
+    let value = e.target.value;
+    let name = e.target.name;
     setFormPassword({
       ...formPassword,
       [name]: value
@@ -62,13 +74,13 @@ export const Profile = () => {
   };
 
   useEffect(() => {
-    console.log(params)
+    console.log(params);
     // tambahkan logika, apabila menerima props dari halaman sebelumnya, maka akan mengubah state isUser
     if (user && isUser) {
       dispatch(getProfile(user.token));
     } else {
       // tambahkan id dari parameter
-      setIsuser(!isUser)
+      setIsuser(!isUser);
       dispatch(getUserProfileID(user.token));
     }
   }, [dispatch, user]);
@@ -83,7 +95,7 @@ export const Profile = () => {
       phone: dataProfile?.phone,
       postcode: dataProfile?.postcode,
       short_bio: dataProfile?.short_bio
-    })
+    });
   }, [profile]);
   //Handler untuk menangani proses
   const logoutHandler = () => {
@@ -91,18 +103,19 @@ export const Profile = () => {
     window.location = "/login";
   };
   const editProfileHandler = e => {
-
     formProfile.birth = moment(formProfile.birth).unix();
     formProfile.postcode = parseInt(formProfile.postcode);
-    console.log("birth " + typeof formProfile.birth, formProfile.birth)
-    console.log("postcode " + typeof formProfile.postcode, formProfile.postcode)
+    console.log("birth " + typeof formProfile.birth, formProfile.birth);
+    console.log(
+      "postcode " + typeof formProfile.postcode,
+      formProfile.postcode
+    );
     dispatch(updateProfile(formProfile, user.token));
     dispatch(getProfile(user.token));
     e.preventDefault();
     // setTimeout(function () { window.location.reload() }, 2000);
-
   };
-  const uploadPhotoHandler = e => { };
+  const uploadPhotoHandler = e => {};
   const updatePasswordHandler = e => {
     if (formPassword !== null) {
       if (
@@ -135,7 +148,7 @@ export const Profile = () => {
       <Card style={{ width: "18rem" }}>
         <Card.Header>Menu</Card.Header>
         <ButtonGroup vertical>
-          {listMenu.map(function (item, i) {
+          {listMenu.map(function(item, i) {
             return (
               <Button className="text-left" key={i} variant="light">
                 {item.icon} {item.name}
@@ -181,7 +194,9 @@ export const Profile = () => {
                   onChange={updateProfiles}
                   type="date"
                   placeholder="Date of Birth"
-                  defaultValue={moment.unix(dataProfile?.birth).format("YYYY-MM-DD")}
+                  defaultValue={moment
+                    .unix(dataProfile?.birth)
+                    .format("YYYY-MM-DD")}
                 />
               </Col>
               <Col md={6}>
@@ -353,7 +368,7 @@ export const Profile = () => {
           className={`${!hiddenbar ? "collapse" : ""} navbar-collapse`}
           id="navbarsExample09"
         >
-          {listMenu.map(function (item, i) {
+          {listMenu.map(function(item, i) {
             return (
               <a key={i} className="nav-link text-light" href="/{ item.link }">
                 {item.name}
@@ -391,7 +406,8 @@ export const Profile = () => {
                   </Col>
                   <Col md={6}>
                     <p style={{ color: "grey" }}>
-                      <FaCalendar /> {moment.unix(dataProfile?.birth).format("L")}
+                      <FaCalendar />{" "}
+                      {moment.unix(dataProfile?.birth).format("L")}
                     </p>
                     <p style={{ color: "grey" }}>
                       <FaMapPin /> {dataProfile?.postcode}
@@ -409,13 +425,15 @@ export const Profile = () => {
             </Row>
           </Col>
           <Col md={2}>
-            {isUser ? <Button
-              variant={showEdit === false ? "primary" : "secondary"}
-              size="sm"
-              onClick={() => setShowEdit(!showEdit)}
-            >
-              {showEdit === false ? "Edit Profile" : "Cancel"}
-            </Button>
+            {isUser ? (
+              <Button
+                variant={showEdit === false ? "primary" : "secondary"}
+                size="sm"
+                onClick={() => setShowEdit(!showEdit)}
+              >
+                {showEdit === false ? "Edit Profile" : "Cancel"}
+              </Button>
+            ) : (
               // {showEdit === false ? (
               //   <Button
               //     onClick={() => logoutHandler()}
@@ -427,8 +445,8 @@ export const Profile = () => {
               // ) : (
               //     ""
               //   )}
-              : ""}
-
+              ""
+            )}
           </Col>
         </Row>
       </Container>
@@ -441,12 +459,12 @@ export const Profile = () => {
               {contentMenu()}
             </Col>
           ) : (
-              ""
-            )}
+            ""
+          )}
           {showEdit === true ? (
             <Col md={12}>
               <Nav fill variant="tabs" defaultActiveKey={navKey}>
-                {listNav.map(function (item, i) {
+                {listNav.map(function(item, i) {
                   return (
                     <Nav.Item key={i}>
                       <Nav.Link
@@ -463,15 +481,15 @@ export const Profile = () => {
               {navKey === 1 ? (
                 contentEditProfile()
               ) : // navKey === 2 ? contentUploadPhoto() :
-                navKey === 3 ? (
-                  contentUpdatePassword()
-                ) : (
-                    <div></div>
-                  )}
+              navKey === 3 ? (
+                contentUpdatePassword()
+              ) : (
+                <div></div>
+              )}
             </Col>
           ) : (
-              <Col md={6}> {contentBio()}</Col>
-            )}
+            <Col md={6}> {contentBio()}</Col>
+          )}
         </Row>
       </Container>
     </Container>
