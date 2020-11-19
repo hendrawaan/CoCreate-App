@@ -31,7 +31,7 @@ ul li:hover {
     background-color: #eee;
 }
 
-.close {
+.close-admin {
     cursor: pointer;
     position: absolute;
     top: 50%;
@@ -40,7 +40,7 @@ ul li:hover {
     transform: translate(0%, -50%);
 }
 
-.close:hover {background: #bbb;}
+.close-admin:hover {background: #bbb;}
 
 .chip {
     display: inline-block;

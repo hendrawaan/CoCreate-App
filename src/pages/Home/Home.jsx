@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import {
   Button,
@@ -29,21 +30,17 @@ import Add from "./Add";
 /* Hanya untuk testing */
 export default function Home() {
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.user);
-  const { profile } = useSelector(state => state.profile);
+  const { user } = useSelector((state) => state.user);
+  const { profile } = useSelector((state) => state.profile);
   useEffect(() => {
     if (user) {
       dispatch(getProfile(user.token));
-    } else if (!user) {
-      window.location = "/login";
     }
   }, [dispatch, user]);
 
   const register = () => {
     window.location = "/register";
   };
-
-
 
   return (
     
@@ -56,9 +53,6 @@ export default function Home() {
           <Col md={4} className="align-middle">
             <div className="d-flex flex-row-reverse">
               <div className="" style={{ display: "inline" }}>
-                {/* <Button variant="primary" type="submit" onClick={register}>
-                  {isLogin ? "Username" : "Register"}
-                </Button> */}
                 <Button
                   variant="primary"
                   type="submit"
@@ -74,19 +68,67 @@ export default function Home() {
             </div>
           </Col>
         </Row>
+        {/* <Row className="align-items-center">
+          <Col className="m-5 align-items-center">
+            <Carousel className="" style={{ margin: "auto" }}>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src={carouselFirst}
+                  alt="First slide"
+                />
+                <Carousel.Caption>
+                  <h3>First slide label</h3>
+                  <p>
+                    Nulla vitae elit libero, a pharetra augue mollis interdum.
+                  </p>
+                </Carousel.Caption>
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className="d-block"
+                  src={carouselSecond}
+                  alt="Second slide"
+                />
+
+                <Carousel.Caption>
+                  <h3>Second slide label</h3>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </p>
+                </Carousel.Caption>
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className="d-block"
+                  src={carouselThird}
+                  alt="Third slide"
+                />
+
+                <Carousel.Caption>
+                  <h3>Third slide label</h3>
+                  <p>
+                    Praesent commodo cursus magna, vel scelerisque nisl
+                    consectetur.
+                  </p>
+                </Carousel.Caption>
+              </Carousel.Item>
+            </Carousel>
+          </Col>
+        </Row> */}
       </Container>
-      <Row style={{}}>
+      <Row>
         <Col
           md={3}
           style={{
-            padding: 50
+            padding: 50,
           }}
         >
           <Row>
-            <Col style={{}}>
+            <Col>
               <div className="d-flex flex-column">
                 <div className="mx-auto text-center w-100">
-                  <Card style={{}}>
+                  <Card>
                     <Card.Header>
                       <CgProfile size={100} />
                     </Card.Header>
@@ -117,13 +159,16 @@ export default function Home() {
                     Event
                   </Button>
                 </div>
+                <div className="p-2">
+                  <Add />
+                </div>
               </div>
               <hr />
             </Col>
           </Row>
           <Row>
-            <Col style={{}}>
-              <Card style={{}}>
+            <Col>
+              <Card>
                 <Card.Header as="h4">My Event</Card.Header>
                 <ListGroup variant="flush">
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
@@ -135,7 +180,7 @@ export default function Home() {
             </Col>
           </Row>
           <Row>
-            <Col style={{}}>
+            <Col>
               <h1>Calendar</h1>
             </Col>
           </Row>
@@ -170,7 +215,7 @@ export default function Home() {
                 </div>
               </div>
             </Col>
-            <Col style={{}}>
+            <Col>
               <div className="input-group mb-3">
                 <input
                   type="text"
@@ -186,10 +231,8 @@ export default function Home() {
             </Col>
           </Row>
 
-        <Button >New Post</Button>
-          {/* <Add/> */}
           <Row>
-            <Col style={{}}>
+            <Col>
               <Card className="mb-2">
                 <Card.Header as="h5">Title #1</Card.Header>
                 <Card.Body>
@@ -220,7 +263,6 @@ export default function Home() {
           </Row>
         </Col>
       </Row>
-      <Button>Test Modal </Button>
     </Container>
   );
 }
