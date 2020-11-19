@@ -24,6 +24,7 @@ export const Profile = (props) => {
   const dispatch = useDispatch();
   const { profile } = useSelector(state => state.profile);
   const { user } = useSelector(state => state.user);
+  const [idUser, setIduser] = useState()
   const params = useParams();
   let location = useLocation();
   const [navKey, setKey] = useState(1);
@@ -58,17 +59,22 @@ export const Profile = (props) => {
   };
 
   useEffect(() => {
-    if (location.props.id !== undefined) {
+    let userIs = true
+    //still get bug when reload
+    if (location.props !== undefined || !isUser) {
       setIsuser(!isUser)
+      setIduser(location.props.id)
+      userIs = false
     }
-    if (user && isUser) {
+    console.log(isUser, location.props)
+    if (user && userIs) {
       dispatch(getProfile(user.token));
     } else {
       dispatch(getUserProfileID(user.token, location.props.id));
     }
   }, [dispatch, user]);
 
-  const dataProfile = profile?.user;
+  const dataProfile = isUser ? profile?.user : profile?.users;
   useEffect(() => {
     setFormProfile({
       name: dataProfile?.name,
@@ -94,8 +100,7 @@ export const Profile = (props) => {
     dispatch(updateProfile(formProfile, user.token));
     dispatch(getProfile(user.token));
     e.preventDefault();
-    // setTimeout(function () { window.location.reload() }, 2000);
-
+    setTimeout(function () { window.location.reload() }, 2000);
   };
   const uploadPhotoHandler = e => { };
   const updatePasswordHandler = e => {

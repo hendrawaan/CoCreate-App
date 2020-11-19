@@ -106,12 +106,12 @@ export const DetailPost = () => {
                             </div>
                         </div>
                         <Card.Body className="lower-container">
-                            <h5>Arif H</h5>
-                            <p>@hendrawayn</p>
+                            <h5>harits</h5>
+                            <p>@harits</p>
                             <Link to={{
                                 pathname: '/profile',
                                 props: {
-                                    id: 1
+                                    id: 5
                                 }
                             }}>
                                 <Button variant="primary" type="button" size="sm" >
