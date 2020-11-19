@@ -1,4 +1,4 @@
-import { ADD_USER, GET_PROFILE, LOGIN, UPDATE_PROFILE, UPDATE_PASSWORD, GET_USER_PROFILE, GOOGLE_LOGIN_CALLBACK } from "./api-list";
+import { ADD_USER, GET_PROFILE, LOGIN, UPDATE_PROFILE, UPDATE_PASSWORD, GET_USER_PROFILE, GOOGLE_LOGIN_CALLBACK, GET_DETAIL_POST } from "./api-list";
 
 const api = {
     /**
@@ -103,3 +103,11 @@ export const updateUserPassword = async (dataPas, token) =>
  */
 // export const getUserAllAdmin = async (token) =>
 //     await api.get(LIST_USERS_ADMIN, { Authorization: token });
+
+/**
+* Mengambil informasi detail post
+* @param {string} endpoint id dari postingan
+* @returns json objek
+*/
+export const getDetailPost = async (id) =>
+    await api.get(GET_DETAIL_POST + id);

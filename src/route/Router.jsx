@@ -8,7 +8,8 @@ import {
   Login,
   NotFound,
   Profile,
-  Trending
+  Trending,
+  DetailPost
 } from "../pages";
 import { AdminHome } from "../pages";
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -31,6 +32,7 @@ const Router = () => {
         <ProtectedRoute exact path="/trending" component={Trending} />
         <ProtectedRoute exact path="/admin" component={Admin} />
         <ProtectedRoute exact path="/adminpages" component={AdminHome} />
+        <ProtectedRoute exact path="/detailpost" component={DetailPost} />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>
