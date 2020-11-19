@@ -5,31 +5,28 @@ import {
   Container,
   Row,
   Card,
-  CardDeck,
   ListGroup,
-  Carousel,
-  Dropdown,
   InputGroup,
   FormControl
 } from "react-bootstrap";
-import {
-  homeLogo,
-  carouselFirst,
-  carouselSecond,
-  carouselThird
-} from "../../assets/images";
+import { homeLogo } from "../../assets/images";
 import { FaHome } from "react-icons/fa";
 import { MdEvent } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { GrTechnology } from "react-icons/gr";
-import { BiMoney } from "react-icons/bi";
-import { AiOutlineHeart, AiOutlineComment } from "react-icons/ai";
+import { BiMoney, BiCommentDots } from "react-icons/bi";
+import { AiOutlineHeart } from "react-icons/ai";
 import { GiLifeInTheBalance } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../store/profile";
 
 export function Home() {
-  const feed = [
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.user);
+  const { profile } = useSelector(state => state.profile);
+
+  const [filter, setFilter] = useState("Teknologi");
+  const [feeds, setFeeds] = useState([
     {
       id_post: 1,
       title: "Berkembang dalam Industri 4.0",
@@ -86,20 +83,7 @@ export function Home() {
       liked: 23,
       comment: 10
     }
-  ];
-
-  const dispatch = useDispatch();
-  const { user } = useSelector(state => state.user);
-  const { profile } = useSelector(state => state.profile);
-
-  const [filter, setFilter] = useState("Teknologi");
-  const [like, setLike] = useState();
-  const [feeds, setFeeds] = useState([feed]);
-
-  // const incrementMe = () => {
-  //   setCounter(counter + 1);
-  //   console.log("liked");
-  // };
+  ]);
 
   useEffect(() => {
     if (user) {
@@ -107,17 +91,7 @@ export function Home() {
     }
   }, [dispatch, user]);
 
-  const register = () => {
-    window.location = "/register";
-  };
-
-  const handleClick = () => {
-    // update the books state property by adding a new book
-    setFeeds([...feeds, { title: "A new Book", id: "..." }]);
-  };
-
   console.log("feeds", feeds);
-  console.log("feed", feed);
 
   return (
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
@@ -252,7 +226,7 @@ export function Home() {
             <Col style={{}}>
               <Container>
                 <Row className="show-grid">
-                  {feed
+                  {feeds
                     .filter(feeding => feeding.tag === filter)
                     .map(filteredFeed => (
                       <Col md={6} key={filteredFeed.id_post}>
@@ -280,28 +254,29 @@ export function Home() {
                           <Card.Footer>
                             <AiOutlineHeart /> {filteredFeed.liked}
                             {"  "}
-                            <AiOutlineComment /> {filteredFeed.comment}
+                            <BiCommentDots /> {filteredFeed.comment}
                           </Card.Footer>
                           <Card.Footer>
                             <Button
                               variant="danger"
                               className="m-1 btn-alert"
                               onClick={() => {
-                                let key = filteredFeed.id_post;
-                                setFeeds(prevState => ({
-                                  feed: prevState.feed.map(el =>
-                                    el.key === key
-                                      ? { ...el, liked: filteredFeed.liked + 1 }
-                                      : el
+                                setFeeds(prevFeeds =>
+                                  feeds.map(item =>
+                                    item.id_post === filteredFeed.id_post
+                                      ? {
+                                          ...item,
+                                          liked: item.liked + 1
+                                        }
+                                      : item
                                   )
-                                }));
-                                console.log("after click", filteredFeed.liked);
+                                );
                               }}
                             >
                               <AiOutlineHeart /> Likes
                             </Button>
                             <Button variant="warning" className="m-1">
-                              <AiOutlineComment /> Comment
+                              <BiCommentDots /> Comment
                             </Button>
                           </Card.Footer>
                           <Card.Footer>
