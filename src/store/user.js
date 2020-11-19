@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginToApi, registeringUser } from "../api/";
+import { loginToApi, loginWithGoogleOATH, registeringUser } from "../api/";
 
 const initialUser = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
@@ -61,6 +61,29 @@ export const login = ({ email, password }) => async (dispatch) => {
         break;
       case 400:
         throw new Error("Username atau password salah.");
+      default:
+        throw new Error("Uppss.. Terjadi kesalahan.");
+    }
+  } catch (e) {
+    dispatch(onFailed(e.message));
+  }
+};
+
+/**
+ * Digunakan untuk login dengan menggunakan Google OATH2.
+ * Ketika login berhasil data dari endpoint akan disimpan ke dalam local
+ * storage.
+ * @param {object} param url params
+ */
+export const loginWithGoogle = (params) => async (dispatch) => {
+  try {
+    dispatch(onProcess());
+    const loginResponse = await loginWithGoogleOATH(params);
+
+    switch (loginResponse.code) {
+      case 200:
+        dispatch(loginSucces(loginResponse.data));
+        break;
       default:
         throw new Error("Uppss.. Terjadi kesalahan.");
     }

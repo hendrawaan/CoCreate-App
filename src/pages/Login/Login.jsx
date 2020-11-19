@@ -30,16 +30,12 @@ export const Login = () => {
     });
   };
 
-  // TODO: Nanti akan diimplementasikan jika backend bisa menghandle
-  // login via FB
-  const responseFacebook = response => {
-    console.log(response);
-  };
-
-  // TODO: Nanti akan diimplementasikan jika backend bisa menghandle
-  // login via Google
-  const responseGoogle = response => {
-    console.log(response);
+  /**
+   * Jika user mengklik tombol login maka user akan di arahkan ke halaman untuk
+   * Google Login.
+   */
+  const googleLoginCallBack = () => {
+    window.location.replace("http://54.234.253.116:80/api/v1/google/login");
   };
 
   /**
@@ -57,20 +53,24 @@ export const Login = () => {
     }
   };
 
+  /**
+   * Cek data user. Jika ada maka akan di-decode tokennya untuk mengetahui
+   * type_user-nya. Setelahnya akan diarahkan ke halaman yang sesuai.
+   */
   if (user) {
     const { token } = user;
     const decode = jwt_decode(token);
 
-    return decode.type_user === 2 ? (
-      <Redirect to="/" />
-    ) : (
+    return decode.type_user === 1 ? (
       <Redirect to="/adminpages" />
+    ) : (
+      <Redirect to="/" />
     );
   }
 
   return (
     <Container>
-      <Row className="vh-90 pt-5 align-items-center row-login">
+      <Row className="align-items-center row-login">
         <Col lg={9} className="d-none d-lg-block">
           <img
             className="w-100 login-illustration"
@@ -153,8 +153,8 @@ export const Login = () => {
             </Button>
           </Form>
 
-          {/* <FacebookLoginBtn callback={responseFacebook} /> */}
-          <GoogleLoginBtn callback={responseGoogle} />
+          <GoogleLoginBtn onClick={googleLoginCallBack} />
+
           <small>
             {isLogin ? "Belum punya akun? " : "Sudah punya akun? "}
             <span

@@ -1,4 +1,4 @@
-import { ADD_USER, GET_PROFILE, LOGIN, UPDATE_PROFILE, UPDATE_PASSWORD, GET_USER_PROFILE } from "./api-list";
+import { ADD_USER, GET_PROFILE, LOGIN, UPDATE_PROFILE, UPDATE_PASSWORD, GET_USER_PROFILE, GOOGLE_LOGIN_CALLBACK } from "./api-list";
 
 const api = {
     /**
@@ -50,6 +50,14 @@ const api = {
  */
 export const loginToApi = async (dataLogin) =>
     await api.post(LOGIN, JSON.stringify(dataLogin));
+
+/**
+ * Login ke dengan menggunakan Google Login OATH 2
+ * @param {objek} dataLogin Data autentikasi yang akan dikirim
+ * @returns json objek
+ */
+export const loginWithGoogleOATH = async (params) =>
+    await api.get(GOOGLE_LOGIN_CALLBACK + params, null);
 
 /**
  * Mendaftarkan user

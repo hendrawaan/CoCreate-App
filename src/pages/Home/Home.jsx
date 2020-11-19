@@ -29,159 +29,98 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../store/profile";
 
 export function Home() {
-  const dispatch = useDispatch();
-  const { user } = useSelector(state => state.user);
-  const { profile } = useSelector(state => state.profile);
-
-  const [filter, setFilter] = useState("Teknologi");
-  const [like, setLike] = useState();
-  const [counter, setCounter] = useState(0);
-
-  const incrementMe = () => {
-    setCounter(counter + 1);
-    console.log("liked");
-  };
-  // useEffect(() => {
-  //   if (user) {
-  //     dispatch(getProfile(user.token));
-  //   } else if (!user) {
-  //     window.location = "/login";
-  //   }
-  // }, [dispatch, user]);
-
-  const register = () => {
-    window.location = "/register";
-  };
-
   const feed = [
     {
       id_post: 1,
       title: "Berkembang dalam Industri 4.0",
       tag: "Teknologi",
       posted_by: "Harits",
-      liked: 25
+      liked: 25,
+      comment: 5
     },
     {
       id_post: 2,
       title: "Ayo mulai belajar React Redux",
       tag: "Teknologi",
       posted_by: "Arif",
-      liked: 15
+      liked: 15,
+      comment: 3
     },
     {
       id_post: 3,
       title: "Bahaya duduk di depan komputer lebih dari 45 menit!",
       tag: "Kesehatan",
       posted_by: "Ruli",
-      liked: 45
+      liked: 45,
+      comment: 7
     },
     {
       id_post: 4,
       title: "Jangan lupa sarapan!",
       tag: "Kesehatan",
       posted_by: "Rian",
-      liked: 23
+      liked: 23,
+      comment: 3
     },
     {
       id_post: 5,
       title: "Menabung Emas. Halal dan kaya di masa tua",
       tag: "Keuangan",
       posted_by: "Raziq",
-      liked: 54
+      liked: 54,
+      comment: 6
     },
     {
       id_post: 6,
       title: "Belajar Laravel",
       tag: "Teknologi",
       posted_by: "Raziq",
-      liked: 12
+      liked: 12,
+      comment: 5
     },
     {
       id_post: 7,
       title: "Belajar Flutter",
       tag: "Teknologi",
       posted_by: "Raziq",
-      liked: 23
+      liked: 23,
+      comment: 10
     }
   ];
 
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.user);
+  const { profile } = useSelector(state => state.profile);
+
+  const [filter, setFilter] = useState("Teknologi");
+  const [like, setLike] = useState();
+  const [feeds, setFeeds] = useState([feed]);
+
+  // const incrementMe = () => {
+  //   setCounter(counter + 1);
+  //   console.log("liked");
+  // };
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getProfile(user.token));
+    }
+  }, [dispatch, user]);
+
+  const register = () => {
+    window.location = "/register";
+  };
+
+  const handleClick = () => {
+    // update the books state property by adding a new book
+    setFeeds([...feeds, { title: "A new Book", id: "..." }]);
+  };
+
+  console.log("feeds", feeds);
+  console.log("feed", feed);
+
   return (
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
-      {/* <Container fluid style={{ backgroundColor: "#14274E" }}>
-        <Row className="align-items-center" style={{ padding: 10 }}>
-          <Col md={8}>
-            <img style={{ height: 70 }} src={homeLogo} alt="Home Logo" />
-          </Col>
-          <Col md={4} className="align-middle">
-            <div className="d-flex flex-row-reverse">
-              <div className="" style={{ display: "inline" }}>
-                <Button variant="primary" type="submit" onClick={register}>
-                  {isLogin ? "Username" : "Register"}
-                </Button>
-                <Button
-                  variant="primary"
-                  type="submit"
-                  onClick={
-                    user
-                      ? () => dispatch(logout())
-                      : () => (window.location = "/login")
-                  }
-                >
-                  {user ? "Logout" : "Login"}
-                </Button>
-              </div>
-            </div>
-          </Col>
-        </Row>
-        <Row className="align-items-center" style={{}}>
-          <Col className="m-5 align-items-center">
-            <Carousel className="" style={{ margin: "auto" }}>
-              <Carousel.Item>
-                <img
-                  className="d-block w-100"
-                  src={carouselFirst}
-                  alt="First slide"
-                />
-                <Carousel.Caption>
-                  <h3>First slide label</h3>
-                  <p>
-                    Nulla vitae elit libero, a pharetra augue mollis interdum.
-                  </p>
-                </Carousel.Caption>
-              </Carousel.Item>
-              <Carousel.Item>
-                <img
-                  className="d-block"
-                  src={carouselSecond}
-                  alt="Second slide"
-                />
-
-                <Carousel.Caption>
-                  <h3>Second slide label</h3>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </p>
-                </Carousel.Caption>
-              </Carousel.Item>
-              <Carousel.Item>
-                <img
-                  className="d-block"
-                  src={carouselThird}
-                  alt="Third slide"
-                />
-
-                <Carousel.Caption>
-                  <h3>Third slide label</h3>
-                  <p>
-                    Praesent commodo cursus magna, vel scelerisque nisl
-                    consectetur.
-                  </p>
-                </Carousel.Caption>
-              </Carousel.Item>
-            </Carousel>
-          </Col>
-        </Row>
-      </Container> */}
       <Row style={{}}>
         <Col
           md={3}
@@ -250,17 +189,6 @@ export function Home() {
         <Col md={9} style={{ paddingTop: 50, paddingRight: 50 }}>
           <Row>
             <Col>
-              {/* <Dropdown>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  Choose Category
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                  <Dropdown.Item href="#/action-1">Keuangan</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">IT</Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Lifestyle</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown> */}
               <div className="d-flex flex-row">
                 <div>
                   <Button
@@ -351,17 +279,29 @@ export function Home() {
                           </Card.Body>
                           <Card.Footer>
                             <AiOutlineHeart /> {filteredFeed.liked}
+                            {"  "}
+                            <AiOutlineComment /> {filteredFeed.comment}
                           </Card.Footer>
                           <Card.Footer>
                             <Button
                               variant="danger"
                               className="m-1 btn-alert"
-                              onClick={incrementMe}
+                              onClick={() => {
+                                let key = filteredFeed.id_post;
+                                setFeeds(prevState => ({
+                                  feed: prevState.feed.map(el =>
+                                    el.key === key
+                                      ? { ...el, liked: filteredFeed.liked + 1 }
+                                      : el
+                                  )
+                                }));
+                                console.log("after click", filteredFeed.liked);
+                              }}
                             >
-                              <AiOutlineHeart /> Likes: {counter}
+                              <AiOutlineHeart /> Likes
                             </Button>
                             <Button variant="warning" className="m-1">
-                              <AiOutlineComment />
+                              <AiOutlineComment /> Comment
                             </Button>
                           </Card.Footer>
                           <Card.Footer>
