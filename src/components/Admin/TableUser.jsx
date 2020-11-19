@@ -5,8 +5,15 @@ export default class TableUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: []
+      items: [],
+      selectedId: []
     };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    console.log("selected!");
+    this.setState({ selectedId: e.target.value });
   }
 
   componentDidMount() {
@@ -114,6 +121,14 @@ export default class TableUser extends Component {
                           >
                             Reject
                           </button>
+                        </td>
+                        <td>
+                          {/* <select
+                            value={this.state.selectedId}
+                            onChange={this.handleChange}
+                          >
+                            <option value={item.id}>{item.id}</option>
+                          </select> */}
                         </td>
                       </tr>
                     </tbody>
