@@ -1,28 +1,13 @@
-import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Col,
-  Container,
-  Row,
-  Card,
-  ListGroup,
-  Carousel,
-  Dropdown,
-  Modal
-} from "react-bootstrap";
-import {
-  homeLogo,
-  carouselFirst,
-  carouselSecond,
-  carouselThird
-} from "../../assets/images";
-import { FaHome } from "react-icons/fa";
-import { MdEvent } from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
-import { GrTechnology } from "react-icons/gr";
+import React, { useEffect } from "react";
+import { Button, Card, Col, Container, ListGroup, Row } from "react-bootstrap";
 import { BiMoney } from "react-icons/bi";
+import { CgProfile } from "react-icons/cg";
+import { FaHome } from "react-icons/fa";
 import { GiLifeInTheBalance } from "react-icons/gi";
+import { GrTechnology } from "react-icons/gr";
+import { MdEvent } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { homeLogo } from "../../assets/images";
 import { getProfile } from "../../store/profile";
 import { logout } from "../../store/user";
 import Add from "./Add";
@@ -30,27 +15,17 @@ import Add from "./Add";
 /* Hanya untuk testing */
 export default function Home() {
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.user);
-  const { profile } = useSelector(state => state.profile);
+  const { user } = useSelector((state) => state.user);
+  const { profile } = useSelector((state) => state.profile);
   useEffect(() => {
     if (user) {
       dispatch(getProfile(user.token));
-    } else if (!user) {
-      window.location = "/login";
     }
   }, [dispatch, user]);
 
   const register = () => {
     window.location = "/register";
   };
-
-  // const add = function Add() {
-  //   const [show, setShow] = useState(false);
-  
-  //   const handleClose = () => setShow(false);
-  //   const handleShow = () => setShow(true);
-  // }
-
 
   return (
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
@@ -62,9 +37,6 @@ export default function Home() {
           <Col md={4} className="align-middle">
             <div className="d-flex flex-row-reverse">
               <div className="" style={{ display: "inline" }}>
-                {/* <Button variant="primary" type="submit" onClick={register}>
-                  {isLogin ? "Username" : "Register"}
-                </Button> */}
                 <Button
                   variant="primary"
                   type="submit"
@@ -80,7 +52,7 @@ export default function Home() {
             </div>
           </Col>
         </Row>
-        {/* <Row className="align-items-center" style={{}}>
+        {/* <Row className="align-items-center">
           <Col className="m-5 align-items-center">
             <Carousel className="" style={{ margin: "auto" }}>
               <Carousel.Item>
@@ -129,18 +101,18 @@ export default function Home() {
           </Col>
         </Row> */}
       </Container>
-      <Row style={{}}>
+      <Row>
         <Col
           md={3}
           style={{
-            padding: 50
+            padding: 50,
           }}
         >
           <Row>
-            <Col style={{}}>
+            <Col>
               <div className="d-flex flex-column">
                 <div className="mx-auto text-center w-100">
-                  <Card style={{}}>
+                  <Card>
                     <Card.Header>
                       <CgProfile size={100} />
                     </Card.Header>
@@ -171,13 +143,16 @@ export default function Home() {
                     Event
                   </Button>
                 </div>
+                <div className="p-2">
+                  <Add />
+                </div>
               </div>
               <hr />
             </Col>
           </Row>
           <Row>
-            <Col style={{}}>
-              <Card style={{}}>
+            <Col>
+              <Card>
                 <Card.Header as="h4">My Event</Card.Header>
                 <ListGroup variant="flush">
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
@@ -189,7 +164,7 @@ export default function Home() {
             </Col>
           </Row>
           <Row>
-            <Col style={{}}>
+            <Col>
               <h1>Calendar</h1>
             </Col>
           </Row>
@@ -235,7 +210,7 @@ export default function Home() {
                 </div>
               </div>
             </Col>
-            <Col style={{}}>
+            <Col>
               <div className="input-group mb-3">
                 <input
                   type="text"
@@ -252,30 +227,8 @@ export default function Home() {
           </Row>
 
 
-          {/* <Button variant="primary" onClick={this.Add.handleShow}>
-            Add Post
-          </Button>
-
-          <Modal show={this.Add.show} onHide={this.Add.handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.Add.handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={this.Add.handleClose}>
-                Save Changes
-              </Button>
-              </Modal.Footer>
-          </Modal> */}
-        
-          <Add triggerText={Add.triggerText} onSubmit={Add.onSubmit}/>
-
-
           <Row>
-            <Col style={{}}>
+            <Col>
               <Card className="mb-2">
                 <Card.Header as="h5">Title #1</Card.Header>
                 <Card.Body>
