@@ -1,3 +1,7 @@
+.row-login {
+  height: calc(100vh - 96px);
+}
+
 .login-illustration {
   max-width: 640px;
 }

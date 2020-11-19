@@ -1,13 +1,27 @@
 import React, { Fragment } from "react";
-// import 'mdbreact/dist/css/mdb.css';
 import { Tabs, Tab } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ContentPost from "../../components/Admin/ContentPost";
 import Header from "../../components/Admin/Header";
+import Footer from "../../components/Admin/Footer";
 import TableUser from "../../components/Admin/TableUser";
 import ListAdminHome from "../../components/Admin/ListAdminHome";
+import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
-function AdminHome() {
+export function AdminHome() {
+  const { user } = useSelector(state => state.user);
+
+  if (user) {
+    const { token } = user;
+    const decode = jwt_decode(token);
+
+    if (decode.type_user !== 1) {
+      return <Redirect to="/error" />;
+    }
+  }
+
   return (
     <Fragment>
       <Header />
@@ -52,4 +66,3 @@ function AdminHome() {
     </Fragment>
   );
 }
-export default AdminHome;

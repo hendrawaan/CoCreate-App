@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Post from "../../components/Admin/Post";
 
-class PagePost extends Component {
+export class PagePost extends Component {
   state = {
     res: "",
     data: [0],
@@ -29,4 +29,3 @@ class PagePost extends Component {
     );
   }
 }
-export default PagePost;
