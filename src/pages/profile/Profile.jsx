@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import profileimg from "../../assets/images/profile-default.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import moment from "moment";
 import "./Profile.css";
 import {

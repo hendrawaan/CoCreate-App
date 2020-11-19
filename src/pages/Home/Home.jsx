@@ -257,7 +257,12 @@ export function Home() {
                               With supporting text below as a natural lead-in to
                               additional content.
                             </Card.Text>
-                            <Button variant="outline-primary">Read More</Button>
+                            <Button
+                              variant="outline-primary"
+                              onClick={() => (window.location = "./detailpost")}
+                            >
+                              Read More
+                            </Button>
                           </Card.Body>
                           <Card.Footer>
                             <AiOutlineHeart /> {filteredFeed.liked}
