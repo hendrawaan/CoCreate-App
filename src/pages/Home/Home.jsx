@@ -300,9 +300,7 @@ export function Home() {
                             <Button
                               variant="warning"
                               className="m-1"
-                              onClick={() => {
-                                setShowcomment({ showcomment: !showcomment });
-                              }}
+                              onClick={() => {}}
                             >
                               <BiCommentDots /> Comment
                             </Button>
