@@ -8,7 +8,6 @@ import {
   ListGroup,
   Carousel,
   Dropdown,
-  Modal
 } from "react-bootstrap";
 import {
   homeLogo,
@@ -44,15 +43,10 @@ export default function Home() {
     window.location = "/register";
   };
 
-  // const add = function Add() {
-  //   const [show, setShow] = useState(false);
-  
-  //   const handleClose = () => setShow(false);
-  //   const handleShow = () => setShow(true);
-  // }
 
 
   return (
+    
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
       <Container fluid style={{ backgroundColor: "#14274E" }}>
         <Row className="align-items-center" style={{ padding: 10 }}>
@@ -80,54 +74,6 @@ export default function Home() {
             </div>
           </Col>
         </Row>
-        {/* <Row className="align-items-center" style={{}}>
-          <Col className="m-5 align-items-center">
-            <Carousel className="" style={{ margin: "auto" }}>
-              <Carousel.Item>
-                <img
-                  className="d-block w-100"
-                  src={carouselFirst}
-                  alt="First slide"
-                />
-                <Carousel.Caption>
-                  <h3>First slide label</h3>
-                  <p>
-                    Nulla vitae elit libero, a pharetra augue mollis interdum.
-                  </p>
-                </Carousel.Caption>
-              </Carousel.Item>
-              <Carousel.Item>
-                <img
-                  className="d-block"
-                  src={carouselSecond}
-                  alt="Second slide"
-                />
-
-                <Carousel.Caption>
-                  <h3>Second slide label</h3>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </p>
-                </Carousel.Caption>
-              </Carousel.Item>
-              <Carousel.Item>
-                <img
-                  className="d-block"
-                  src={carouselThird}
-                  alt="Third slide"
-                />
-
-                <Carousel.Caption>
-                  <h3>Third slide label</h3>
-                  <p>
-                    Praesent commodo cursus magna, vel scelerisque nisl
-                    consectetur.
-                  </p>
-                </Carousel.Caption>
-              </Carousel.Item>
-            </Carousel>
-          </Col>
-        </Row> */}
       </Container>
       <Row style={{}}>
         <Col
@@ -197,17 +143,6 @@ export default function Home() {
         <Col md={9} style={{ paddingTop: 50, paddingRight: 50 }}>
           <Row>
             <Col>
-              {/* <Dropdown>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  Choose Category
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                  <Dropdown.Item href="#/action-1">Keuangan</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">IT</Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Lifestyle</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown> */}
               <div className="d-flex flex-row">
                 <div>
                   <Button variant="light">
@@ -251,29 +186,8 @@ export default function Home() {
             </Col>
           </Row>
 
-
-          {/* <Button variant="primary" onClick={this.Add.handleShow}>
-            Add Post
-          </Button>
-
-          <Modal show={this.Add.show} onHide={this.Add.handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.Add.handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={this.Add.handleClose}>
-                Save Changes
-              </Button>
-              </Modal.Footer>
-          </Modal> */}
-        
-          <Add triggerText={Add.triggerText} onSubmit={Add.onSubmit}/>
-
-
+        <Button >New Post</Button>
+          {/* <Add/> */}
           <Row>
             <Col style={{}}>
               <Card className="mb-2">
@@ -306,6 +220,7 @@ export default function Home() {
           </Row>
         </Col>
       </Row>
+      <Button> Test Modal </Button>
     </Container>
   );
 }
