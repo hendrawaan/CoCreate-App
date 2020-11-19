@@ -1,7 +1,15 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { NavApp } from "../components";
-import { Admin, Home, Login, NotFound, Profile, Trending } from "../pages";
+import {
+  Admin,
+  GoogleLoginCallBack,
+  Home,
+  Login,
+  NotFound,
+  Profile,
+  Trending
+} from "../pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 
 const Router = () => {
@@ -17,6 +25,7 @@ const Router = () => {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/google-callback" component={GoogleLoginCallBack} />
         <ProtectedRoute exact path="/profile" component={Profile} />
         <ProtectedRoute exact path="/trending" component={Trending} />
         <ProtectedRoute exact path="/admin" component={Admin} />
