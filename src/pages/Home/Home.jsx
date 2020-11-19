@@ -7,7 +7,8 @@ import {
   Card,
   ListGroup,
   Carousel,
-  Dropdown
+  Dropdown,
+  Modal
 } from "react-bootstrap";
 import {
   homeLogo,
@@ -24,6 +25,7 @@ import { GiLifeInTheBalance } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../store/profile";
 import { logout } from "../../store/user";
+import Add from "./Add";
 
 /* Hanya untuk testing */
 export default function Home() {
@@ -41,6 +43,14 @@ export default function Home() {
   const register = () => {
     window.location = "/register";
   };
+
+  // const add = function Add() {
+  //   const [show, setShow] = useState(false);
+  
+  //   const handleClose = () => setShow(false);
+  //   const handleShow = () => setShow(true);
+  // }
+
 
   return (
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
@@ -240,6 +250,30 @@ export default function Home() {
               </div>
             </Col>
           </Row>
+
+
+          {/* <Button variant="primary" onClick={this.Add.handleShow}>
+            Add Post
+          </Button>
+
+          <Modal show={this.Add.show} onHide={this.Add.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.Add.handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={this.Add.handleClose}>
+                Save Changes
+              </Button>
+              </Modal.Footer>
+          </Modal> */}
+        
+          <Add triggerText={Add.triggerText} onSubmit={Add.onSubmit}/>
+
+
           <Row>
             <Col style={{}}>
               <Card className="mb-2">

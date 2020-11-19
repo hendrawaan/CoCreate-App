@@ -1,0 +1,12 @@
+.form-group {
+    width: 50%;
+}
+.btn-post{
+    background-color:#17A2BB;
+    color: white;
+    align-items: center;
+    align-self: center;
+}
+.post-label{
+    font-weight: bold;
+}
