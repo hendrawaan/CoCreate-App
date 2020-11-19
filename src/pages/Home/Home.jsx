@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, state } from "react";
 import {
   Button,
   Col,
   Container,
   Row,
   Card,
+  CardDeck,
   ListGroup,
   Carousel,
-  Dropdown
+  Dropdown,
+  InputGroup,
+  FormControl
 } from "react-bootstrap";
 import {
   homeLogo,
@@ -31,14 +34,20 @@ export function Home() {
   const { profile } = useSelector(state => state.profile);
 
   const [filter, setFilter] = useState("Teknologi");
+  const [like, setLike] = useState();
+  const [counter, setCounter] = useState(0);
 
-  useEffect(() => {
-    if (user) {
-      dispatch(getProfile(user.token));
-    } else if (!user) {
-      window.location = "/login";
-    }
-  }, [dispatch, user]);
+  const incrementMe = () => {
+    setCounter(counter + 1);
+    console.log("liked");
+  };
+  // useEffect(() => {
+  //   if (user) {
+  //     dispatch(getProfile(user.token));
+  //   } else if (!user) {
+  //     window.location = "/login";
+  //   }
+  // }, [dispatch, user]);
 
   const register = () => {
     window.location = "/register";
@@ -46,41 +55,55 @@ export function Home() {
 
   const feed = [
     {
-      id: 1,
+      id_post: 1,
       title: "Berkembang dalam Industri 4.0",
       tag: "Teknologi",
-      konten: "jkgufyfyftyfhghffuygyu",
-      posted_by: "Harits"
+      posted_by: "Harits",
+      liked: 25
     },
     {
-      id: 2,
+      id_post: 2,
       title: "Ayo mulai belajar React Redux",
       tag: "Teknologi",
-      posted_by: "Arif"
+      posted_by: "Arif",
+      liked: 15
     },
     {
-      id: 3,
+      id_post: 3,
       title: "Bahaya duduk di depan komputer lebih dari 45 menit!",
       tag: "Kesehatan",
-      posted_by: "Ruli"
+      posted_by: "Ruli",
+      liked: 45
     },
     {
-      id: 4,
+      id_post: 4,
       title: "Jangan lupa sarapan!",
       tag: "Kesehatan",
-      posted_by: "Rian"
+      posted_by: "Rian",
+      liked: 23
     },
     {
-      id: 5,
+      id_post: 5,
       title: "Menabung Emas. Halal dan kaya di masa tua",
       tag: "Keuangan",
-      posted_by: "Raziq"
+      posted_by: "Raziq",
+      liked: 54
+    },
+    {
+      id_post: 6,
+      title: "Belajar Laravel",
+      tag: "Teknologi",
+      posted_by: "Raziq",
+      liked: 12
+    },
+    {
+      id_post: 7,
+      title: "Belajar Flutter",
+      tag: "Teknologi",
+      posted_by: "Raziq",
+      liked: 23
     }
   ];
-
-  const filterKesehatan = () => {
-    setFilter = "Kesehatan";
-  };
 
   return (
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
@@ -299,38 +322,66 @@ export function Home() {
           </Row>
           <Row>
             <Col style={{}}>
-              {feed
-                .filter(feeding => feeding.tag === filter)
-                .map(filteredFeed => (
-                  <Card className="my-4" key={filteredFeed.id}>
-                    <Card.Header as="h3">{filteredFeed.title}</Card.Header>
-                    <Card.Body>
-                      <Card.Title>
-                        <div className="row">
-                          <div className="col-md-1 text-center">
-                            <CgProfile />
-                          </div>
-                          <div className="col-md-11">
-                            <p>{filteredFeed.posted_by}</p>
-                          </div>
-                        </div>
-                      </Card.Title>
-                      <Card.Text>
-                        With supporting text below as a natural lead-in to
-                        additional content.
-                      </Card.Text>
-                      <Button variant="outline-primary">Read More</Button>
-                    </Card.Body>
-                    <Card.Footer>
-                      <Button variant="danger" className="m-1 btn-alert">
-                        <AiOutlineHeart />
-                      </Button>
-                      <Button variant="warning" classname="m-1">
-                        <AiOutlineComment />
-                      </Button>
-                    </Card.Footer>
-                  </Card>
-                ))}
+              <Container>
+                <Row className="show-grid">
+                  {feed
+                    .filter(feeding => feeding.tag === filter)
+                    .map(filteredFeed => (
+                      <Col md={6} key={filteredFeed.id_post}>
+                        <Card className="my-4">
+                          <Card.Header as="h4">
+                            {filteredFeed.title}
+                          </Card.Header>
+                          <Card.Body>
+                            <Card.Title>
+                              <div className="row">
+                                <div className="col-md-1 text-center">
+                                  <CgProfile />
+                                </div>
+                                <div className="col-md-11">
+                                  <p>{filteredFeed.posted_by}</p>
+                                </div>
+                              </div>
+                            </Card.Title>
+                            <Card.Text>
+                              With supporting text below as a natural lead-in to
+                              additional content.
+                            </Card.Text>
+                            <Button variant="outline-primary">Read More</Button>
+                          </Card.Body>
+                          <Card.Footer>
+                            <AiOutlineHeart /> {filteredFeed.liked}
+                          </Card.Footer>
+                          <Card.Footer>
+                            <Button
+                              variant="danger"
+                              className="m-1 btn-alert"
+                              onClick={incrementMe}
+                            >
+                              <AiOutlineHeart /> Likes: {counter}
+                            </Button>
+                            <Button variant="warning" className="m-1">
+                              <AiOutlineComment />
+                            </Button>
+                          </Card.Footer>
+                          <Card.Footer>
+                            <InputGroup className="mb-3">
+                              <InputGroup.Prepend>
+                                <InputGroup.Text id="basic-addon1">
+                                  <CgProfile />
+                                </InputGroup.Text>
+                              </InputGroup.Prepend>
+                              <FormControl
+                                placeholder="Tulis komentar..."
+                                aria-label="Comment"
+                              />
+                            </InputGroup>
+                          </Card.Footer>
+                        </Card>
+                      </Col>
+                    ))}
+                </Row>
+              </Container>
             </Col>
           </Row>
         </Col>
