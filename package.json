@@ -1,5 +1,5 @@
 {
-  "proxy": "http://kelompok6.dtstakelompok1.com",
+  "proxy": "http://54.234.253.116:80",
   "name": "cocreate",
   "version": "0.1.0",
   "private": true,
