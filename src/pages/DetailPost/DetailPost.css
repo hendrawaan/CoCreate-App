@@ -1,0 +1,98 @@
+.align-center {
+    text-align: center;
+}
+
+
+/*Article */
+
+.article-container {
+    text-align: left;
+}
+
+
+/*card right profile*/
+
+.upper-container {
+    height: 150px;
+    background: #14274E;
+}
+
+.image-profile {
+    background: white;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 50%;
+    padding: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transform: translate(0px, 100px);
+}
+
+.lower-container {
+    background: #FFF;
+    padding: 20px;
+    padding-top: 40px;
+    text-align: center;
+}
+
+
+/* Article comment*/
+
+.div-comment {
+    height: 200px;
+}
+
+.comment-container {
+    padding: 0;
+    -webkit-animation: scale-in-ver-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: scale-in-ver-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+div.scroll {
+    margin: 4px, 4px;
+    padding: 4px;
+    background-color: #F1F6F9;
+    height: 170px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: justify;
+}
+
+.comment-inline {
+    border-bottom: 1px solid #9ba4b4;
+}
+
+.comment-inline p {
+    margin: 0;
+}
+
+.comment-user {
+    color: #9ba4b4;
+    font-size: 12px;
+}
+
+.comment-section p {
+    margin: 0;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: row;
+    width: max-content;
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: 2px;
+}
+
+
+/*Other*/
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited {
+    background-color: #14274E !important;
+    color: #F1F6F9;
+    border-color: #394867;
+}
