@@ -1,4 +1,4 @@
-import { ADD_USER, GET_PROFILE, LOGIN, UPDATE_PROFILE, UPDATE_PASSWORD } from "./api-list";
+import { ADD_USER, GET_PROFILE, LOGIN, UPDATE_PROFILE, UPDATE_PASSWORD, GET_USER_PROFILE } from "./api-list";
 
 const api = {
     /**
@@ -67,6 +67,13 @@ export const registeringUser = async (dataReg) =>
 export const getUserProfile = async (token) =>
     await api.get(GET_PROFILE, { Authorization: token });
 /**
+* Mengambil informasi profil user lain
+* @param {string} token Data token yang akan digunakan untuk Authorization
+* @returns json objek
+*/
+export const getAnotherUserProfile = async (token, id) =>
+    await api.get(GET_USER_PROFILE + id, { Authorization: token });
+/**
  * Mengupdate profile user
  * @param {objek} dataProfil yang dikirimkan
  * @returns json objek
@@ -74,10 +81,10 @@ export const getUserProfile = async (token) =>
 export const updateUserProfile = async (dataProf, token) =>
     await api.put(UPDATE_PROFILE, JSON.stringify(dataProf), { Authorization: token });
 /**
-* Mengupdate password user
-* @param {objek} data password yang dikirimkan
-* @returns json objek
-*/
+ * Mengupdate password user
+ * @param {objek} data password yang dikirimkan
+ * @returns json objek
+ */
 export const updateUserPassword = async (dataPas, token) =>
     await api.put(UPDATE_PASSWORD, JSON.stringify(dataPas), { Authorization: token });
 

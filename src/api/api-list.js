@@ -15,3 +15,7 @@ export const UPDATE_PROFILE = `/api/v1/user/detail/update`
 export const UPDATE_PASSWORD = `/api/v1/user/password/update`
 //Get all user by admin
 export const LIST_USERS_ADMIN = '/api/v1/user/verifikasi/daftar/all'
+// Mengupdate password user
+export const UPDATE_PASSWORD = `/api/v1/user/password/update`
+//Mendapatkan profile user lain
+export const GET_USER_PROFILE = `/api/v1/user/detail/`
