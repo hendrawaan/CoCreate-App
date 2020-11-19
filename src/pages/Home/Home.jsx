@@ -26,6 +26,7 @@ export function Home() {
   const { profile } = useSelector(state => state.profile);
 
   const [filter, setFilter] = useState("Teknologi");
+  const [showcomment, setShowcomment] = useState(true);
   const [feeds, setFeeds] = useState([
     {
       id_post: 1,
@@ -33,7 +34,8 @@ export function Home() {
       tag: "Teknologi",
       posted_by: "Harits",
       liked: 25,
-      comment: 5
+      comment: 5,
+      isLikedByUser: false
     },
     {
       id_post: 2,
@@ -41,7 +43,8 @@ export function Home() {
       tag: "Teknologi",
       posted_by: "Arif",
       liked: 15,
-      comment: 3
+      comment: 3,
+      isLikedByUser: false
     },
     {
       id_post: 3,
@@ -49,7 +52,8 @@ export function Home() {
       tag: "Kesehatan",
       posted_by: "Ruli",
       liked: 45,
-      comment: 7
+      comment: 7,
+      isLikedByUser: false
     },
     {
       id_post: 4,
@@ -57,7 +61,8 @@ export function Home() {
       tag: "Kesehatan",
       posted_by: "Rian",
       liked: 23,
-      comment: 3
+      comment: 3,
+      isLikedByUser: false
     },
     {
       id_post: 5,
@@ -65,7 +70,8 @@ export function Home() {
       tag: "Keuangan",
       posted_by: "Raziq",
       liked: 54,
-      comment: 6
+      comment: 6,
+      isLikedByUser: false
     },
     {
       id_post: 6,
@@ -73,7 +79,8 @@ export function Home() {
       tag: "Teknologi",
       posted_by: "Raziq",
       liked: 12,
-      comment: 5
+      comment: 5,
+      isLikedByUser: false
     },
     {
       id_post: 7,
@@ -81,7 +88,8 @@ export function Home() {
       tag: "Teknologi",
       posted_by: "Raziq",
       liked: 23,
-      comment: 10
+      comment: 10,
+      isLikedByUser: false
     }
   ]);
 
@@ -258,28 +266,50 @@ export function Home() {
                           </Card.Footer>
                           <Card.Footer>
                             <Button
-                              variant="danger"
+                              variant={
+                                !filteredFeed.isLikedByUser
+                                  ? "outline-secondary"
+                                  : "danger"
+                              }
                               className="m-1 btn-alert"
                               onClick={() => {
                                 setFeeds(prevFeeds =>
                                   feeds.map(item =>
-                                    item.id_post === filteredFeed.id_post
+                                    item.id_post === filteredFeed.id_post &&
+                                    filteredFeed.isLikedByUser == false
                                       ? {
                                           ...item,
-                                          liked: item.liked + 1
+                                          liked: item.liked + 1,
+                                          isLikedByUser: true
+                                        }
+                                      : item.id_post === filteredFeed.id_post &&
+                                        filteredFeed.isLikedByUser == true
+                                      ? {
+                                          ...item,
+                                          liked: item.liked - 1,
+                                          isLikedByUser: false
                                         }
                                       : item
                                   )
                                 );
                               }}
                             >
-                              <AiOutlineHeart /> Likes
+                              <AiOutlineHeart />{" "}
+                              {!filteredFeed.isLikedByUser ? "Like" : "Liked"}
                             </Button>
-                            <Button variant="warning" className="m-1">
+                            <Button
+                              variant="warning"
+                              className="m-1"
+                              onClick={() => {
+                                setShowcomment({ showcomment: !showcomment });
+                              }}
+                            >
                               <BiCommentDots /> Comment
                             </Button>
                           </Card.Footer>
-                          <Card.Footer>
+                          <Card.Footer
+                            className={showcomment ? "d-none" : null}
+                          >
                             <InputGroup className="mb-3">
                               <InputGroup.Prepend>
                                 <InputGroup.Text id="basic-addon1">
