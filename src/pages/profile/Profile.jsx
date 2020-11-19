@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import profileimg from "../../assets/images/profile-default.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import moment from 'moment'
 import {
   Button, ButtonGroup, Card, Col, Container,
@@ -20,11 +20,12 @@ import { getProfile, updatePassword, updateProfile, getUserProfileID } from "../
 
 import { logout } from "../../store/user";
 import "./Profile.css";
-export const Profile = () => {
+export const Profile = (props) => {
   const dispatch = useDispatch();
   const { profile } = useSelector(state => state.profile);
   const { user } = useSelector(state => state.user);
   const params = useParams();
+  let location = useLocation();
   const [navKey, setKey] = useState(1);
   const [formProfile, setFormProfile] = useState({
     name: '',
@@ -57,14 +58,13 @@ export const Profile = () => {
   };
 
   useEffect(() => {
-    console.log(params)
-    // tambahkan logika, apabila menerima props dari halaman sebelumnya, maka akan mengubah state isUser
+    if (location.props.id !== undefined) {
+      setIsuser(!isUser)
+    }
     if (user && isUser) {
       dispatch(getProfile(user.token));
     } else {
-      // tambahkan id dari parameter
-      setIsuser(!isUser)
-      dispatch(getUserProfileID(user.token));
+      dispatch(getUserProfileID(user.token, location.props.id));
     }
   }, [dispatch, user]);
 
