@@ -27,6 +27,7 @@ export function Home() {
 
   const [filter, setFilter] = useState("Teknologi");
   const [showcomment, setShowcomment] = useState(true);
+  const [clickedcomment, setClickedcomment] = useState();
   const [feeds, setFeeds] = useState([
     {
       id_post: 1,
@@ -99,7 +100,16 @@ export function Home() {
     }
   }, [dispatch, user]);
 
+  useEffect(() => {
+    fetch("");
+  }, []);
+
   console.log("feeds", feeds);
+
+  const commentClick = id_post => {
+    setShowcomment(!showcomment);
+    console.log(id_post);
+  };
 
   return (
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
@@ -305,26 +315,26 @@ export function Home() {
                             <Button
                               variant="warning"
                               className="m-1"
-                              onClick={() => {}}
+                              onClick={() => commentClick(filteredFeed.id_post)}
                             >
                               <BiCommentDots /> Comment
                             </Button>
                           </Card.Footer>
-                          <Card.Footer
-                            className={showcomment ? "d-none" : null}
-                          >
-                            <InputGroup className="mb-3">
-                              <InputGroup.Prepend>
-                                <InputGroup.Text id="basic-addon1">
-                                  <CgProfile />
-                                </InputGroup.Text>
-                              </InputGroup.Prepend>
-                              <FormControl
-                                placeholder="Tulis komentar..."
-                                aria-label="Comment"
-                              />
-                            </InputGroup>
-                          </Card.Footer>
+                          {showcomment ? (
+                            <Card.Footer className="">
+                              <InputGroup className="mb-3">
+                                <InputGroup.Prepend>
+                                  <InputGroup.Text id="basic-addon1">
+                                    <CgProfile />
+                                  </InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <FormControl
+                                  placeholder="Tulis komentar..."
+                                  aria-label="Comment"
+                                />
+                              </InputGroup>
+                            </Card.Footer>
+                          ) : null}
                         </Card>
                       </Col>
                     ))}
