@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { MdAdd } from "react-icons/md";
+import './Add.css'
 
 const Add = () => {
   const [show, setShow] = useState(false);
@@ -15,26 +16,25 @@ const Add = () => {
         New Post
       </Button>
 
-      <Modal show={show} onHide={handleClose} centered>
+      <Modal show={show} onHide={handleClose} centered className="form-add-post">
         <Modal.Header closeButton>
           <Modal.Title>Postingan</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
-            <Form.Group controlId="post">
-              <Form.Label>Judul</Form.Label>
-              <Form.Control
-              valueId="postTitle"
-                as="textarea"
-                rows={2}
-                placeholder="Post Title.."
+          <Form >
+            <Form.Group controlId="postFeed">
+              <Form.Label className="label-form">Title</Form.Label>
+              <Form.Control className="input"
+              name="title"
+                as="input"
+                placeholder="Add title"
               />
-              <Form.Label>Tuliskan postingan Anda</Form.Label>
+              <Form.Label className="label-form">Post Content</Form.Label>
               <Form.Control
-              valueId="postDeskripsi"
+              name="isi"
                 as="textarea"
                 rows={4}
-                placeholder="Bagikan pemikiran anda..."
+                placeholder="Add content post"
               />
             </Form.Group>
           </Form>
@@ -44,7 +44,7 @@ const Add = () => {
             Close
           </Button>
           <Button variant="primary" onClick={handleClose}>
-            Submit
+            Post
           </Button>
         </Modal.Footer>
       </Modal>
