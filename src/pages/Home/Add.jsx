@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { MdAdd } from "react-icons/md";
-import './Add.css'
+import './Home.css'
 
-const Add = () => {
+  const Add = () => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  // const FeedPost = () => {
+  // const [post, setPost] = useState(false);
+
+  // const handleClose = () => setShow(false);
+  // const handleShow = () => setShow(true);
 
   return (
     <>
@@ -31,7 +37,7 @@ const Add = () => {
               />
               <Form.Label className="label-form">Post Content</Form.Label>
               <Form.Control
-              name="isi"
+                name="isi"
                 as="textarea"
                 rows={4}
                 placeholder="Add content post"

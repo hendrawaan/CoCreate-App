@@ -1,5 +1,7 @@
 
 import React, { useState, useEffect } from "react";
+import PostFeed from './PostFeed'
+import Feed from './Feed'
 import {
   Button,
   Col,
@@ -68,54 +70,6 @@ export default function Home() {
             </div>
           </Col>
         </Row>
-        {/* <Row className="align-items-center">
-          <Col className="m-5 align-items-center">
-            <Carousel className="" style={{ margin: "auto" }}>
-              <Carousel.Item>
-                <img
-                  className="d-block w-100"
-                  src={carouselFirst}
-                  alt="First slide"
-                />
-                <Carousel.Caption>
-                  <h3>First slide label</h3>
-                  <p>
-                    Nulla vitae elit libero, a pharetra augue mollis interdum.
-                  </p>
-                </Carousel.Caption>
-              </Carousel.Item>
-              <Carousel.Item>
-                <img
-                  className="d-block"
-                  src={carouselSecond}
-                  alt="Second slide"
-                />
-
-                <Carousel.Caption>
-                  <h3>Second slide label</h3>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </p>
-                </Carousel.Caption>
-              </Carousel.Item>
-              <Carousel.Item>
-                <img
-                  className="d-block"
-                  src={carouselThird}
-                  alt="Third slide"
-                />
-
-                <Carousel.Caption>
-                  <h3>Third slide label</h3>
-                  <p>
-                    Praesent commodo cursus magna, vel scelerisque nisl
-                    consectetur.
-                  </p>
-                </Carousel.Caption>
-              </Carousel.Item>
-            </Carousel>
-          </Col>
-        </Row> */}
       </Container>
       <Row>
         <Col
@@ -233,32 +187,7 @@ export default function Home() {
 
           <Row>
             <Col>
-              <Card className="mb-2">
-                <Card.Header as="h5">Title #1</Card.Header>
-                <Card.Body>
-                  <Card.Title>
-                    <CgProfile /> <p>Username</p>
-                  </Card.Title>
-                  <Card.Text>
-                    With supporting text below as a natural lead-in to
-                    additional content.
-                  </Card.Text>
-                  <Button variant="primary">Read More</Button>
-                </Card.Body>
-              </Card>
-              <Card className="mb-2">
-                <Card.Header as="h5">Title #2</Card.Header>
-                <Card.Body>
-                  <Card.Title>
-                    <CgProfile /> <p>Username</p>
-                  </Card.Title>
-                  <Card.Text>
-                    With supporting text below as a natural lead-in to
-                    additional content.
-                  </Card.Text>
-                  <Button variant="primary">Read More</Button>
-                </Card.Body>
-              </Card>
+              <Feed title={<PostFeed desc="Deskripsi Postingan #1 Dengan Feed" />} />
             </Col>
           </Row>
         </Col>
