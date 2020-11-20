@@ -28,7 +28,22 @@ export function Home() {
   const [filter, setFilter] = useState("Teknologi");
   const [showcomment, setShowcomment] = useState(true);
   const [clickedcomment, setClickedcomment] = useState();
-  const [feeds, setFeeds] = useState([
+  const [feeds, setFeeds] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getProfile(user.token));
+    } else if (!user) {
+      window.location = "/login";
+    }
+  }, [dispatch, user]);
+
+  let profileData = profile?.user;
+  const register = () => {
+    window.location = "/register";
+  };
+
+  const feed = [
     {
       id_post: 1,
       title: "Berkembang dalam Industri 4.0",
@@ -92,7 +107,7 @@ export function Home() {
       comment: 10,
       isLikedByUser: false
     }
-  ]);
+  ];
 
   useEffect(() => {
     if (user) {
@@ -131,10 +146,10 @@ export function Home() {
                     <ListGroup variant="flush">
                       {profile && (
                         <div>
-                          <ListGroup.Item>{profile.user.name}</ListGroup.Item>
-                          <ListGroup.Item>{profile.user.email}</ListGroup.Item>
+                          <ListGroup.Item>{profileData?.name}</ListGroup.Item>
+                          <ListGroup.Item>{profileData?.email}</ListGroup.Item>
                           <ListGroup.Item>
-                            {profile.user.verification === "False"
+                            {profileData?.verification === "False"
                               ? " belum "
                               : " sudah "}{" "}
                             terverifikasi

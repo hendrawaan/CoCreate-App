@@ -41,9 +41,12 @@ export const Profile = props => {
   const dispatch = useDispatch();
   const { profile } = useSelector(state => state.profile);
   const { user } = useSelector(state => state.user);
+<<<<<<< HEAD
   const [idUser, setIduser] = useState();
   const params = useParams();
   let location = useLocation();
+=======
+>>>>>>> 8253c930c659cd22c5913b6146b10c50bc3f4af3
   const [navKey, setKey] = useState(1);
   const [formProfile, setFormProfile] = useState({
     name: "",
@@ -76,6 +79,7 @@ export const Profile = props => {
   };
 
   useEffect(() => {
+<<<<<<< HEAD
     let userIs = true;
     //still get bug when reload
     if (location.props !== undefined || !isUser) {
@@ -84,10 +88,18 @@ export const Profile = props => {
       userIs = false;
     }
     console.log(isUser, location.props);
+=======
+    let userIs = true
+    let pathend = window.location.pathname.split('/').pop()
+    if (pathend !== 'profile' || !isUser) {
+      setIsuser(!isUser)
+      userIs = false
+    }
+>>>>>>> 8253c930c659cd22c5913b6146b10c50bc3f4af3
     if (user && userIs) {
       dispatch(getProfile(user.token));
     } else {
-      dispatch(getUserProfileID(user.token, location.props.id));
+      dispatch(getUserProfileID(user.token, parseInt(pathend)));
     }
   }, [dispatch, user]);
 
@@ -104,10 +116,7 @@ export const Profile = props => {
     });
   }, [profile]);
   //Handler untuk menangani proses
-  const logoutHandler = () => {
-    dispatch(logout());
-    window.location = "/login";
-  };
+
   const editProfileHandler = e => {
     formProfile.birth = moment(formProfile.birth).unix();
     formProfile.postcode = parseInt(formProfile.postcode);
