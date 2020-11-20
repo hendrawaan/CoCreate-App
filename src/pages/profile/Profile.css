@@ -81,17 +81,3 @@ body,
 
 
 /*Mobile*/
-
-@media only screen and (max-width: 768px) {
-    /* For mobile phones: */
-    .logo-instance {
-        display: none;
-    }
-    .burger-button {
-        display: inline;
-        margin-right: auto;
-    }
-    .card-menu {
-        display: none;
-    }
-}
