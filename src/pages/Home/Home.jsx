@@ -26,24 +26,9 @@ export function Home() {
   const { profile } = useSelector(state => state.profile);
 
   const [filter, setFilter] = useState("Teknologi");
-  const [showcomment, setShowcomment] = useState(true);
+  const [showcomment, setShowcomment] = useState(false);
   const [clickedcomment, setClickedcomment] = useState();
-  const [feeds, setFeeds] = useState([]);
-
-  useEffect(() => {
-    if (user) {
-      dispatch(getProfile(user.token));
-    } else if (!user) {
-      window.location = "/login";
-    }
-  }, [dispatch, user]);
-
-  let profileData = profile?.user;
-  const register = () => {
-    window.location = "/register";
-  };
-
-  const feed = [
+  const [feeds, setFeeds] = useState([
     {
       id_post: 1,
       title: "Berkembang dalam Industri 4.0",
@@ -107,7 +92,18 @@ export function Home() {
       comment: 10,
       isLikedByUser: false
     }
-  ];
+  ]);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getProfile(user.token));
+    }
+  }, [dispatch, user]);
+
+  let profileData = profile?.user;
+  const register = () => {
+    window.location = "/register";
+  };
 
   useEffect(() => {
     if (user) {
@@ -330,7 +326,11 @@ export function Home() {
                             <Button
                               variant="warning"
                               className="m-1"
-                              onClick={() => commentClick(filteredFeed.id_post)}
+                              onClick={() =>
+                                filteredFeed.id_post === 1
+                                  ? commentClick(filteredFeed.id_post)
+                                  : null
+                              }
                             >
                               <BiCommentDots /> Comment
                             </Button>
