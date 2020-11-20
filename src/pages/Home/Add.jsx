@@ -22,11 +22,19 @@ const Add = () => {
         <Modal.Body>
           <Form>
             <Form.Group controlId="post">
+              <Form.Label>Judul</Form.Label>
+              <Form.Control
+              valueId="postTitle"
+                as="textarea"
+                rows={2}
+                placeholder="Post Title.."
+              />
               <Form.Label>Tuliskan postingan Anda</Form.Label>
               <Form.Control
+              valueId="postDeskripsi"
                 as="textarea"
                 rows={4}
-                placeholder="Hari ini saya........."
+                placeholder="Bagikan pemikiran anda..."
               />
             </Form.Group>
           </Form>
