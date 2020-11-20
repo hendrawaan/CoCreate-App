@@ -50,6 +50,36 @@ body,
 }
 
 
+/*Feeds*/
+
+.scroll-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #F1F6F9;
+    height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: justify;
+}
+
+.scroll-card p {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.scroll-card .feed-calendar {
+    color: grey;
+    font-size: 12px;
+}
+
+.card-menu {
+    height: 300px;
+}
+
+
 /*Mobile*/
 
 @media only screen and (max-width: 768px) {

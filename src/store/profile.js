@@ -16,6 +16,7 @@ const profileSlice = createSlice({
             state.loading = false;
             state.profile = payload;
         },
+
         updateProfileSuccess: (state, { payload }) => {
             state.error = null;
             state.loading = false;
@@ -39,7 +40,8 @@ const {
     getProfileSuccess,
     updateProfileSuccess,
     updatePasswordFailed,
-    updatePasswordSuccess
+    updatePasswordSuccess,
+
 } = profileSlice.actions;
 
 /**
@@ -48,10 +50,10 @@ const {
  */
 export const getProfile = (token) => async(dispatch) => {
     try {
-        const profileResponse = await getUserProfile(token);
-        switch (profileResponse.code) {
+        const response = await getUserProfile(token);
+        switch (response.code) {
             case 200:
-                dispatch(getProfileSuccess(profileResponse.data));
+                dispatch(getProfileSuccess(response.data));
                 break;
             default:
                 throw new Error("Uppss.. Terjadi kesalahan.");
@@ -60,6 +62,7 @@ export const getProfile = (token) => async(dispatch) => {
         dispatch(onFailed(e.message));
     }
 };
+
 /**
  * Mengambil profil singkat user lain.
  * @param {string} token Data token yang akan digunakan untuk Authorization

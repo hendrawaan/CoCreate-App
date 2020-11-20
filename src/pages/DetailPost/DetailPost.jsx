@@ -11,28 +11,12 @@ import { getPost } from '../../store/post'
 import { getUserProfileID } from '../../store/profile'
 export const DetailPost = () => {
     const history = useHistory();
-    let params = useParams();
     const dispatch = useDispatch();
     const [hideComment, setHideComment] = useState(true)
     const [like, setLike] = useState(true)
     const { post } = useSelector(state => state.post);
     const { profile } = useSelector(state => state.profile);
     const { user } = useSelector(state => state.user);
-    const [data, setData] = useState({
-        id: 0,
-        judul: "",
-        id_kat_feed: 0,
-        id_jen_feed: 0,
-        isi_feed: "",
-        link_vidio: "",
-        id_project: 0,
-        link_download: "",
-        id_user: 0,
-        waktu: 0,
-        jumlah_liker: 0,
-        jumlah_comment: 0,
-        TredingParam: 0
-    })
     const datapost = post?.Feed
     const dataProfile = profile?.users;
     useEffect(() => {
@@ -43,23 +27,6 @@ export const DetailPost = () => {
     useEffect(() => {
         dispatch(getUserProfileID(user.token, datapost?.id_user))
     })
-    // useEffect(() => {
-    //     setData({
-    //         id: datapost?.id,
-    //         judul: datapost?.judul,
-    //         id_kat_feed: datapost?.id_kat_feed,
-    //         id_jen_feed: datapost?.id_jen_feed,
-    //         isi_feed: datapost?.isi_feed,
-    //         link_vidio: datapost?.link_vidiov,
-    //         id_project: datapost?.id_project,
-    //         link_download: datapost?.link_download,
-    //         id_user: datapost?.id_user,
-    //         waktu: moment.unix(datapost?.waktu).format("DD-MM-YYYY"),
-    //         jumlah_liker: datapost?.jumlah_liker,
-    //         jumlah_comment: datapost?.jumlah_comment,
-    //         TredingParam: datapost?.TredingParam
-    //     })
-    // }, [dispatch])
     const contentComment = () => {
         return (
             <div className="div-comment">
@@ -114,7 +81,7 @@ export const DetailPost = () => {
                         </div>
                         <Card.Body className="lower-container">
                             <h5>{dataProfile?.name}</h5>
-                            <p>{dataProfile?.username}</p>
+                            <p>@{dataProfile?.username}</p>
                             <Button onClick={() => history.push('/profile/' + datapost?.id_user)} variant="primary" type="button" size="sm" >
                                 View Profile
                     </Button>
