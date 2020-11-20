@@ -24,9 +24,6 @@ export const Profile = (props) => {
   const dispatch = useDispatch();
   const { profile } = useSelector(state => state.profile);
   const { user } = useSelector(state => state.user);
-  const [idUser, setIduser] = useState()
-  const params = useParams();
-  let location = useLocation();
   const [navKey, setKey] = useState(1);
   const [formProfile, setFormProfile] = useState({
     name: '',
@@ -60,17 +57,15 @@ export const Profile = (props) => {
 
   useEffect(() => {
     let userIs = true
-    //still get bug when reload
-    if (location.props !== undefined || !isUser) {
+    let pathend = window.location.pathname.split('/').pop()
+    if (pathend !== 'profile' || !isUser) {
       setIsuser(!isUser)
-      setIduser(location.props.id)
       userIs = false
     }
-    console.log(isUser, location.props)
     if (user && userIs) {
       dispatch(getProfile(user.token));
     } else {
-      dispatch(getUserProfileID(user.token, location.props.id));
+      dispatch(getUserProfileID(user.token, parseInt(pathend)));
     }
   }, [dispatch, user]);
 
@@ -87,10 +82,7 @@ export const Profile = (props) => {
     })
   }, [profile]);
   //Handler untuk menangani proses
-  const logoutHandler = () => {
-    dispatch(logout());
-    window.location = "/login";
-  };
+
   const editProfileHandler = e => {
 
     formProfile.birth = moment(formProfile.birth).unix();

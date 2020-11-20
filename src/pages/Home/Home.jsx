@@ -39,7 +39,7 @@ export function Home() {
       window.location = "/login";
     }
   }, [dispatch, user]);
-
+  let profileData = profile?.user
   const register = () => {
     window.location = "/register";
   };
@@ -176,10 +176,10 @@ export function Home() {
                     <ListGroup variant="flush">
                       {profile && (
                         <div>
-                          <ListGroup.Item>{profile.user.name}</ListGroup.Item>
-                          <ListGroup.Item>{profile.user.email}</ListGroup.Item>
+                          <ListGroup.Item>{profileData?.name}</ListGroup.Item>
+                          <ListGroup.Item>{profileData?.email}</ListGroup.Item>
                           <ListGroup.Item>
-                            {profile.user.verification === "False"
+                            {profileData?.verification === "False"
                               ? " belum "
                               : " sudah "}{" "}
                             terverifikasi
