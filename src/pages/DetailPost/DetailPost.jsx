@@ -38,8 +38,11 @@ export const DetailPost = () => {
     useEffect(() => {
         let pathend = window.location.pathname.split('/').pop()
         dispatch(getPost(parseInt(pathend)));
-        dispatch(getUserProfileID(user.token, datapost?.id_user))
+
     }, [dispatch])
+    useEffect(() => {
+        dispatch(getUserProfileID(user.token, datapost?.id_user))
+    })
     // useEffect(() => {
     //     setData({
     //         id: datapost?.id,
