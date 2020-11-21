@@ -1,4 +1,4 @@
-import React, { useEffect, useState, state } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -19,15 +19,19 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { GiLifeInTheBalance } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../store/profile";
+import moment from "moment";
 
 export function Home() {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.user);
   const { profile } = useSelector(state => state.profile);
 
-  const [filter, setFilter] = useState("Teknologi");
-  const [showcomment, setShowcomment] = useState(false);
+  const [filter, setFilter] = useState(0);
+  const [showcomment, setShowcomment] = useState(-1);
   const [clickedcomment, setClickedcomment] = useState();
+  const [realFeeds, setRealFeeds] = useState([]);
+  const [myCategory, setMyCategory] = useState([{ id: 1 }, { id: 2 }]);
+  const [comment, setComments] = useState([]);
   const [feeds, setFeeds] = useState([
     {
       id_post: 1,
@@ -101,25 +105,49 @@ export function Home() {
   }, [dispatch, user]);
 
   let profileData = profile?.user;
-  const register = () => {
-    window.location = "/register";
-  };
 
   useEffect(() => {
-    if (user) {
-      dispatch(getProfile(user.token));
-    }
-  }, [dispatch, user]);
-
-  useEffect(() => {
-    fetch("");
+    fetch("http://kelompok6.dtstakelompok1.com/api/v1/feeds/user", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InplYXN0YW5rLmhhcml0c0BnbWFpbC5jb20iLCJpZCI6NSwidHlwZV91c2VyIjoyLCJ1c2VybmFtZSI6Imhhcml0cyJ9.259aG9HQASMkelpXEyPkdp8z5ZEkekxGKA7qVcb6Vbg"
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setRealFeeds(data.data.feeds);
+      });
   }, []);
 
-  console.log("feeds", feeds);
+  // useEffect(() => {
+  //   fetch("http://kelompok6.dtstakelompok1.com/api/v1/kategori/list/follow", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-type": "application/json; charset=UTF-8",
+  //       Authorization:
+  //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InplYXN0YW5rLmhhcml0c0BnbWFpbC5jb20iLCJpZCI6NSwidHlwZV91c2VyIjoyLCJ1c2VybmFtZSI6Imhhcml0cyJ9.259aG9HQASMkelpXEyPkdp8z5ZEkekxGKA7qVcb6Vbg"
+  //     }
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+
+  //       console.log("category", data);
+  //       setMyCategory(data.data.['kategori follow']);
+  //     });
+  // }, []);
+
+  // console.log("feeds", feeds);
+  console.log("realFeeds", realFeeds);
+  console.log("realCategory", myCategory);
 
   const commentClick = id_post => {
-    setShowcomment(!showcomment);
-    console.log(id_post);
+    console.log("showcomment before:", showcomment);
+    setShowcomment({ showcomment: showcomment === id_post ? -1 : id_post });
+    console.log("di fungsi klik post:", id_post);
+    console.log("di fungsi klik showcomment:", showcomment);
   };
 
   return (
@@ -194,10 +222,7 @@ export function Home() {
             <Col>
               <div className="d-flex flex-row">
                 <div>
-                  <Button
-                    variant="light"
-                    onClick={() => setFilter("Teknologi")}
-                  >
+                  <Button variant="light" onClick={() => setFilter(0)}>
                     <GrTechnology />
                     <p className="px-2" style={{ float: "right" }}>
                       My Feed
@@ -205,10 +230,7 @@ export function Home() {
                   </Button>
                 </div>
                 <div>
-                  <Button
-                    variant="light"
-                    onClick={() => setFilter("Teknologi")}
-                  >
+                  <Button variant="light" onClick={() => setFilter(1)}>
                     <GrTechnology />
                     <p className="px-2" style={{ float: "right" }}>
                       Technology
@@ -216,7 +238,7 @@ export function Home() {
                   </Button>
                 </div>
                 <div>
-                  <Button variant="light" onClick={() => setFilter("Keuangan")}>
+                  <Button variant="light" onClick={() => setFilter(2)}>
                     <BiMoney />
                     <p className="px-2" style={{ float: "right" }}>
                       Keuangan
@@ -224,10 +246,7 @@ export function Home() {
                   </Button>
                 </div>
                 <div>
-                  <Button
-                    variant="light"
-                    onClick={() => setFilter("Kesehatan")}
-                  >
+                  <Button variant="light" onClick={() => setFilter(3)}>
                     <GiLifeInTheBalance />
                     <p className="px-2" style={{ float: "right" }}>
                       Lifestyle
@@ -255,87 +274,100 @@ export function Home() {
             <Col style={{}}>
               <Container>
                 <Row className="show-grid">
-                  {feeds
-                    .filter(feeding => feeding.tag === filter)
-                    .map(filteredFeed => (
-                      <Col md={6} key={filteredFeed.id_post}>
+                  {realFeeds
+                    .filter(filtering =>
+                      filter === 0
+                        ? filtering.id_kat_feed
+                        : filtering.id_kat_feed === filter
+                    )
+                    .map(items => (
+                      <Col md={6} key={items.id}>
                         <Card className="my-4">
-                          <Card.Header as="h4">
-                            {filteredFeed.title}
-                          </Card.Header>
                           <Card.Body>
                             <Card.Title>
-                              <div className="row">
-                                <div className="col-md-1 text-center">
-                                  <CgProfile />
-                                </div>
-                                <div className="col-md-11">
-                                  <p>{filteredFeed.posted_by}</p>
-                                </div>
-                              </div>
+                              <Row className="d-flex align-items-center justify-content-center">
+                                <Col md={2} className="">
+                                  <CgProfile size={50} />
+                                </Col>
+                                <Col md={10} className="">
+                                  <p>{items.judul}</p>
+                                </Col>
+                              </Row>
+                              <Row className="d-flex flex-row align-items-center justify-content-center">
+                                <p style={{ fontSize: 15 }}>
+                                  Posted By: {items.name_user} |{" "}
+                                  {moment
+                                    .unix(items.waktu)
+                                    .format("YYYY-MM-DD hh:mm")}{" "}
+                                  | {items.id_kat_feed}
+                                </p>
+                              </Row>
                             </Card.Title>
+                            <hr />
                             <Card.Text>
-                              With supporting text below as a natural lead-in to
-                              additional content.
+                              <p>{items.isi_feed}</p>
                             </Card.Text>
                             <Button
                               variant="outline-primary"
-                              onClick={() => (window.location = "./detailpost")}
+                              onClick={() =>
+                                (window.location = "./detailpost/" + items.id)
+                              }
                             >
                               Read More
                             </Button>
                           </Card.Body>
                           <Card.Footer>
-                            <AiOutlineHeart /> {filteredFeed.liked}
+                            <AiOutlineHeart /> {items.jumlah_liker}
                             {"  "}
-                            <BiCommentDots /> {filteredFeed.comment}
+                            <BiCommentDots /> {items.jumlah_comment}
                           </Card.Footer>
                           <Card.Footer>
                             <Button
-                              variant={
-                                !filteredFeed.isLikedByUser
-                                  ? "outline-secondary"
-                                  : "danger"
-                              }
+                              variant="danger"
+                              // {
+                              //   !items.isLikedByUser
+                              //     ? "outline-secondary"
+                              //     : "danger"
+                              // }
                               className="m-1 btn-alert"
-                              onClick={() => {
-                                setFeeds(prevFeeds =>
-                                  feeds.map(item =>
-                                    item.id_post === filteredFeed.id_post &&
-                                    filteredFeed.isLikedByUser == false
-                                      ? {
-                                          ...item,
-                                          liked: item.liked + 1,
-                                          isLikedByUser: true
-                                        }
-                                      : item.id_post === filteredFeed.id_post &&
-                                        filteredFeed.isLikedByUser == true
-                                      ? {
-                                          ...item,
-                                          liked: item.liked - 1,
-                                          isLikedByUser: false
-                                        }
-                                      : item
-                                  )
-                                );
-                              }}
+                              // onClick={() => {
+                              //   setFeeds(prevFeeds =>
+                              //     feeds.map(item =>
+                              //       item.id_post === items.id_post &&
+                              //       items.isLikedByUser == false
+                              //         ? {
+                              //             ...item,
+                              //             liked: item.liked + 1,
+                              //             isLikedByUser: true
+                              //           }
+                              //         : item.id_post === items.id_post &&
+                              //           items.isLikedByUser == true
+                              //         ? {
+                              //             ...item,
+                              //             liked: item.liked - 1,
+                              //             isLikedByUser: false
+                              //           }
+                              //         : item
+                              //     )
+                              //   );
+                              // }}
                             >
                               <AiOutlineHeart />{" "}
-                              {!filteredFeed.isLikedByUser ? "Like" : "Liked"}
+                              {/* {!items.isLikedByUser ? "Like" : "Liked"} */}
+                              Like
                             </Button>
                             <Button
                               variant="warning"
                               className="m-1"
-                              onClick={() =>
-                                filteredFeed.id_post === 1
-                                  ? commentClick(filteredFeed.id_post)
-                                  : null
-                              }
+                              onClick={() => {
+                                commentClick(items.id_post);
+                                console.log("dari klik:", items.id);
+                              }}
                             >
                               <BiCommentDots /> Comment
                             </Button>
                           </Card.Footer>
-                          {showcomment ? (
+                          {showcomment === -1 ? (
                             <Card.Footer className="">
                               <InputGroup className="mb-3">
                                 <InputGroup.Prepend>
