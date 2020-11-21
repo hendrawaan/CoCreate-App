@@ -1,26 +1,43 @@
-import React, { useRef, useEffect, useState } from "react";
-import profileimg from "../../assets/images/profile-default.jpg";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from 'react-router-dom'
-import moment from 'moment'
+import moment from 'moment';
+import React, { useEffect, useState } from "react";
 import {
-  Button, ButtonGroup, Card, Col, Container,
-  Form, Image,
-  Nav, Row
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Image,
+  Nav,
+  Row
 } from "react-bootstrap";
 import {
-  FaCalendar, FaEnvelope,
-  FaIdCard, FaKey,
+  FaCalendar,
+  FaEnvelope,
+  FaFileAlt,
+  FaIdCard,
+  FaKey,
   FaMapMarkerAlt,
-  FaMapPin, FaPhone, FaRestroom, FaUser, FaFileAlt
+  FaMapPin,
+  FaPhone,
+  FaRestroom,
+  FaUser
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom';
+import profileimg from "../../assets/images/profile-default.jpg";
 import InputGroupCustom from "../../components/InputGroupCustom";
-import { listGender, listNav, listMenu } from "./List";
-import { getProfile, updatePassword, updateProfile, getUserProfileID, } from "../../store/profile";
-import { getMyPost } from '../../store/post'
+import { getMyPost } from '../../store/post';
+import {
+  getProfile,
+  getUserProfileID,
+  updatePassword,
+  updateProfile
+} from "../../store/profile";
 import { logout } from "../../store/user";
+import { listGender, listMenu, listNav } from "./List";
 import "./Profile.css";
-export const Profile = (props) => {
+export const Profile = ({location}) => {
+  const pathend = location.pathname.split('/').pop()
   const dispatch = useDispatch();
   const { profile } = useSelector(state => state.profile);
   const { user } = useSelector(state => state.user);
@@ -37,7 +54,7 @@ export const Profile = (props) => {
     short_bio: ''
   });
   const [formPassword, setFormPassword] = useState();
-  const [isUser, setIsuser] = useState(true);
+  const [isUser, setIsuser] = useState(false);
   const [hiddenbar, setHiddenBar] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const updateProfiles = e => {
@@ -57,20 +74,19 @@ export const Profile = (props) => {
     });
   };
   const dataFeeds = post?.feeds
-  const dataProfile = isUser ? profile?.user : profile?.users;
+  const dataProfile = pathend !== 'profile' ? profile?.users : profile?.user;
   useEffect(() => {
-    let userIs = true
-    let pathend = window.location.pathname.split('/').pop()
-    if (pathend !== 'profile' || !isUser) {
-      setIsuser(!isUser)
-      userIs = false
-    }
-    if (user && userIs) {
-      dispatch(getProfile(user.token));
-    } else {
+    if (pathend !== 'profile') {
       dispatch(getUserProfileID(user.token, parseInt(pathend)));
+      setIsuser(false)
+
     }
-  }, [dispatch, profile]);
+    else {
+      dispatch(getProfile(user.token));
+      setIsuser(true)
+
+    } 
+  }, [dispatch, location]);
 
   useEffect(() => {
     dispatch(getMyPost(user.token))
