@@ -1,29 +1,28 @@
-import React, { useEffect, useState, state } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
+  Card,
   Col,
   Container,
-  Row,
-  Card,
-  ListGroup,
+  FormControl,
   InputGroup,
-  FormControl
+  ListGroup,
+  Row
 } from "react-bootstrap";
-import { homeLogo } from "../../assets/images";
-import { FaHome } from "react-icons/fa";
-import { MdEvent } from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
-import { GrTechnology } from "react-icons/gr";
-import { BiMoney, BiCommentDots } from "react-icons/bi";
 import { AiOutlineHeart } from "react-icons/ai";
+import { BiCommentDots, BiMoney } from "react-icons/bi";
+import { CgProfile } from "react-icons/cg";
+import { FaHome } from "react-icons/fa";
 import { GiLifeInTheBalance } from "react-icons/gi";
+import { GrTechnology } from "react-icons/gr";
+import { MdEvent } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../store/profile";
 
 export function Home() {
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.user);
-  const { profile } = useSelector(state => state.profile);
+  const { user } = useSelector((state) => state.user);
+  const { profile } = useSelector((state) => state.profile);
 
   const [filter, setFilter] = useState("Teknologi");
   const [feeds, setFeeds] = useState([
@@ -33,7 +32,7 @@ export function Home() {
       tag: "Teknologi",
       posted_by: "Harits",
       liked: 25,
-      comment: 5
+      comment: 5,
     },
     {
       id_post: 2,
@@ -41,7 +40,7 @@ export function Home() {
       tag: "Teknologi",
       posted_by: "Arif",
       liked: 15,
-      comment: 3
+      comment: 3,
     },
     {
       id_post: 3,
@@ -49,7 +48,7 @@ export function Home() {
       tag: "Kesehatan",
       posted_by: "Ruli",
       liked: 45,
-      comment: 7
+      comment: 7,
     },
     {
       id_post: 4,
@@ -57,7 +56,7 @@ export function Home() {
       tag: "Kesehatan",
       posted_by: "Rian",
       liked: 23,
-      comment: 3
+      comment: 3,
     },
     {
       id_post: 5,
@@ -65,7 +64,7 @@ export function Home() {
       tag: "Keuangan",
       posted_by: "Raziq",
       liked: 54,
-      comment: 6
+      comment: 6,
     },
     {
       id_post: 6,
@@ -73,7 +72,7 @@ export function Home() {
       tag: "Teknologi",
       posted_by: "Raziq",
       liked: 12,
-      comment: 5
+      comment: 5,
     },
     {
       id_post: 7,
@@ -81,8 +80,8 @@ export function Home() {
       tag: "Teknologi",
       posted_by: "Raziq",
       liked: 23,
-      comment: 10
-    }
+      comment: 10,
+    },
   ]);
 
   useEffect(() => {
@@ -99,7 +98,7 @@ export function Home() {
         <Col
           md={3}
           style={{
-            padding: 50
+            padding: 50,
           }}
         >
           <Row>
@@ -227,8 +226,8 @@ export function Home() {
               <Container>
                 <Row className="show-grid">
                   {feeds
-                    .filter(feeding => feeding.tag === filter)
-                    .map(filteredFeed => (
+                    .filter((feeding) => feeding.tag === filter)
+                    .map((filteredFeed) => (
                       <Col md={6} key={filteredFeed.id_post}>
                         <Card className="my-4">
                           <Card.Header as="h4">
@@ -261,12 +260,12 @@ export function Home() {
                               variant="danger"
                               className="m-1 btn-alert"
                               onClick={() => {
-                                setFeeds(prevFeeds =>
-                                  feeds.map(item =>
+                                setFeeds((prevFeeds) =>
+                                  feeds.map((item) =>
                                     item.id_post === filteredFeed.id_post
                                       ? {
                                           ...item,
-                                          liked: item.liked + 1
+                                          liked: item.liked + 1,
                                         }
                                       : item
                                   )
