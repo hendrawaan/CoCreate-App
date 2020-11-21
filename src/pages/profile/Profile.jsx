@@ -1,9 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
-import profileimg from "../../assets/images/profile-default.jpg";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import moment from "moment";
-import "./Profile.css";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   ButtonGroup,
@@ -26,21 +22,24 @@ import {
   FaRestroom,
   FaUser
 } from "react-icons/fa";
-import InputGroupCustom from "../../components/InputGroupCustom";
-import { listGender, listNav, listMenu } from "./List";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { profileimg } from "../../assets/images";
+import { InputGroupCustom } from "../../components";
 import {
   getProfile,
+  getUserProfileID,
   updatePassword,
-  updateProfile,
-  getUserProfileID
+  updateProfile
 } from "../../store/profile";
-
 import { logout } from "../../store/user";
+import { listGender, listMenu, listNav } from "./List";
 import "./Profile.css";
+
 export const Profile = () => {
   const dispatch = useDispatch();
-  const { profile } = useSelector(state => state.profile);
-  const { user } = useSelector(state => state.user);
+  const { profile } = useSelector((state) => state.profile);
+  const { user } = useSelector((state) => state.user);
   const params = useParams();
   const [navKey, setKey] = useState(1);
   const [formProfile, setFormProfile] = useState({
@@ -50,26 +49,26 @@ export const Profile = () => {
     address: "",
     phone: "",
     postcode: 0,
-    short_bio: ""
+    short_bio: "",
   });
   const [formPassword, setFormPassword] = useState();
   const [isUser, setIsuser] = useState(true);
   const [hiddenbar, setHiddenBar] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const updateProfiles = e => {
+  const updateProfiles = (e) => {
     let value = e.target.value;
     let name = e.target.name;
     setFormProfile({
       ...formProfile,
-      [name]: value
+      [name]: value,
     });
   };
-  const updatePasswords = e => {
+  const updatePasswords = (e) => {
     let value = e.target.value;
     let name = e.target.name;
     setFormPassword({
       ...formPassword,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -94,7 +93,7 @@ export const Profile = () => {
       address: dataProfile?.address,
       phone: dataProfile?.phone,
       postcode: dataProfile?.postcode,
-      short_bio: dataProfile?.short_bio
+      short_bio: dataProfile?.short_bio,
     });
   }, [profile]);
   //Handler untuk menangani proses
@@ -102,7 +101,7 @@ export const Profile = () => {
     dispatch(logout());
     window.location = "/login";
   };
-  const editProfileHandler = e => {
+  const editProfileHandler = (e) => {
     formProfile.birth = moment(formProfile.birth).unix();
     formProfile.postcode = parseInt(formProfile.postcode);
     console.log("birth " + typeof formProfile.birth, formProfile.birth);
@@ -115,8 +114,8 @@ export const Profile = () => {
     e.preventDefault();
     // setTimeout(function () { window.location.reload() }, 2000);
   };
-  const uploadPhotoHandler = e => {};
-  const updatePasswordHandler = e => {
+  const uploadPhotoHandler = (e) => {};
+  const updatePasswordHandler = (e) => {
     if (formPassword !== null) {
       if (
         formPassword.password_lama !== "" ||
@@ -148,7 +147,7 @@ export const Profile = () => {
       <Card style={{ width: "18rem" }}>
         <Card.Header>Menu</Card.Header>
         <ButtonGroup vertical>
-          {listMenu.map(function(item, i) {
+          {listMenu.map(function (item, i) {
             return (
               <Button className="text-left" key={i} variant="light">
                 {item.icon} {item.name}
@@ -368,7 +367,7 @@ export const Profile = () => {
           className={`${!hiddenbar ? "collapse" : ""} navbar-collapse`}
           id="navbarsExample09"
         >
-          {listMenu.map(function(item, i) {
+          {listMenu.map(function (item, i) {
             return (
               <a key={i} className="nav-link text-light" href="/{ item.link }">
                 {item.name}
@@ -464,7 +463,7 @@ export const Profile = () => {
           {showEdit === true ? (
             <Col md={12}>
               <Nav fill variant="tabs" defaultActiveKey={navKey}>
-                {listNav.map(function(item, i) {
+                {listNav.map(function (item, i) {
                   return (
                     <Nav.Item key={i}>
                       <Nav.Link
