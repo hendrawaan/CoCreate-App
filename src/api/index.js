@@ -3,6 +3,8 @@ import {
   ADD_USER,
   DAFTAR_KATEGORI_FEED,
   DETAIL_FEED,
+  GET_DETAIL_POST,
+  GET_MY_POST,
   GET_PROFILE,
   GET_USER_PROFILE,
   GOOGLE_LOGIN_CALLBACK,
@@ -186,3 +188,19 @@ export const updateFeedCategory = async (modifiedCategory, token) =>
   await api.put(UPDATE_FEED_CETEGORY, JSON.stringify(modifiedCategory), {
     Authorization: token,
   });
+// export const getUserAllAdmin = async (token) =>
+//     await api.get(LIST_USERS_ADMIN, { Authorization: token });
+
+/**
+ * Mengambil informasi detail post
+ * @param {string} endpoint id dari postingan
+ * @returns json objek
+ */
+export const getDetailPost = async (id) => await api.get(GET_DETAIL_POST + id);
+/**
+ * Mengambil informasi post milik sendiri
+ * @param {string} endpoint id dari postingan
+ * @returns json objek
+ */
+export const getMyOwnPost = async (token) =>
+  await api.get(GET_MY_POST, { Authorization: token });

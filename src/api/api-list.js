@@ -40,3 +40,9 @@ export const ADD_FEED_CATEGORY = "/api/v1/kategori/add"
 // Update feed category
 export const UPDATE_FEED_CETEGORY = "/api/v1/kategori/update"
 
+//Get all user by admin
+export const LIST_USERS_ADMIN = '/api/v1/user/verifikasi/daftar/all'
+
+// Detail Post
+export const GET_DETAIL_POST = '/api/v1/feed/detail/'
+export const GET_MY_POST = '/api/v1/user/feeds'

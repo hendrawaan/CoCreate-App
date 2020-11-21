@@ -1,8 +1,7 @@
-import moment from "moment";
+import moment from 'moment';
 import React, { useEffect, useState } from "react";
 import {
   Button,
-  ButtonGroup,
   Card,
   Col,
   Container,
@@ -14,6 +13,7 @@ import {
 import {
   FaCalendar,
   FaEnvelope,
+  FaFileAlt,
   FaIdCard,
   FaKey,
   FaMapMarkerAlt,
@@ -23,9 +23,10 @@ import {
   FaUser
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { profileimg } from "../../assets/images";
-import { InputGroupCustom } from "../../components";
+import { useHistory } from 'react-router-dom';
+import profileimg from "../../assets/images/profile-default.jpg";
+import InputGroupCustom from "../../components/InputGroupCustom";
+import { getMyPost } from '../../store/post';
 import {
   getProfile,
   getUserProfileID,
@@ -35,57 +36,62 @@ import {
 import { logout } from "../../store/user";
 import { listGender, listMenu, listNav } from "./List";
 import "./Profile.css";
-
-export const Profile = () => {
+export const Profile = ({location}) => {
+  const pathend = location.pathname.split('/').pop()
   const dispatch = useDispatch();
-  const { profile } = useSelector((state) => state.profile);
-  const { user } = useSelector((state) => state.user);
-  const params = useParams();
+  const { profile } = useSelector(state => state.profile);
+  const { user } = useSelector(state => state.user);
+  const { post } = useSelector(state => state.post);
   const [navKey, setKey] = useState(1);
+  const history = useHistory();
   const [formProfile, setFormProfile] = useState({
-    name: "",
+    name: '',
     birth: 0,
-    gender: "",
-    address: "",
-    phone: "",
+    gender: '',
+    address: '',
+    phone: '',
     postcode: 0,
-    short_bio: "",
+    short_bio: ''
   });
   const [formPassword, setFormPassword] = useState();
-  const [isUser, setIsuser] = useState(true);
+  const [isUser, setIsuser] = useState(false);
   const [hiddenbar, setHiddenBar] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const updateProfiles = (e) => {
-    let value = e.target.value;
-    let name = e.target.name;
+  const updateProfiles = e => {
+    let value = e.target.value
+    let name = e.target.name
     setFormProfile({
       ...formProfile,
-      [name]: value,
+      [name]: value
     });
   };
-  const updatePasswords = (e) => {
-    let value = e.target.value;
-    let name = e.target.name;
+  const updatePasswords = e => {
+    let value = e.target.value
+    let name = e.target.name
     setFormPassword({
       ...formPassword,
-      [name]: value,
+      [name]: value
     });
   };
-
+  const dataFeeds = post?.feeds
+  const dataProfile = pathend !== 'profile' ? profile?.users : profile?.user;
   useEffect(() => {
-    console.log(params);
-    // tambahkan logika, apabila menerima props dari halaman sebelumnya, maka akan mengubah state isUser
-    if (user && isUser) {
-      dispatch(getProfile(user.token));
-    } else {
-      // tambahkan id dari parameter
-      setIsuser(!isUser);
-      dispatch(getUserProfileID(user.token));
+    if (pathend !== 'profile') {
+      dispatch(getUserProfileID(user.token, parseInt(pathend)));
+      setIsuser(false)
+
     }
-  }, [dispatch, user]);
+    else {
+      dispatch(getProfile(user.token));
+      setIsuser(true)
 
-  const dataProfile = profile?.user;
+    } 
+  }, [dispatch, location]);
+
   useEffect(() => {
+    dispatch(getMyPost(user.token))
+    console.log(dataFeeds)
+    console.log(dataProfile)
     setFormProfile({
       name: dataProfile?.name,
       birth: Number(moment.unix(dataProfile?.birth).format("YYYY-MM-DD")),
@@ -93,29 +99,23 @@ export const Profile = () => {
       address: dataProfile?.address,
       phone: dataProfile?.phone,
       postcode: dataProfile?.postcode,
-      short_bio: dataProfile?.short_bio,
-    });
-  }, [profile]);
+      short_bio: dataProfile?.short_bio
+    })
+  }, [dispatch])
+
+
   //Handler untuk menangani proses
-  const logoutHandler = () => {
-    dispatch(logout());
-    window.location = "/login";
-  };
-  const editProfileHandler = (e) => {
+
+  const editProfileHandler = e => {
     formProfile.birth = moment(formProfile.birth).unix();
     formProfile.postcode = parseInt(formProfile.postcode);
-    console.log("birth " + typeof formProfile.birth, formProfile.birth);
-    console.log(
-      "postcode " + typeof formProfile.postcode,
-      formProfile.postcode
-    );
     dispatch(updateProfile(formProfile, user.token));
     dispatch(getProfile(user.token));
     e.preventDefault();
-    // setTimeout(function () { window.location.reload() }, 2000);
+    setTimeout(function () { window.location.reload() }, 2000);
   };
-  const uploadPhotoHandler = (e) => {};
-  const updatePasswordHandler = (e) => {
+  const uploadPhotoHandler = e => { };
+  const updatePasswordHandler = e => {
     if (formPassword !== null) {
       if (
         formPassword.password_lama !== "" ||
@@ -142,19 +142,21 @@ export const Profile = () => {
       </Card>
     );
   };
-  const contentMenu = () => {
+  const contentFeeds = () => {
     return (
-      <Card style={{ width: "18rem" }}>
-        <Card.Header>Menu</Card.Header>
-        <ButtonGroup vertical>
-          {listMenu.map(function (item, i) {
+      <Card style={{ width: "18rem", height: 300 }}>
+        <Card.Header>Feeds</Card.Header>
+        <div className="scroll-card">
+          {dataFeeds?.map(function (item, i) {
             return (
-              <Button className="text-left" key={i} variant="light">
-                {item.icon} {item.name}
+              <Button onClick={() => history.push('/detailpost/' + item.id)} className="text-left" key={i} variant="light">
+                <p><FaFileAlt /> {item.judul}</p>
+                <p className="feed-calendar">{moment.unix(item.waktu).format("DD-MM-YYYY")}</p>
               </Button>
             );
           })}
-        </ButtonGroup>
+        </div>
+
       </Card>
     );
   };
@@ -193,9 +195,7 @@ export const Profile = () => {
                   onChange={updateProfiles}
                   type="date"
                   placeholder="Date of Birth"
-                  defaultValue={moment
-                    .unix(dataProfile?.birth)
-                    .format("YYYY-MM-DD")}
+                  defaultValue={moment.unix(dataProfile?.birth).format("YYYY-MM-DD")}
                 />
               </Col>
               <Col md={6}>
@@ -405,8 +405,7 @@ export const Profile = () => {
                   </Col>
                   <Col md={6}>
                     <p style={{ color: "grey" }}>
-                      <FaCalendar />{" "}
-                      {moment.unix(dataProfile?.birth).format("L")}
+                      <FaCalendar /> {moment.unix(dataProfile?.birth).format("L")}
                     </p>
                     <p style={{ color: "grey" }}>
                       <FaMapPin /> {dataProfile?.postcode}
@@ -424,28 +423,15 @@ export const Profile = () => {
             </Row>
           </Col>
           <Col md={2}>
-            {isUser ? (
-              <Button
-                variant={showEdit === false ? "primary" : "secondary"}
-                size="sm"
-                onClick={() => setShowEdit(!showEdit)}
-              >
-                {showEdit === false ? "Edit Profile" : "Cancel"}
-              </Button>
-            ) : (
-              // {showEdit === false ? (
-              //   <Button
-              //     onClick={() => logoutHandler()}
-              //     variant="secondary"
-              //     size="sm"
-              //   >
-              //     Logout
-              //   </Button>
-              // ) : (
-              //     ""
-              //   )}
-              ""
-            )}
+            {isUser ? <Button
+              variant={showEdit === false ? "primary" : "secondary"}
+              size="sm"
+              onClick={() => setShowEdit(!showEdit)}
+            >
+              {showEdit === false ? "Edit Profile" : "Cancel"}
+            </Button>
+              : ""}
+
           </Col>
         </Row>
       </Container>
@@ -453,13 +439,13 @@ export const Profile = () => {
       <Container>
         <Row>
           {/*Menu Konten*/}
-          {showEdit === false ? (
+          {showEdit === false & isUser ? (
             <Col md={4} className="card-menu">
-              {contentMenu()}
+              {contentFeeds()}
             </Col>
           ) : (
-            ""
-          )}
+              ""
+            )}
           {showEdit === true ? (
             <Col md={12}>
               <Nav fill variant="tabs" defaultActiveKey={navKey}>
@@ -480,15 +466,15 @@ export const Profile = () => {
               {navKey === 1 ? (
                 contentEditProfile()
               ) : // navKey === 2 ? contentUploadPhoto() :
-              navKey === 3 ? (
-                contentUpdatePassword()
-              ) : (
-                <div></div>
-              )}
+                navKey === 3 ? (
+                  contentUpdatePassword()
+                ) : (
+                    <div></div>
+                  )}
             </Col>
           ) : (
-            <Col md={6}> {contentBio()}</Col>
-          )}
+              <Col md={6}> {contentBio()}</Col>
+            )}
         </Row>
       </Container>
     </Container>

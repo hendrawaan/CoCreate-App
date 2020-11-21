@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { NavApp } from "../components";
 import {
   Admin,
-  Feed,
+  DetailPost,
   GoogleLoginCallBack,
   Home,
   Login,
@@ -15,8 +15,8 @@ import { ProtectedRoute } from "./ProtectedRoute";
 
 const Router = () => {
   const navItems = [
-    { label: "Home",     link: "/",         isProtected: false },
-    { label: "Profile",  link: "/profile",  isProtected: true },
+    { label: "Home", link: "/", isProtected: false },
+    { label: "Profile", link: "/profile", isProtected: true },
     { label: "Trending", link: "/trending", isProtected: true },
   ];
 
@@ -28,9 +28,10 @@ const Router = () => {
         <Route exact path="/login" component={Login} />
         <Route exact path="/google-callback" component={GoogleLoginCallBack} />
         <ProtectedRoute exact path="/profile" component={Profile} />
+        <ProtectedRoute exact path="/profile/:id" component={Profile} />
         <ProtectedRoute exact path="/trending" component={Trending} />
         <ProtectedRoute exact path="/admin" component={Admin} />
-        <ProtectedRoute path="/feed/" component={Feed} />
+        <ProtectedRoute exact path="/detailpost/:id" component={DetailPost} />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>
