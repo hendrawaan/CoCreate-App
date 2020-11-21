@@ -10,13 +10,33 @@ export const ADD_USER = "/api/v1/user/add";
 // Mendapatkan profile user
 export const GET_PROFILE = "/api/v1/user/detail";
 
-// Menampilkan semua daftar user.
-export const LIST_USERS = `/api/v1/users`;
 // Mengupdate data profile
-export const UPDATE_PROFILE = `/api/v1/user/detail/update`
+export const UPDATE_PROFILE = "/api/v1/user/detail/update";
+
 //Get all user by admin
-export const LIST_USERS_ADMIN = '/api/v1/user/verifikasi/daftar/all'
+export const LIST_USERS = "/api/v1/user/verifikasi/daftar/";
+
 // Mengupdate password user
-export const UPDATE_PASSWORD = `/api/v1/user/password/update`
+export const UPDATE_PASSWORD = "/api/v1/user/password/update";
+
 //Mendapatkan profile user lain
-export const GET_USER_PROFILE = `/api/v1/user/detail/`
+export const GET_USER_PROFILE = "/api/v1/user/detail/";
+
+// Validasi User
+export const VERIFIKASI = "/api/v1/user/verifikasi/set";
+
+// List Feed Trending
+export const LIST_FEED_TRENDING = "/api/v1/feeds/trending";
+
+// List Feed Kategori
+export const DAFTAR_KATEGORI_FEED = "/api/v1/kategori/list"
+
+// Get Detail Feed
+export const DETAIL_FEED = "/api/v1/feed/detail/"
+
+// Add feed category
+export const ADD_FEED_CATEGORY = "/api/v1/kategori/add"
+
+// Update feed category
+export const UPDATE_FEED_CETEGORY = "/api/v1/kategori/update"
+
