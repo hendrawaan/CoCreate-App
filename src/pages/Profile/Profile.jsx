@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -23,75 +23,73 @@ import {
   FaUser
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from 'react-router-dom';
-import profileimg from "../../assets/images/profile-default.jpg";
-import InputGroupCustom from "../../components/InputGroupCustom";
-import { getMyPost } from '../../store/post';
+import { useHistory } from "react-router-dom";
+import { profileimg } from "../../assets/images";
+import { InputGroupCustom, LoadingIndicator } from "../../components";
+import { getMyFeeds } from "../../store/feed";
 import {
+  clearProfileState,
+  getOtherUserProfile,
   getProfile,
-  getUserProfileID,
   updatePassword,
   updateProfile
 } from "../../store/profile";
 import { logout } from "../../store/user";
 import { listGender, listMenu, listNav } from "./List";
 import "./Profile.css";
-export const Profile = ({location}) => {
-  const pathend = location.pathname.split('/').pop()
+export const Profile = ({ location }) => {
+  const pathend = location.pathname.split("/").pop();
   const dispatch = useDispatch();
-  const { profile } = useSelector(state => state.profile);
-  const { user } = useSelector(state => state.user);
-  const { post } = useSelector(state => state.post);
+  const { profile } = useSelector((state) => state.profile);
+  const { user } = useSelector((state) => state.user);
+  const { feed } = useSelector((state) => state.feed);
   const [navKey, setKey] = useState(1);
   const history = useHistory();
   const [formProfile, setFormProfile] = useState({
-    name: '',
+    name: "",
     birth: 0,
-    gender: '',
-    address: '',
-    phone: '',
+    gender: "",
+    address: "",
+    phone: "",
     postcode: 0,
-    short_bio: ''
+    short_bio: "",
   });
   const [formPassword, setFormPassword] = useState();
   const [isUser, setIsuser] = useState(false);
   const [hiddenbar, setHiddenBar] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const updateProfiles = e => {
-    let value = e.target.value
-    let name = e.target.name
+  const updateProfiles = (e) => {
+    let value = e.target.value;
+    let name = e.target.name;
     setFormProfile({
       ...formProfile,
-      [name]: value
+      [name]: value,
     });
   };
-  const updatePasswords = e => {
-    let value = e.target.value
-    let name = e.target.name
+  const updatePasswords = (e) => {
+    let value = e.target.value;
+    let name = e.target.name;
     setFormPassword({
       ...formPassword,
-      [name]: value
+      [name]: value,
     });
   };
-  const dataFeeds = post?.feeds
-  const dataProfile = pathend !== 'profile' ? profile?.users : profile?.user;
+  const dataFeeds = feed?.myFeeds;
+  const dataProfile =
+    pathend !== "profile" ? profile?.otherUser : profile?.user;
   useEffect(() => {
-    if (pathend !== 'profile') {
-      dispatch(getUserProfileID(user.token, parseInt(pathend)));
-      setIsuser(false)
-
-    }
-    else {
+    if (pathend !== "profile") {
+      dispatch(getOtherUserProfile(user.token, parseInt(pathend)));
+      setIsuser(false);
+    } else {
       dispatch(getProfile(user.token));
-      setIsuser(true)
-
-    } 
+      setIsuser(true);
+    }
   }, [dispatch, location]);
 
   useEffect(() => {
-    dispatch(getMyPost(user.token))
-    console.log(dataFeeds)
-    console.log(dataProfile)
+    dispatch(getMyFeeds(user.token));
+
     setFormProfile({
       name: dataProfile?.name,
       birth: Number(moment.unix(dataProfile?.birth).format("YYYY-MM-DD")),
@@ -99,23 +97,30 @@ export const Profile = ({location}) => {
       address: dataProfile?.address,
       phone: dataProfile?.phone,
       postcode: dataProfile?.postcode,
-      short_bio: dataProfile?.short_bio
-    })
-  }, [dispatch])
+      short_bio: dataProfile?.short_bio,
+    });
+  }, [dispatch]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearProfileState());
+    };
+  }, [dispatch]);
 
   //Handler untuk menangani proses
 
-  const editProfileHandler = e => {
+  const editProfileHandler = (e) => {
     formProfile.birth = moment(formProfile.birth).unix();
     formProfile.postcode = parseInt(formProfile.postcode);
     dispatch(updateProfile(formProfile, user.token));
     dispatch(getProfile(user.token));
     e.preventDefault();
-    setTimeout(function () { window.location.reload() }, 2000);
+    setTimeout(function () {
+      window.location.reload();
+    }, 2000);
   };
-  const uploadPhotoHandler = e => { };
-  const updatePasswordHandler = e => {
+  const uploadPhotoHandler = (e) => {};
+  const updatePasswordHandler = (e) => {
     if (formPassword !== null) {
       if (
         formPassword.password_lama !== "" ||
@@ -149,14 +154,22 @@ export const Profile = ({location}) => {
         <div className="scroll-card">
           {dataFeeds?.map(function (item, i) {
             return (
-              <Button onClick={() => history.push('/detailpost/' + item.id)} className="text-left" key={i} variant="light">
-                <p><FaFileAlt /> {item.judul}</p>
-                <p className="feed-calendar">{moment.unix(item.waktu).format("DD-MM-YYYY")}</p>
+              <Button
+                onClick={() => history.push("feed/" + item.id)}
+                className="text-left"
+                key={i}
+                variant="light"
+              >
+                <p>
+                  <FaFileAlt /> {item.judul}
+                </p>
+                <p className="feed-calendar">
+                  {moment.unix(item.waktu).format("DD-MM-YYYY")}
+                </p>
               </Button>
             );
           })}
         </div>
-
       </Card>
     );
   };
@@ -195,7 +208,9 @@ export const Profile = ({location}) => {
                   onChange={updateProfiles}
                   type="date"
                   placeholder="Date of Birth"
-                  defaultValue={moment.unix(dataProfile?.birth).format("YYYY-MM-DD")}
+                  defaultValue={moment
+                    .unix(dataProfile?.birth)
+                    .format("YYYY-MM-DD")}
                 />
               </Col>
               <Col md={6}>
@@ -356,8 +371,13 @@ export const Profile = ({location}) => {
       </Card>
     );
   };
+
   return (
-    <Container
+    <>
+    {
+      dataProfile
+      ? (
+        <Container
       fluid
       style={{ backgroundColor: "#F1F6F9", padding: 0, minHeight: 700 }}
     >
@@ -405,7 +425,8 @@ export const Profile = ({location}) => {
                   </Col>
                   <Col md={6}>
                     <p style={{ color: "grey" }}>
-                      <FaCalendar /> {moment.unix(dataProfile?.birth).format("L")}
+                      <FaCalendar />{" "}
+                      {dataProfile?.birth && moment.unix(dataProfile?.birth).format("L")}
                     </p>
                     <p style={{ color: "grey" }}>
                       <FaMapPin /> {dataProfile?.postcode}
@@ -423,15 +444,17 @@ export const Profile = ({location}) => {
             </Row>
           </Col>
           <Col md={2}>
-            {isUser ? <Button
-              variant={showEdit === false ? "primary" : "secondary"}
-              size="sm"
-              onClick={() => setShowEdit(!showEdit)}
-            >
-              {showEdit === false ? "Edit Profile" : "Cancel"}
-            </Button>
-              : ""}
-
+            {isUser ? (
+              <Button
+                variant={showEdit === false ? "primary" : "secondary"}
+                size="sm"
+                onClick={() => setShowEdit(!showEdit)}
+              >
+                {showEdit === false ? "Edit Profile" : "Cancel"}
+              </Button>
+            ) : (
+              ""
+            )}
           </Col>
         </Row>
       </Container>
@@ -439,13 +462,13 @@ export const Profile = ({location}) => {
       <Container>
         <Row>
           {/*Menu Konten*/}
-          {showEdit === false & isUser ? (
+          {(showEdit === false) & isUser ? (
             <Col md={4} className="card-menu">
               {contentFeeds()}
             </Col>
           ) : (
-              ""
-            )}
+            ""
+          )}
           {showEdit === true ? (
             <Col md={12}>
               <Nav fill variant="tabs" defaultActiveKey={navKey}>
@@ -466,17 +489,21 @@ export const Profile = ({location}) => {
               {navKey === 1 ? (
                 contentEditProfile()
               ) : // navKey === 2 ? contentUploadPhoto() :
-                navKey === 3 ? (
-                  contentUpdatePassword()
-                ) : (
-                    <div></div>
-                  )}
+              navKey === 3 ? (
+                contentUpdatePassword()
+              ) : (
+                <div></div>
+              )}
             </Col>
           ) : (
-              <Col md={6}> {contentBio()}</Col>
-            )}
+            <Col md={6}> {contentBio()}</Col>
+          )}
         </Row>
       </Container>
     </Container>
+      )
+      : (<LoadingIndicator />)
+    }
+    </>
   );
 };
