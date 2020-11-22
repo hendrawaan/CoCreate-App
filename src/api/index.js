@@ -2,8 +2,7 @@ import {
   ADD_FEED_CATEGORY,
   ADD_USER,
   DAFTAR_KATEGORI_FEED,
-  DETAIL_FEED,
-  GET_DETAIL_POST,
+  GET_DETAIL_FEED,
   GET_MY_POST,
   GET_PROFILE,
   GET_USER_PROFILE,
@@ -167,7 +166,8 @@ export const getListFeedCategory = async () =>
  * Mengambil Detail Suatu Feed
  * @returns json objek
  */
-export const getDetailFeed = async (id) => await api.get(DETAIL_FEED + id, {});
+export const getDetailFeed = async (id) =>
+  await api.get(GET_DETAIL_FEED + id, {});
 
 /**
  * Menambahkan kategori Feed
@@ -188,15 +188,7 @@ export const updateFeedCategory = async (modifiedCategory, token) =>
   await api.put(UPDATE_FEED_CETEGORY, JSON.stringify(modifiedCategory), {
     Authorization: token,
   });
-// export const getUserAllAdmin = async (token) =>
-//     await api.get(LIST_USERS_ADMIN, { Authorization: token });
 
-/**
- * Mengambil informasi detail post
- * @param {string} endpoint id dari postingan
- * @returns json objek
- */
-export const getDetailPost = async (id) => await api.get(GET_DETAIL_POST + id);
 /**
  * Mengambil informasi post milik sendiri
  * @param {string} endpoint id dari postingan
