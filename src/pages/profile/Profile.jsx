@@ -20,13 +20,14 @@ import {
   FaMapPin,
   FaPhone,
   FaRestroom,
-  FaUser
+  FaUser,
+  FaPlusCircle
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import profileimg from "../../assets/images/profile-default.jpg";
 import InputGroupCustom from "../../components/InputGroupCustom";
-import { getMyPost } from '../../store/post';
+import { getMyPost } from '../../store/feed';
 import {
   getProfile,
   getUserProfileID,
@@ -36,12 +37,12 @@ import {
 import { logout } from "../../store/user";
 import { listGender, listMenu, listNav } from "./List";
 import "./Profile.css";
-export const Profile = ({location}) => {
+export const Profile = ({ location }) => {
   const pathend = location.pathname.split('/').pop()
   const dispatch = useDispatch();
   const { profile } = useSelector(state => state.profile);
   const { user } = useSelector(state => state.user);
-  const { post } = useSelector(state => state.post);
+  const { feed } = useSelector(state => state.feed);
   const [navKey, setKey] = useState(1);
   const history = useHistory();
   const [formProfile, setFormProfile] = useState({
@@ -57,6 +58,7 @@ export const Profile = ({location}) => {
   const [isUser, setIsuser] = useState(false);
   const [hiddenbar, setHiddenBar] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showAddCategory, setShowAddCategory] = useState(false);
   const updateProfiles = e => {
     let value = e.target.value
     let name = e.target.name
@@ -73,7 +75,7 @@ export const Profile = ({location}) => {
       [name]: value
     });
   };
-  const dataFeeds = post?.feeds
+  const dataFeeds = feed?.feeds
   const dataProfile = pathend !== 'profile' ? profile?.users : profile?.user;
   useEffect(() => {
     if (pathend !== 'profile') {
@@ -85,7 +87,7 @@ export const Profile = ({location}) => {
       dispatch(getProfile(user.token));
       setIsuser(true)
 
-    } 
+    }
   }, [dispatch, location]);
 
   useEffect(() => {
@@ -160,7 +162,13 @@ export const Profile = ({location}) => {
       </Card>
     );
   };
-
+  const contentCategory = () => {
+    return (<div>
+      <h5>Followed Category
+        {isUser ? <Button variant="light"><FaPlusCircle /></Button> : ""}</h5>
+    
+    </div>)
+  }
   const contentEditProfile = () => {
     return (
       <Card>
@@ -433,6 +441,10 @@ export const Profile = ({location}) => {
               : ""}
 
           </Col>
+        </Row>
+        <Row>
+          <Col md={2}></Col>
+          <Col md={4}>{isUser ? contentCategory() : ""}</Col>
         </Row>
       </Container>
       {/*Container fungsi*/}

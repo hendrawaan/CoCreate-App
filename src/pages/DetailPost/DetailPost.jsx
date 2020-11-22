@@ -7,17 +7,17 @@ import moment from 'moment'
 import { FaCalendar, FaRegHeart, FaHeart, FaRegCommentDots, FaRegShareSquare } from 'react-icons/fa'
 import './DetailPost.css'
 import { comment } from './data'
-import { getPost } from '../../store/post'
+import { getPost } from '../../store/feed'
 import { getUserProfileID } from '../../store/profile'
 export const DetailPost = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const [hideComment, setHideComment] = useState(true)
     const [like, setLike] = useState(true)
-    const { post } = useSelector(state => state.post);
+    const { feed } = useSelector(state => state.feed);
     const { profile } = useSelector(state => state.profile);
     const { user } = useSelector(state => state.user);
-    const datapost = post?.Feed
+    const datapost = feed?.Feed
     const dataProfile = profile?.users;
     useEffect(() => {
         let pathend = window.location.pathname.split('/').pop()

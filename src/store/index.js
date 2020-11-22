@@ -2,11 +2,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import profile from './profile';
 import user from './user';
-import post from './post'
+import feed from './feed'
 const reducer = combineReducers({
     user,
     profile,
-    post
+    feed
 })
 
 const store = configureStore({

@@ -101,7 +101,7 @@ export const updateUserPassword = async (dataPas, token) =>
 * @param {string} endpoint id dari postingan
 * @returns json objek
 */
-export const getDetailPost = async (id) =>
+export const getDetailFeed = async (id) =>
     await api.get(GET_DETAIL_POST + id);
 /**
 * Mengambil informasi post milik sendiri
