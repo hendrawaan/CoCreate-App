@@ -45,3 +45,8 @@ export const LIST_USERS_ADMIN = '/api/v1/user/verifikasi/daftar/all'
 
 // User feeds
 export const GET_MY_POST = '/api/v1/user/feeds'
+
+// Get My Category
+export const GET_MY_CATEGORY = '/api/v1/kategori/list/follow'
+    // Get My Category
+export const ADD_MY_CATEGORY = '/api/v1/kategori/set'
