@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import PostFeed from "./PostFeed";
+import Feed from "./Feed";
 import {
   Button,
   Col,
@@ -20,6 +22,8 @@ import { GiLifeInTheBalance } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../store/profile";
 import moment from "moment";
+import { logout } from "../../store/user";
+import Add from "./Add";
 
 export function Home() {
   const dispatch = useDispatch();
@@ -152,81 +156,6 @@ export function Home() {
 
   return (
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
-      {/* <Container fluid style={{ backgroundColor: "#14274E" }}>
-        <Row className="align-items-center" style={{ padding: 10 }}>
-          <Col md={8}>
-            <img style={{ height: 70 }} src={homeLogo} alt="Home Logo" />
-          </Col>
-          <Col md={4} className="align-middle">
-            <div className="d-flex flex-row-reverse">
-              <div className="" style={{ display: "inline" }}>
-                <Button variant="primary" type="submit" onClick={register}>
-                  {isLogin ? "Username" : "Register"}
-                </Button>
-                <Button
-                  variant="primary"
-                  type="submit"
-                  onClick={
-                    user
-                      ? () => dispatch(logout())
-                      : () => (window.location = "/login")
-                  }
-                >
-                  {user ? "Logout" : "Login"}
-                </Button>
-              </div>
-            </div>
-          </Col>
-        </Row>
-        <Row className="align-items-center" style={{}}>
-          <Col className="m-5 align-items-center">
-            <Carousel className="" style={{ margin: "auto" }}>
-              <Carousel.Item>
-                <img
-                  className="d-block w-100"
-                  src={carouselFirst}
-                  alt="First slide"
-                />
-                <Carousel.Caption>
-                  <h3>First slide label</h3>
-                  <p>
-                    Nulla vitae elit libero, a pharetra augue mollis interdum.
-                  </p>
-                </Carousel.Caption>
-              </Carousel.Item>
-              <Carousel.Item>
-                <img
-                  className="d-block"
-                  src={carouselSecond}
-                  alt="Second slide"
-                />
-
-                <Carousel.Caption>
-                  <h3>Second slide label</h3>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </p>
-                </Carousel.Caption>
-              </Carousel.Item>
-              <Carousel.Item>
-                <img
-                  className="d-block"
-                  src={carouselThird}
-                  alt="Third slide"
-                />
-
-                <Carousel.Caption>
-                  <h3>Third slide label</h3>
-                  <p>
-                    Praesent commodo cursus magna, vel scelerisque nisl
-                    consectetur.
-                  </p>
-                </Carousel.Caption>
-              </Carousel.Item>
-            </Carousel>
-          </Col>
-        </Row>
-      </Container> */}
       <Row style={{}}>
         <Col
           md={3}
@@ -235,10 +164,10 @@ export function Home() {
           }}
         >
           <Row>
-            <Col style={{}}>
+            <Col>
               <div className="d-flex flex-column">
                 <div className="mx-auto text-center w-100">
-                  <Card style={{}}>
+                  <Card>
                     <Card.Header>
                       <CgProfile size={100} />
                     </Card.Header>
@@ -274,13 +203,16 @@ export function Home() {
                     Profile
                   </Button>
                 </div>
+                <div className="p-2">
+                  <Add />
+                </div>
               </div>
               <hr />
             </Col>
           </Row>
           <Row>
-            <Col style={{}}>
-              <Card style={{}}>
+            <Col>
+              <Card>
                 <Card.Header as="h4">My Event</Card.Header>
                 <ListGroup variant="flush">
                   <ListGroup.Item>Cras justo odio</ListGroup.Item>
@@ -295,17 +227,6 @@ export function Home() {
         <Col md={9} style={{ paddingTop: 50, paddingRight: 50 }}>
           <Row>
             <Col>
-              {/* <Dropdown>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  Choose Category
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                  <Dropdown.Item href="#/action-1">Keuangan</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">IT</Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Lifestyle</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown> */}
               <div className="d-flex flex-row">
                 <div>
                   <Button variant="light" onClick={() => setFilter(0)}>
@@ -341,7 +262,7 @@ export function Home() {
                 </div>
               </div>
             </Col>
-            <Col style={{}}>
+            <Col>
               <div className="input-group mb-3">
                 <input
                   type="text"
@@ -356,6 +277,7 @@ export function Home() {
               </div>
             </Col>
           </Row>
+          {/* **** BARIS ISI FEED **** */}
           <Row>
             <Col style={{}}>
               <Container>
