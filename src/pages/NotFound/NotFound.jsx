@@ -1,7 +1,7 @@
-import React from 'react';
-import { Button } from "react-bootstrap";
+import React from "react";
+import { Button, Container } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { notFoundIlustration } from '../../assets/images';
+import { notFoundIlustration } from "../../assets/images";
 
 /**
  * Author : Muhammad Febriansyah
@@ -10,14 +10,16 @@ import { notFoundIlustration } from '../../assets/images';
 export function NotFound() {
   const history = useHistory();
   return (
-    <div className="container m5">
-      <Button
-        className="btn btn-warning"
-        onClick={() => history.goBack()}>Go Back</Button>
+    <Container className="my-5">
+      <Button variant="danger" onClick={() => history.goBack()}>
+        Go Back
+      </Button>
       <img
-        className="img-fluid"
+        className="mx-auto d-block"
         alt="Not found"
-        src={notFoundIlustration} />
-    </div>
-  )
+        src={notFoundIlustration}
+        style={{ maxHeight: "calc(100vh - 120px)" }}
+      />
+    </Container>
+  );
 }
