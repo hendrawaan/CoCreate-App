@@ -6,7 +6,7 @@ import {
   addFeedCategoryAction,
   updateFeedCategoryAction
 } from "../../store/admin";
-import { clearState, getFeedsCetegory } from "../../store/feed";
+import { getFeedsCetegory } from "../../store/feed";
 import { LoadingIndicator } from "../LoadingIndicator/LoadingIndicator";
 import { ModalFeed } from "./ModalFeed";
 
@@ -17,14 +17,11 @@ export const FeedCategory = () => {
   const [category,  setCategory]  = useState();
   const [feedsItem, setFeedsItem] = useState({});
 
-  const { loading, categoryFeeds } = useSelector((state) => state.feed);
+  const { loading, feed } = useSelector((state) => state.feed);
   const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getFeedsCetegory());
-    return () => {
-      dispatch(clearState());
-    };
   }, [dispatch]);
 
   return (
@@ -73,8 +70,8 @@ export const FeedCategory = () => {
           />
         </Card.Header>
         <ListGroup variant="flush">
-          {categoryFeeds &&
-            categoryFeeds.map((item, index) => (
+          {feed.categoryFeeds &&
+            feed.categoryFeeds.map((item, index) => (
               <ListGroup.Item
                 action
                 key={index}

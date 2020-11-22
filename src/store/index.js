@@ -2,7 +2,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import admin from './admin';
 import feed from './feed';
-import post from './post';
 import profile from './profile';
 import user from './user';
 const reducer = combineReducers({
@@ -10,7 +9,6 @@ const reducer = combineReducers({
   user,
   profile,
   feed,
-  post
 })
 
 const store = configureStore({

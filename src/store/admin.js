@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addFeedCategory, changeUserVerification, getUserList, updateFeedCategory } from "../api/";
+import {
+  addFeedCategory,
+  changeUserVerification,
+  getUserList,
+  updateFeedCategory
+} from "../api/";
 import { getFeedsCetegory } from "./feed";
 
 // Slice
@@ -11,19 +16,9 @@ const adminSlice = createSlice({
       state.loading = true;
     },
     getUserListSuccess: (state, { payload }) => {
-      state.error = null;
-      state.loading = false;
       state.userList = payload;
     },
-    addCategorySuccess: (state) => {
-      state.error = null;
-      state.loading = false;
-    },
-    updateCategorySuccess: (state) => {
-      state.error = null;
-      state.loading = false;
-    },
-    setUserVerifiedSucces: (state) => {
+    onSuccess: (state) => {
       state.error = null;
       state.loading = false;
     },
@@ -38,18 +33,16 @@ export default adminSlice.reducer;
 
 const {
   getUserListSuccess,
-  setUserVerifiedSucces,
   onFailed,
   onProcess,
-  updateCategorySuccess,
-  addCategorySuccess
+  onSuccess
 } = adminSlice.actions;
 
 /**
  * Action untuk mengambil daftar user
  * @param {string} options All = semua user | True = user yang telah diverifikasi
  * | False = user yang belum diverfikasi
- * @param {string} token Data token yang akan digunakan untuk Authorization. 
+ * @param {string} token Data token yang akan digunakan untuk Authorization.
  */
 export const getUsersList = (options, token) => async (dispatch) => {
   try {
@@ -58,6 +51,7 @@ export const getUsersList = (options, token) => async (dispatch) => {
     switch (userListResponse.code) {
       case 200:
         dispatch(getUserListSuccess(userListResponse.data.users));
+        dispatch(onSuccess());
         break;
       default:
         throw new Error("Uppss.. Terjadi kesalahan.");
@@ -78,8 +72,8 @@ export const setUsersVerification = (options, token) => async (dispatch) => {
     const response = await changeUserVerification(options, token);
     switch (response.code) {
       case 200:
-        dispatch(setUserVerifiedSucces());
         dispatch(getUsersList("all", token));
+        dispatch(onSuccess());
         break;
       default:
         throw new Error("Uppss.. Terjadi kesalahan.");
@@ -100,8 +94,8 @@ export const addFeedCategoryAction = (category, token) => async (dispatch) => {
     const response = await addFeedCategory(category, token);
     switch (response.code) {
       case 200:
-        dispatch(addCategorySuccess());
         dispatch(getFeedsCetegory());
+        dispatch(onSuccess());
         break;
       default:
         throw new Error("Uppss.. Terjadi kesalahan.");
@@ -116,14 +110,16 @@ export const addFeedCategoryAction = (category, token) => async (dispatch) => {
  * @param {object} category Data kategori yang ingin diubah.
  * @param {string} token Data token yang akan digunakan untuk Authorization.
  */
-export const updateFeedCategoryAction = (category, token) => async (dispatch) => {
+export const updateFeedCategoryAction = (category, token) => async (
+  dispatch
+) => {
   try {
     dispatch(onProcess());
     const response = await updateFeedCategory(category, token);
     switch (response.code) {
       case 200:
-        dispatch(updateCategorySuccess());
         dispatch(getFeedsCetegory());
+        dispatch(onSuccess());
         break;
       default:
         throw new Error("Uppss.. Terjadi kesalahan.");
