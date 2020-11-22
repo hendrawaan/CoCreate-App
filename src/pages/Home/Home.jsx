@@ -1,34 +1,19 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  Container,
-  Row,
-  Card,
-  ListGroup,
-  Carousel,
-  Dropdown
-} from "react-bootstrap";
-import {
-  homeLogo,
-  carouselFirst,
-  carouselSecond,
-  carouselThird
-} from "../../assets/images";
-import { FaHome } from "react-icons/fa";
-import { MdEvent } from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
-import { GrTechnology } from "react-icons/gr";
-import { BiMoney } from "react-icons/bi";
+import { Button, Card, Col, Container, ListGroup, Row } from "react-bootstrap";
 import { AiOutlineHeart } from "react-icons/ai";
+import { BiMoney } from "react-icons/bi";
+import { CgProfile } from "react-icons/cg";
+import { FaHome } from "react-icons/fa";
 import { GiLifeInTheBalance } from "react-icons/gi";
+import { GrTechnology } from "react-icons/gr";
+import { MdEvent } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../store/profile";
 
 export function Home() {
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.user);
-  const { profile } = useSelector(state => state.profile);
+  const { user } = useSelector((state) => state.user);
+  const { profile } = useSelector((state) => state.profile);
 
   const [filter, setFilter] = useState("Teknologi");
 
@@ -39,7 +24,7 @@ export function Home() {
       window.location = "/login";
     }
   }, [dispatch, user]);
-  let profileData = profile?.user
+  let profileData = profile?.user;
   const register = () => {
     window.location = "/register";
   };
@@ -49,32 +34,32 @@ export function Home() {
       id: 1,
       title: "Berkembang dalam Industri 4.0",
       tag: "Teknologi",
-      posted_by: "Harits"
+      posted_by: "Harits",
     },
     {
       id: 2,
       title: "Ayo mulai belajar React Redux",
       tag: "Teknologi",
-      posted_by: "Arif"
+      posted_by: "Arif",
     },
     {
       id: 3,
       title: "Bahaya duduk di depan komputer lebih dari 45 menit!",
       tag: "Kesehatan",
-      posted_by: "Ruli"
+      posted_by: "Ruli",
     },
     {
       id: 4,
       title: "Jangan lupa sarapan!",
       tag: "Kesehatan",
-      posted_by: "Rian"
+      posted_by: "Rian",
     },
     {
       id: 5,
       title: "Menabung Emas. Halal dan kaya di masa tua",
       tag: "Keuangan",
-      posted_by: "Raziq"
-    }
+      posted_by: "Raziq",
+    },
   ];
 
   const filterKesehatan = () => {
@@ -162,7 +147,7 @@ export function Home() {
         <Col
           md={3}
           style={{
-            padding: 50
+            padding: 50,
           }}
         >
           <Row>
@@ -288,8 +273,8 @@ export function Home() {
           <Row>
             <Col style={{}}>
               {feed
-                .filter(feeding => feeding.tag === filter)
-                .map(filteredFeed => (
+                .filter((feeding) => feeding.tag === filter)
+                .map((filteredFeed) => (
                   <Card className="mb-2" key={filteredFeed.id}>
                     <Card.Header as="h5">{filteredFeed.title}</Card.Header>
                     <Card.Body>

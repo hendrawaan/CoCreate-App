@@ -3,8 +3,10 @@ import {
     getDetailFeed,
     getListFeedCategory,
     getListFeedTrending,
-    getMyOwnPost
-} from "../api";
+    getMyOwnPost,
+    getMyCategory,
+    addMyCategory
+} from "../api/";
 
 const feedSlice = createSlice({
     name: "feed",
@@ -88,7 +90,29 @@ export const getFeedsCetegory = () => async(dispatch) => {
         dispatch(onFailed(e.message));
     }
 };
-
+/**
+ * Action untuk mengambil data kategory saya
+ */
+export const getMyFeedsCategory = (token) => async(dispatch) => {
+    try {
+        dispatch(onProcess());
+        const listResponse = await getMyCategory(token);
+        switch (listResponse.code) {
+            case 200:
+                dispatch(
+                    onSuccess({
+                        identifier: "myCategoryFeeds",
+                        stateValue: listResponse.data["kategori follow"],
+                    })
+                );
+                break;
+            default:
+                throw new Error("Uppss.. Terjadi kesalahan.");
+        }
+    } catch (e) {
+        dispatch(onFailed(e.message));
+    }
+};
 /**
  * Action untuk mengambil salah satu feed
  * @param {number} id ID feed
@@ -130,6 +154,27 @@ export const getMyFeeds = (token) => async(dispatch) => {
                         stateValue: response.data.feeds,
                     })
                 );
+                break;
+            default:
+                throw new Error("Uppss.. Terjadi kesalahan.");
+        }
+    } catch (e) {
+        dispatch(onFailed(e.message));
+    }
+};
+/**
+ * Action untuk menambahkan kategori saya
+ * @param {object} options True = Verfikasi user | False = Reject user
+ * @param {string} token Data token yang akan digunakan untuk Authorization
+ */
+export const setMyFeedsCategory = ({ id_kategori, follow }, token) => async(dispatch) => {
+    try {
+        dispatch(onProcess());
+        const response = await addMyCategory({ id_kategori, follow }, token);
+        switch (response.code) {
+            case 200:
+                dispatch(getMyFeedsCategory(token));
+                dispatch(onSuccess());
                 break;
             default:
                 throw new Error("Uppss.. Terjadi kesalahan.");

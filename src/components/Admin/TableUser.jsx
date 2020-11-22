@@ -1,128 +1,107 @@
-import React, { Component } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Table } from "react-bootstrap";
+import { CgCheck, CgCloseO } from "react-icons/cg";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsersList, setUsersVerification } from "../../store/admin";
+import { LoadingIndicator } from "../LoadingIndicator/LoadingIndicator";
 
-export default class TableUser extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: []
-    };
-  }
+export const TableUser = () => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const { userList, loading } = useSelector((state) => state.admin);
 
-  componentDidMount() {
-    fetch(
-      "http://kelompok6.dtstakelompok1.com/api/v1/user/verifikasi/daftar/all",
-      {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          Authorization:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ1bGlAZ21haWwuY29tIiwiaWQiOjEsInR5cGVfdXNlciI6MSwidXNlcm5hbWUiOiIifQ.z1DITijZKn9TGxJuDJJIe1EhXTjs-Q_0DUY6KmRCrWU"
-        }
-      }
-    )
-      .then(res => res.json())
-      .then(data => {
-        this.setState({ items: data.data.users });
-      });
-  }
-
-  render() {
-    const { items } = this.state;
-    {
-      console.log("test aja", items);
+  useEffect(() => {
+    if (user) {
+      dispatch(getUsersList("all", user.token));
     }
-    // if(error){
-    //     return <div>Error in loading</div>
-    // }else if (!isLoaded) {
-    //     return <div>Loading ...</div>
-    // }else
-    // {
-    return (
-      <div>
-        <ol>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th></th>
-                <th>email</th>
-                <th>nama</th>
-                <th>Approval</th>
-              </tr>
-            </thead>
-            {items.length > 0
-              ? items.map((item, index) => {
-                  return (
-                    <tbody key={index}>
-                      <tr>
-                        <th></th>
-                        <td>{item.email}</td>
-                        <td>{item.name}</td>
-                        <td>{item.verification.toString()}</td>
-                        <td>
-                          <button
-                            className="btn btn-primary"
-                            onClick={() => {
-                              const rawResponse = fetch(
-                                "http://kelompok6.dtstakelompok1.com/api/v1/user/verifikasi/set",
-                                {
-                                  method: "POST",
-                                  headers: {
-                                    Accept: "application/json, text/plain, */*",
-                                    "Content-Type":
-                                      "application/json; charset=UTF-8",
-                                    Authorization:
-                                      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ1bGlAZ21haWwuY29tIiwiaWQiOjEsInR5cGVfdXNlciI6MSwidXNlcm5hbWUiOiIifQ.z1DITijZKn9TGxJuDJJIe1EhXTjs-Q_0DUY6KmRCrWU"
-                                  },
-                                  body: JSON.stringify({
-                                    id: item.id,
-                                    verification: true
-                                  })
-                                }
-                              )
-                                .then(res => res.json())
-                                .then(res => console.log(res));
-                            }}
-                          >
-                            Accept
-                          </button>
-                        </td>
-                        <td>
-                          <button
+  }, [dispatch, user]);
+
+  /**
+   * Fungsi untuk mengubah status verifikasi user
+   * @param {number} id ID user
+   * @param {boolean} status True jika ingin diverifikasi dan False jika tidak.
+   */
+  const changeStatusVerified = (id, status) => {
+    dispatch(
+      setUsersVerification({ id: id, verification: status }, user.token)
+    );
+  };
+
+  /**
+   * Fungsi untuk mengetahui apakah user telah mengisi semua data profile atau
+   * belum.
+   * @param {object} dataUser Data user yang akan dicek
+   */
+  const isProfileComplete = (dataUser) => {
+    for (var key in dataUser) {
+      if (dataUser[key] === null || dataUser[key] === "") return false;
+    }
+    return true;
+  };
+
+  return (
+    <Fragment>
+      {loading && <LoadingIndicator />}
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Email</th>
+            <th>Nama</th>
+            <th>Status</th>
+            <th className="text-center">Profile<br />Completion</th>
+            <th colSpan="2" className="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {userList &&
+            userList.map((user, index) => {
+              const { email, name, id, verification } = user;
+              return (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{email}</td>
+                  <td>{name}</td>
+                  <td className="text-center">
+                    {
+                      verification
+                        ? (<CgCheck className="text-info" size={24} />)
+                        : (<CgCloseO className="text-danger" size={24} />)
+                    }
+                  </td>
+                  <td className="text-center">
+                    {
+                      isProfileComplete(user)
+                        ? (<CgCheck className="text-info" size={24} />)
+                        : (<CgCloseO className="text-danger" size={24} />)
+                    }
+                  </td>
+                  <td className="text-center">
+                    {
+                      verification
+                        ? (<button
                             className="btn btn-danger"
                             onClick={() => {
-                              const rawResponse = fetch(
-                                "http://kelompok6.dtstakelompok1.com/api/v1/user/verifikasi/set",
-                                {
-                                  method: "POST",
-                                  headers: {
-                                    Accept: "application/json, text/plain, */*",
-                                    "Content-Type":
-                                      "application/json; charset=UTF-8",
-                                    Authorization:
-                                      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ1bGlAZ21haWwuY29tIiwiaWQiOjEsInR5cGVfdXNlciI6MSwidXNlcm5hbWUiOiIifQ.z1DITijZKn9TGxJuDJJIe1EhXTjs-Q_0DUY6KmRCrWU"
-                                  },
-                                  body: JSON.stringify({
-                                    id: item.id,
-                                    verification: false
-                                  })
-                                }
-                              )
-                                .then(res => res.json())
-                                .then(res => console.log(res));
+                              changeStatusVerified(id, false);
                             }}
                           >
                             Reject
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  );
-                })
-              : null}
-          </Table>
-        </ol>
-      </div>
-    );
-  }
-}
+                          </button>)
+                        : (<button
+                            className="btn btn-primary"
+                            onClick={() => {
+                              changeStatusVerified(id, true);
+                            }}
+                          >
+                            Accept
+                          </button>)
+                    }
+                  </td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </Table>
+    </Fragment>
+  );
+};

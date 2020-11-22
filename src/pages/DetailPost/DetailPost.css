@@ -1,3 +1,7 @@
+.card-profile {
+    max-width: 200px;
+}
+
 .align-center {
     text-align: center;
 }
@@ -13,7 +17,7 @@
 /*card right profile*/
 
 .upper-container {
-    height: 150px;
+    height: 77.5px;
     background: #14274E;
 }
 
@@ -26,12 +30,11 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    transform: translate(0px, 100px);
+    transform: translate(0px, 35px);
 }
 
 .lower-container {
     background: #FFF;
-    padding: 20px;
     padding-top: 40px;
     text-align: center;
 }
