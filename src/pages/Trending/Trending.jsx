@@ -5,40 +5,45 @@ import { VscSearchStop } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { LoadingIndicator } from "../../components";
 import {
-  clearState,
   getFeedsCetegory,
   getFeedsTrendingList
 } from "../../store/feed";
+import { clearProfileState } from "../../store/profile";
 import "./Trending.css";
 import { TrendingList } from "./TrendingList";
 
-export function Trending() {
-
-  const dispatch                = useDispatch();
+export function Trending({location}) {
+  const dispatch = useDispatch();
   const [feedList, setFeedList] = useState([]);
-  const [title, setTitle]       = useState("Trending");
-  const { feeds, loading, categoryFeeds } = useSelector((state) => state.feed);
+  const [title, setTitle] = useState("Trending");
+  const { feed, loading } = useSelector((state) => state.feed);
+  const trendingList = feed?.trendingList;
 
   const feedCategory = [
-    { label: "Artikel",     id: 1, ic: GrArticle },
-    { label: "Project",     id: 2, ic: GrProjects },
+    { label: "Artikel", id: 1, ic: GrArticle },
+    { label: "Project", id: 2, ic: GrProjects },
     { label: "Kontributor", id: 3, ic: GrUser },
-    { label: "Discussion",  id: 4, ic: GrGroup },
+    { label: "Discussion", id: 4, ic: GrGroup },
   ];
   useEffect(() => {
-    dispatch(getFeedsTrendingList());
-    dispatch(getFeedsCetegory());
+    if (!feed?.trendingList) {
+      dispatch(getFeedsTrendingList());
+      dispatch(getFeedsCetegory());
+    }
+  }, [dispatch, feed, location]);
+
+  useEffect(() => {
+    setFeedList(trendingList);
+  }, [trendingList]);
+
+  useEffect(() => {
     return () => {
-      dispatch(clearState());
+      dispatch(clearProfileState());
     };
   }, [dispatch]);
 
-  useEffect(() => {
-    setFeedList(feeds);
-  }, [feeds]);
-
   const setList = (key, comparator, label) => {
-    setFeedList(feeds.filter((item) => item[key] === comparator));
+    setFeedList(trendingList.filter((item) => item[key] === comparator));
     setTitle(label);
   };
 
@@ -59,49 +64,41 @@ export function Trending() {
                 <Button
                   variant="outline-dark"
                   className="mb-3"
-                  onClick={
-                    () => {
-                      setFeedList(feeds);
-                      setTitle("Trending");
-                    }}
+                  onClick={() => {
+                    setFeedList(trendingList);
+                    setTitle("Trending");
+                  }}
                 >
                   <GrApps className="mr-2" /> Semua
                 </Button>
-                {
-                  feedCategory.map((item, index) => (
-                    <Button
-                      key={index}
-                      variant="outline-dark"
-                      className="mb-3"
-                      onClick={
-                        () => setList("id_jen_feed", item.id, item.label)
-                      }
-                    >
-                      <item.ic className="mr-2" />
-                      {item.label}
-                    </Button>
-                  ))
-                }
+                {feedCategory.map((item, index) => (
+                  <Button
+                    key={index}
+                    variant="outline-dark"
+                    className="mb-3"
+                    onClick={() => setList("id_jen_feed", item.id, item.label)}
+                  >
+                    <item.ic className="mr-2" />
+                    {item.label}
+                  </Button>
+                ))}
               </Col>
             </Row>
           </Col>
 
           <Col md={6}>
             <h4 className="text-center mb-4">{title}</h4>
-            {
-              feedList?.length === 0 &&
-                (<div className="text-center">
-                  <VscSearchStop className="mt-5" size={80} />
-                  <p>Tampaknya tidak ada</p>
-                </div>)
-            }
+            {feedList?.length === 0 && (
+              <div className="text-center">
+                <VscSearchStop className="mt-5" size={80} />
+                <p>Tampaknya tidak ada</p>
+              </div>
+            )}
             <ListGroup className="w-100">
-              {
-                feedList &&
-                  feedList.map((item, index) => (
-                    <TrendingList key={index} {...item} />
-                  ))
-              }
+              {feedList &&
+                feedList.map((item, index) => (
+                  <TrendingList key={index} {...item} />
+                ))}
             </ListGroup>
           </Col>
 
@@ -113,14 +110,14 @@ export function Trending() {
                   variant="outline-dark"
                   className="mb-3"
                   onClick={() => {
-                    setFeedList(feeds);
+                    setFeedList(trendingList);
                     setTitle("Trending");
                   }}
                 >
                   Semua
                 </Button>
-                {categoryFeeds &&
-                  categoryFeeds.map((item, index) => (
+                {feed?.categoryFeeds &&
+                  feed?.categoryFeeds.map((item, index) => (
                     <Button
                       key={index}
                       variant="outline-dark"
