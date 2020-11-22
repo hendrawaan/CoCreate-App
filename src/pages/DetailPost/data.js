@@ -1,16 +1,16 @@
 export const comment = [{
         id: 1,
-        comment: "Amazing",
+        comment: "Pertamaxxx",
         username: "harits"
     },
     {
         id: 2,
-        comment: "Such an beautiful article",
-        username: "rayen"
+        comment: "wkWKwkwkwk",
+        username: "Rian"
     },
     {
         id: 4,
-        comment: "Go go",
+        comment: "🤣😂😃😅😄😆😌",
         username: "ruli"
     },
     {
@@ -20,12 +20,17 @@ export const comment = [{
     },
     {
         id: 6,
-        comment: "nice article",
-        username: "kun"
+        comment: "Mantul Gan",
+        username: "Harlan"
     },
     {
-        id: 6,
-        comment: "Good post",
-        username: "foo"
+        id: 7,
+        comment: "Once 😎",
+        username: "Arif"
+    },
+    {
+        id: 8,
+        comment: "black pink in your area.... 🤪",
+        username: "Dedy"
     },
 ]

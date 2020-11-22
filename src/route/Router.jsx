@@ -32,8 +32,7 @@ const Router = () => {
         <ProtectedRoute exact path="/profile/:id" component={Profile} />
         <ProtectedRoute exact path="/trending" component={Trending} />
         <ProtectedRoute exact path="/admin" component={Admin} />
-        <ProtectedRoute exact path="/adminpages" component={AdminHome} />
-        <ProtectedRoute exact path="/detailpost/:id" component={DetailPost} />
+        <ProtectedRoute exact path="/feed/:id" component={DetailPost} />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>

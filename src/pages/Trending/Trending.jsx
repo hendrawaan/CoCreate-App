@@ -1,247 +1,143 @@
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  Container,
-  Row,
-  Card,
-  ListGroup
-} from "react-bootstrap";
-
-import { FaHome } from "react-icons/fa";
-import { MdEvent } from "react-icons/md";
-import { GrTechnology } from "react-icons/gr";
-import { BiMoney } from "react-icons/bi";
-import { GiLifeInTheBalance } from "react-icons/gi";
-import { AiOutlineNumber } from "react-icons/ai";
-import { AiFillHeart } from "react-icons/ai";
+import React, { Fragment, useEffect, useState } from "react";
+import { Button, Col, Container, ListGroup, Row } from "react-bootstrap";
+import { GrApps, GrArticle, GrGroup, GrProjects, GrUser } from "react-icons/gr";
+import { VscSearchStop } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfile } from "../../store/profile";
+import { LoadingIndicator } from "../../components";
+import {
+  getFeedsCetegory,
+  getFeedsTrendingList
+} from "../../store/feed";
+import { clearProfileState } from "../../store/profile";
+import "./Trending.css";
+import { TrendingList } from "./TrendingList";
 
-export function Trending() {
+export function Trending({location}) {
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.user);
-  const { profile } = useSelector(state => state.profile);
+  const [feedList, setFeedList] = useState([]);
+  const [title, setTitle] = useState("Trending");
+  const { feed, loading } = useSelector((state) => state.feed);
+  const trendingList = feed?.trendingList;
 
-  const [filter, setFilter] = useState("Teknologi");
+  const feedCategory = [
+    { label: "Artikel", id: 1, ic: GrArticle },
+    { label: "Project", id: 2, ic: GrProjects },
+    { label: "Kontributor", id: 3, ic: GrUser },
+    { label: "Discussion", id: 4, ic: GrGroup },
+  ];
+  useEffect(() => {
+    if (!feed?.trendingList) {
+      dispatch(getFeedsTrendingList());
+      dispatch(getFeedsCetegory());
+    }
+  }, [dispatch, feed, location]);
 
   useEffect(() => {
-    if (user) {
-      dispatch(getProfile(user.token));
-    } else if (!user) {
-      window.location = "/login";
-    }
-  }, [dispatch, user]);
+    setFeedList(trendingList);
+  }, [trendingList]);
 
-  const register = () => {
-    window.location = "/register";
-  };
+  useEffect(() => {
+    return () => {
+      dispatch(clearProfileState());
+    };
+  }, [dispatch]);
 
-  const feed = [
-    {
-      id: 1,
-      title: "Berkembang dalam Industri 4.0",
-      tag: "Teknologi",
-      posted_by: "Harits"
-    },
-    {
-      id: 2,
-      title: "Ayo mulai belajar React Redux",
-      tag: "Teknologi",
-      posted_by: "Arif"
-    },
-    {
-      id: 3,
-      title: "Bahaya duduk di depan komputer lebih dari 45 menit!",
-      tag: "Kesehatan",
-      posted_by: "Ruli"
-    },
-    {
-      id: 4,
-      title: "Jangan lupa sarapan!",
-      tag: "Kesehatan",
-      posted_by: "Rian"
-    },
-    {
-      id: 5,
-      title: "Menabung Emas. Halal dan kaya di masa tua",
-      tag: "Keuangan",
-      posted_by: "Raziq"
-    }
-  ];
-
-  const filterKesehatan = () => {
-    setFilter = "Kesehatan";
+  const setList = (key, comparator, label) => {
+    setFeedList(trendingList.filter((item) => item[key] === comparator));
+    setTitle(label);
   };
 
   return (
-    <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
+    <Fragment>
+      {loading && <LoadingIndicator />}
 
-      <Row style={{}}>
-
-        {/* sisi kiri  */}
-        <Col
-          md={3}
-          style={{
-            padding: 50
-          }}
-        >
-          <Row>
-            <Col style={{}}>
-              <div className="d-flex flex-column">
-                <div className="mx-auto text-center w-100">
-
-                </div>
-                <div className="p-2">
+      <Container
+        fluid
+        style={{ backgroundColor: "#F1F6F9" }}
+        className="vh-fit pt-5"
+      >
+        <Row className="w-100">
+          <Col md={3} className="px-5">
+            <Row>
+              <Col className="d-flex flex-column">
+                <h4 className="text-center mb-4">Feed</h4>
+                <Button
+                  variant="outline-dark"
+                  className="mb-3"
+                  onClick={() => {
+                    setFeedList(trendingList);
+                    setTitle("Trending");
+                  }}
+                >
+                  <GrApps className="mr-2" /> Semua
+                </Button>
+                {feedCategory.map((item, index) => (
                   <Button
-                    variant="primary"
-                    style={{ width: "100%" }}
-                    type="submit"
-                    onClick={() => (window.location = "/trending")}
-                  >
-                    <AiOutlineNumber />
-                    Tranding Topic
-                  </Button>
-                </div>
-                <div className="p-2">
-                  <Button variant="outline-dark" style={{ width: "100%" }}>
-                    <FaHome /> Home
-                  </Button>
-                </div>
-                <div className="p-2">
-                  <Button
+                    key={index}
                     variant="outline-dark"
-                    style={{ width: "100%" }}
-                    type="submit"
-                    onClick={() => (window.location = "/profile")}
+                    className="mb-3"
+                    onClick={() => setList("id_jen_feed", item.id, item.label)}
                   >
-                    <MdEvent />
-                    Profile
+                    <item.ic className="mr-2" />
+                    {item.label}
                   </Button>
-                </div>
-
-              </div>
-              <hr />
-            </Col>
-          </Row>
-
-          {/* isi tranding */}
-
-        </Col>
-        <Col md={6} style={{ paddingTop: 50, paddingRight: 50 }}>
-          <Row>
-            <Col>
-
-              <div className="d-flex flex-row">
-                <div>
-                  <Button
-                    variant="primary"
-                    onClick={() => setFilter("Trending")}
-                    style={{ width: "100%" }}
-                  >
-
-                    <AiOutlineNumber />
-                    <p style={{ float: "right" }}>
-                      Tranding
-                    </p>
-                  </Button>
-                </div>
-
-              </div>
-            </Col>
-
-          </Row>
-          <Row>
-            <Col style={{}}>
-              {feed
-                .filter(feeding => feeding.tag === filter)
-                .map(filteredFeed => (
-                  <Card className="mb-2" >
-                    <Card.Header as="h5">
-                      {/* <Col style={{}}>
-                        <div className="input-group mb-3">
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Search"
-                          />
-                          <div className="input-group-append">
-                            <Button className="btn btn-outline-secondary" type="button">
-                              <BiSearchAlt />
-                            </Button>
-                          </div>
-                        </div>
-                      </Col> */}
-                      Tren Untuk Anda
-                    </Card.Header>
-                    <Card.Body>
-                      <Card.Title>
-                        #NewTeachnology
-                      </Card.Title>
-                      <Card.Text>
-                        3.230 <AiFillHeart />
-                      </Card.Text>
-
-                    </Card.Body>
-                    <Card.Footer>
-
-                    </Card.Footer>
-                  </Card>
                 ))}
-            </Col>
-          </Row>
+              </Col>
+            </Row>
+          </Col>
 
-          {/* sisi kanan */}
-        </Col>
-        <Col
-          md={3}
-          style={{
-            padding: 50
-          }}
-        >
-
-          <Row>
-            <Col style={{}}>
-              <div className="d-flex flex-column">
-                <div className="mx-auto text-center w-100">
-
-                </div>
-                <div className="p-2">
-                  <Button variant="outline-dark" style={{ width: "100%" }}>
-                    <GrTechnology />
-                     Technology
-                  </Button>
-                </div>
-                <div className="p-2">
-                  <Button
-                    variant="outline-dark"
-                    style={{ width: "100%" }}
-                    type="submit"
-                    onClick={() => (window.location = "/profile")}
-                  >
-                    <BiMoney />
-                    Finance
-                  </Button>
-                </div>
-                <div className="p-2">
-                  <Button
-                    variant="outline-dark"
-                    style={{ width: "100%" }}
-                    type="submit"
-                    onClick={() => (window.location = "/trending")}
-                  >
-                    <GiLifeInTheBalance />
-                    Lifestyle
-                  </Button>
-                </div>
+          <Col md={6}>
+            <h4 className="text-center mb-4">{title}</h4>
+            {feedList?.length === 0 && (
+              <div className="text-center">
+                <VscSearchStop className="mt-5" size={80} />
+                <p>Tampaknya tidak ada</p>
               </div>
-              <hr />
-            </Col>
-          </Row>
-        </Col>
+            )}
+            <ListGroup className="w-100">
+              {feedList &&
+                feedList.map((item, index) => (
+                  <TrendingList key={index} {...item} />
+                ))}
+            </ListGroup>
+          </Col>
 
-      </Row>
-    </Container >
+          <Col md={3} className="px-5">
+            <Row>
+              <Col className="d-flex flex-column">
+                <h4 className="text-center mb-4">Kategori</h4>
+                <Button
+                  variant="outline-dark"
+                  className="mb-3"
+                  onClick={() => {
+                    setFeedList(trendingList);
+                    setTitle("Trending");
+                  }}
+                >
+                  Semua
+                </Button>
+                {feed?.categoryFeeds &&
+                  feed?.categoryFeeds.map((item, index) => (
+                    <Button
+                      key={index}
+                      variant="outline-dark"
+                      className="mb-3"
+                      onClick={() =>
+                        setList(
+                          "id_kat_feed",
+                          item.id_kategori,
+                          item.nama_kategori
+                        )
+                      }
+                    >
+                      {item.nama_kategori}
+                    </Button>
+                  ))}
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </Container>
+    </Fragment>
   );
 }
-

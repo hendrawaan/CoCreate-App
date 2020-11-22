@@ -1,0 +1,3 @@
+.vh-fit {
+  min-height: calc(100vh - 96px);
+}

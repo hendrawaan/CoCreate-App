@@ -1,12 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
-import profileimg from "../../assets/images/profile-default.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
 import moment from "moment";
 import "./Profile.css";
 import {
   Button,
-  ButtonGroup,
   Card,
   Col,
   Container,
@@ -18,6 +16,7 @@ import {
 import {
   FaCalendar,
   FaEnvelope,
+  FaFileAlt,
   FaIdCard,
   FaKey,
   FaMapMarkerAlt,
@@ -26,22 +25,28 @@ import {
   FaRestroom,
   FaUser
 } from "react-icons/fa";
-import InputGroupCustom from "../../components/InputGroupCustom";
-import { listGender, listNav, listMenu } from "./List";
+import { useHistory } from "react-router-dom";
+import { profileimg } from "../../assets/images";
+import { InputGroupCustom, LoadingIndicator } from "../../components";
+import { getMyFeeds } from "../../store/feed";
 import {
+  clearProfileState,
+  getOtherUserProfile,
   getProfile,
   updatePassword,
-  updateProfile,
-  getUserProfileID
+  updateProfile
 } from "../../store/profile";
-
 import { logout } from "../../store/user";
+import { listGender, listMenu, listNav } from "./List";
 import "./Profile.css";
-export const Profile = props => {
+export const Profile = ({ location }) => {
+  const pathend = location.pathname.split("/").pop();
   const dispatch = useDispatch();
   const { profile } = useSelector(state => state.profile);
   const { user } = useSelector(state => state.user);
+  const { feed } = useSelector(state => state.feed);
   const [navKey, setKey] = useState(1);
+  const history = useHistory();
   const [formProfile, setFormProfile] = useState({
     name: "",
     birth: 0,
@@ -52,7 +57,7 @@ export const Profile = props => {
     short_bio: ""
   });
   const [formPassword, setFormPassword] = useState();
-  const [isUser, setIsuser] = useState(true);
+  const [isUser, setIsuser] = useState(false);
   const [hiddenbar, setHiddenBar] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const updateProfiles = e => {
@@ -71,23 +76,22 @@ export const Profile = props => {
       [name]: value
     });
   };
-
+  const dataFeeds = feed?.myFeeds;
+  const dataProfile =
+    pathend !== "profile" ? profile?.otherUser : profile?.user;
   useEffect(() => {
-    let userIs = true;
-    let pathend = window.location.pathname.split("/").pop();
-    if (pathend !== "profile" || !isUser) {
-      setIsuser(!isUser);
-      userIs = false;
-    }
-    if (user && userIs) {
-      dispatch(getProfile(user.token));
+    if (pathend !== "profile") {
+      dispatch(getOtherUserProfile(user.token, parseInt(pathend)));
+      setIsuser(false);
     } else {
-      dispatch(getUserProfileID(user.token, parseInt(pathend)));
+      dispatch(getProfile(user.token));
+      setIsuser(true);
     }
-  }, [dispatch, user]);
+  }, [dispatch, location]);
 
-  const dataProfile = isUser ? profile?.user : profile?.users;
   useEffect(() => {
+    dispatch(getMyFeeds(user.token));
+
     setFormProfile({
       name: dataProfile?.name,
       birth: Number(moment.unix(dataProfile?.birth).format("YYYY-MM-DD")),
@@ -97,17 +101,19 @@ export const Profile = props => {
       postcode: dataProfile?.postcode,
       short_bio: dataProfile?.short_bio
     });
-  }, [profile]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearProfileState());
+    };
+  }, [dispatch]);
+
   //Handler untuk menangani proses
 
   const editProfileHandler = e => {
     formProfile.birth = moment(formProfile.birth).unix();
     formProfile.postcode = parseInt(formProfile.postcode);
-    console.log("birth " + typeof formProfile.birth, formProfile.birth);
-    console.log(
-      "postcode " + typeof formProfile.postcode,
-      formProfile.postcode
-    );
     dispatch(updateProfile(formProfile, user.token));
     dispatch(getProfile(user.token));
     e.preventDefault();
@@ -143,19 +149,29 @@ export const Profile = props => {
       </Card>
     );
   };
-  const contentMenu = () => {
+  const contentFeeds = () => {
     return (
-      <Card style={{ width: "18rem" }}>
-        <Card.Header>Menu</Card.Header>
-        <ButtonGroup vertical>
-          {listMenu.map(function(item, i) {
+      <Card style={{ width: "18rem", height: 300 }}>
+        <Card.Header>Feeds</Card.Header>
+        <div className="scroll-card">
+          {dataFeeds?.map(function(item, i) {
             return (
-              <Button className="text-left" key={i} variant="light">
-                {item.icon} {item.name}
+              <Button
+                onClick={() => history.push("feed/" + item.id)}
+                className="text-left"
+                key={i}
+                variant="light"
+              >
+                <p>
+                  <FaFileAlt /> {item.judul}
+                </p>
+                <p className="feed-calendar">
+                  {moment.unix(item.waktu).format("DD-MM-YYYY")}
+                </p>
               </Button>
             );
           })}
-        </ButtonGroup>
+        </div>
       </Card>
     );
   };
@@ -357,141 +373,142 @@ export const Profile = props => {
       </Card>
     );
   };
+
   return (
-    <Container
-      fluid
-      style={{ backgroundColor: "#F1F6F9", padding: 0, minHeight: 700 }}
-    >
-      {/*Navbar*/}
-      <Container fluid style={{ backgroundColor: "#14274E" }}>
-        <div
-          className={`${!hiddenbar ? "collapse" : ""} navbar-collapse`}
-          id="navbarsExample09"
+    <>
+      {dataProfile ? (
+        <Container
+          fluid
+          style={{ backgroundColor: "#F1F6F9", padding: 0, minHeight: 700 }}
         >
-          {listMenu.map(function(item, i) {
-            return (
-              <a key={i} className="nav-link text-light" href="/{ item.link }">
-                {item.name}
-              </a>
-            );
-          })}
-        </div>
-      </Container>
-      {/*Container atas */}
-      <Container fluid>
-        <Row className="profile-container">
-          <Col md={1}></Col>
-          <Col md={6}>
-            <Row>
+          {/*Navbar*/}
+          <Container fluid style={{ backgroundColor: "#14274E" }}>
+            <div
+              className={`${!hiddenbar ? "collapse" : ""} navbar-collapse`}
+              id="navbarsExample09"
+            >
+              {listMenu.map(function(item, i) {
+                return (
+                  <a
+                    key={i}
+                    className="nav-link text-light"
+                    href="/{ item.link }"
+                  >
+                    {item.name}
+                  </a>
+                );
+              })}
+            </div>
+          </Container>
+          {/*Container atas */}
+          <Container fluid>
+            <Row className="profile-container">
               <Col md={1}></Col>
-              <Col md={2}>
-                <Image
-                  src={profileimg}
-                  alt="profile"
-                  roundedCircle
-                  style={{ maxWidth: 60 }}
-                />
-              </Col>
-              <Col md={6} className="personal-info">
-                <h2>{dataProfile?.name}</h2>
-                <p style={{ color: "grey" }}>@{dataProfile?.username}</p>
+              <Col md={6}>
                 <Row>
-                  <Col md={6}>
-                    <p style={{ color: "grey" }}>
-                      <FaRestroom /> {dataProfile?.gender}
-                    </p>
-                    <p style={{ color: "grey" }}>
-                      <FaPhone /> {dataProfile?.phone}
-                    </p>
+                  <Col md={1}></Col>
+                  <Col md={2}>
+                    <Image
+                      src={profileimg}
+                      alt="profile"
+                      roundedCircle
+                      style={{ maxWidth: 60 }}
+                    />
                   </Col>
-                  <Col md={6}>
+                  <Col md={6} className="personal-info">
+                    <h2>{dataProfile?.name}</h2>
+                    <p style={{ color: "grey" }}>@{dataProfile?.username}</p>
+                    <Row>
+                      <Col md={6}>
+                        <p style={{ color: "grey" }}>
+                          <FaRestroom /> {dataProfile?.gender}
+                        </p>
+                        <p style={{ color: "grey" }}>
+                          <FaPhone /> {dataProfile?.phone}
+                        </p>
+                      </Col>
+                      <Col md={6}>
+                        <p style={{ color: "grey" }}>
+                          <FaCalendar />{" "}
+                          {dataProfile?.birth &&
+                            moment.unix(dataProfile?.birth).format("L")}
+                        </p>
+                        <p style={{ color: "grey" }}>
+                          <FaMapPin /> {dataProfile?.postcode}
+                        </p>
+                      </Col>
+                    </Row>
+                    <br />
                     <p style={{ color: "grey" }}>
-                      <FaCalendar />{" "}
-                      {moment.unix(dataProfile?.birth).format("L")}
+                      <FaEnvelope /> {dataProfile?.email}
                     </p>
                     <p style={{ color: "grey" }}>
-                      <FaMapPin /> {dataProfile?.postcode}
+                      <FaMapMarkerAlt /> {dataProfile?.address}
                     </p>
                   </Col>
                 </Row>
-                <br />
-                <p style={{ color: "grey" }}>
-                  <FaEnvelope /> {dataProfile?.email}
-                </p>
-                <p style={{ color: "grey" }}>
-                  <FaMapMarkerAlt /> {dataProfile?.address}
-                </p>
+              </Col>
+              <Col md={2}>
+                {isUser ? (
+                  <Button
+                    variant={showEdit === false ? "primary" : "secondary"}
+                    size="sm"
+                    onClick={() => setShowEdit(!showEdit)}
+                  >
+                    {showEdit === false ? "Edit Profile" : "Cancel"}
+                  </Button>
+                ) : (
+                  ""
+                )}
               </Col>
             </Row>
-          </Col>
-          <Col md={2}>
-            {isUser ? (
-              <Button
-                variant={showEdit === false ? "primary" : "secondary"}
-                size="sm"
-                onClick={() => setShowEdit(!showEdit)}
-              >
-                {showEdit === false ? "Edit Profile" : "Cancel"}
-              </Button>
-            ) : (
-              // {showEdit === false ? (
-              //   <Button
-              //     onClick={() => logoutHandler()}
-              //     variant="secondary"
-              //     size="sm"
-              //   >
-              //     Logout
-              //   </Button>
-              // ) : (
-              //     ""
-              //   )}
-              ""
-            )}
-          </Col>
-        </Row>
-      </Container>
-      {/*Container fungsi*/}
-      <Container>
-        <Row>
-          {/*Menu Konten*/}
-          {showEdit === false ? (
-            <Col md={4} className="card-menu">
-              {contentMenu()}
-            </Col>
-          ) : (
-            ""
-          )}
-          {showEdit === true ? (
-            <Col md={12}>
-              <Nav fill variant="tabs" defaultActiveKey={navKey}>
-                {listNav.map(function(item, i) {
-                  return (
-                    <Nav.Item key={i}>
-                      <Nav.Link
-                        eventKey={item.key}
-                        onClick={() => setKey(item.key)}
-                      >
-                        {item.name}
-                      </Nav.Link>
-                    </Nav.Item>
-                  );
-                })}
-              </Nav>
-              {/*Menu Edit*/}
-              {navKey === 1 ? (
-                contentEditProfile()
-              ) : // navKey === 2 ? contentUploadPhoto() :
-              navKey === 3 ? (
-                contentUpdatePassword()
+          </Container>
+          {/*Container fungsi*/}
+          <Container>
+            <Row>
+              {/*Menu Konten*/}
+              {(showEdit === false) & isUser ? (
+                <Col md={4} className="card-menu">
+                  {contentFeeds()}
+                </Col>
               ) : (
-                <div></div>
+                ""
               )}
-            </Col>
-          ) : (
-            <Col md={6}> {contentBio()}</Col>
-          )}
-        </Row>
-      </Container>
-    </Container>
+              {showEdit === true ? (
+                <Col md={12}>
+                  <Nav fill variant="tabs" defaultActiveKey={navKey}>
+                    {listNav.map(function(item, i) {
+                      return (
+                        <Nav.Item key={i}>
+                          <Nav.Link
+                            eventKey={item.key}
+                            onClick={() => setKey(item.key)}
+                          >
+                            {item.name}
+                          </Nav.Link>
+                        </Nav.Item>
+                      );
+                    })}
+                  </Nav>
+                  {/*Menu Edit*/}
+                  {navKey === 1 ? (
+                    contentEditProfile()
+                  ) : // navKey === 2 ? contentUploadPhoto() :
+                  navKey === 3 ? (
+                    contentUpdatePassword()
+                  ) : (
+                    <div></div>
+                  )}
+                </Col>
+              ) : (
+                <Col md={6}> {contentBio()}</Col>
+              )}
+            </Row>
+          </Container>
+        </Container>
+      ) : (
+        <LoadingIndicator />
+      )}
+    </>
   );
 };

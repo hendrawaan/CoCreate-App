@@ -5,9 +5,8 @@ import { FaEnvelope } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { loginIllustration } from "../../assets/images";
-import { GoogleLoginBtn } from "../../components";
+import { FormLogin, GoogleLoginBtn } from "../../components";
 import { addUser, login } from "../../store/user";
-import FormLogin from "./FormLogin";
 import "./Login.css";
 
 /**
@@ -19,14 +18,14 @@ import "./Login.css";
  */
 export const Login = () => {
   const dispatch = useDispatch();
-  const { user, error, loading } = useSelector(state => state.user);
+  const { user, error, loading } = useSelector((state) => state.user);
   const [isLogin, setLogin] = useState(true);
   const [formData, setFormData] = useState();
 
-  const updateField = e => {
+  const updateField = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -35,14 +34,16 @@ export const Login = () => {
    * Google Login.
    */
   const googleLoginCallBack = () => {
-    window.location.replace("http://54.234.253.116:80/api/v1/google/login");
+    window.location.replace(
+      "http://kelompok6.dtstakelompok1.com/api/v1/google/login"
+    );
   };
 
   /**
    * Fungsi untuk menangani submit form login.
    * @param {object} e Element
    */
-  const submitHandler = e => {
+  const submitHandler = (e) => {
     e.preventDefault();
     if (isLogin) {
       dispatch(login(formData));
@@ -61,16 +62,14 @@ export const Login = () => {
     const { token } = user;
     const decode = jwt_decode(token);
 
-    return decode.type_user === 1 ? (
-      <Redirect to="/adminpages" />
-    ) : (
-      <Redirect to="/" />
-    );
+    return decode.type_user === 1
+      ? (<Redirect to="/admin" />)
+      : (<Redirect to="/" />);
   }
 
   return (
     <Container>
-      <Row className="align-items-center row-login">
+      <Row className="align-items-center row-login vh-fit">
         <Col lg={9} className="d-none d-lg-block">
           <img
             className="w-100 login-illustration"
@@ -81,8 +80,9 @@ export const Login = () => {
         <Col lg={3} className="my-4">
           <h1 className="mb-4 text-center">{isLogin ? "Login" : "Daftar"}</h1>
           <Form onSubmit={submitHandler}>
-            {!isLogin && (
-              <>
+            {
+              !isLogin &&
+              (<>
                 <FormLogin
                   type="text"
                   placeholder="Masukkan username"
@@ -98,8 +98,8 @@ export const Login = () => {
                   autoComplete={isLogin ? "name" : "off"}
                   onChange={updateField}
                 />
-              </>
-            )}
+              </>)
+            }
             <FormLogin
               type="email"
               placeholder="Masukkan email"
@@ -114,15 +114,16 @@ export const Login = () => {
               autoComplete={isLogin ? "current-password" : "new-password"}
               onChange={updateField}
             />
-            {!isLogin && (
-              <FormLogin
-                type="password"
-                placeholder="Konfirmasi password"
-                name="passwordConfirm"
-                autoComplete="new-password"
-                onChange={updateField}
-              />
-            )}
+            {
+              !isLogin && (
+                <FormLogin
+                  type="password"
+                  placeholder="Konfirmasi password"
+                  name="passwordConfirm"
+                  autoComplete="new-password"
+                  onChange={updateField}
+                />)
+            }
             <small>
               Lupa password? <a href="./">Klik disini</a> <br />
               <span className="text-danger ">{error}</span>
@@ -135,18 +136,18 @@ export const Login = () => {
               block
               disabled={loading}
             >
-              {loading ? (
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  className="mr-2"
-                  aria-hidden="true"
-                />
-              ) : (
-                <FaEnvelope className="mr-2" />
-              )}
+              {
+                loading
+                ? (<Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    className="mr-2"
+                    aria-hidden="true"
+                  />)
+                : (<FaEnvelope className="mr-2" />)
+              }
               <span>
                 {isLogin ? "Masuk dengan Email" : "Daftar dengan Email"}
               </span>

@@ -5,7 +5,7 @@ exports[`Test Halaman Login Halaman Login Harus sesuai dengan snapshot komponen 
   className="container"
 >
   <div
-    className="align-items-center row-login row"
+    className="align-items-center row-login vh-fit row"
   >
     <div
       className="d-none d-lg-block col-lg-9"
