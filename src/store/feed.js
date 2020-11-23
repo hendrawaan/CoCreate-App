@@ -75,7 +75,7 @@ export const getFeedsCetegory = () => async (dispatch) => {
         dispatch(
           onSuccess({
             identifier: "categoryFeeds",
-            stateValue: listResponse.data["kategori feed"],
+            stateValue: listResponse.data["kategori_feed"],
           })
         );
         break;
