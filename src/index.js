@@ -7,7 +7,10 @@ import store from "./store";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
-    <App />,
+  <Provider store={store}>
+  <App />
+</Provider>,
+
   document.getElementById("root")
 )
 

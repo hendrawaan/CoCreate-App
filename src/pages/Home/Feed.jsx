@@ -13,10 +13,10 @@ const Feed = (props) => {
                 <Card.Header as="h5"> {props.title} </Card.Header>
                 <Card.Body>
                 <Card.Title>
-                    <CgProfile /> <p>{props.username}</p>
+                    <CgProfile /> <p>{props.userId}</p>
                 </Card.Title>
                 <Card.Text>
-                    Ini Deskripsi Postingan Halaman Home
+                {props.desc}
                 </Card.Text>
                 <Button variant="primary">Read More</Button>
                 </Card.Body>

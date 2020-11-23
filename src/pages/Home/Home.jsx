@@ -11,6 +11,7 @@ import {
   ListGroup,
   Carousel,
   Dropdown,
+  Form,
 } from "react-bootstrap";
 import {
   homeLogo,
@@ -187,6 +188,31 @@ export default function Home() {
 
           <Row>
             <Col>
+              <Card className="mb-3">
+                <h3 className="text-center">Postingan</h3>
+                <Form className="container">
+                    <Form.Group controlId="postFeed">
+                    <Form.Label className="label-form">Title</Form.Label>
+                    <Form.Control className="input"
+                    name="title"
+                        as="input"
+                        placeholder="Add title"
+                    />
+                    <Form.Label className="label-form">Post Content</Form.Label>
+                    <Form.Control
+                        name="isi"
+                        as="textarea"
+                        rows={4}
+                        placeholder="Add content post"
+                    />
+                    </Form.Group>
+                    <Col md={{ span: 10, offset: 10 }} className="mb-3">
+                    <Button variant="primary" >
+                        Post
+                    </Button>
+                    </Col>
+                </Form>
+              </Card >
               <Feed title={<PostFeed desc="Deskripsi Postingan #1 Dengan Feed" />} />
             </Col>
           </Row>

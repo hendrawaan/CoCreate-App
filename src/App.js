@@ -1,10 +1,10 @@
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import Router from "./route/Router";
-import CreateFeed from './pages/CreateFeed/CreateFeed'
+import Router from "./route/Router";
+
 
 function App() {
-  return <CreateFeed />
+  return <Router />
 }
 
 export default App;
