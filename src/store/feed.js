@@ -119,7 +119,6 @@ export const getFeed = (id) => async (dispatch) => {
 export const getMyFeeds = (token) => async (dispatch) => {
   try {
     const response = await getMyOwnPost(token);
-    console.log(response);
     switch (response.code) {
       case 200:
         dispatch(
