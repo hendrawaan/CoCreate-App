@@ -49,15 +49,15 @@ export default class PageGroup extends Component {
                 
                 <Form.Row>
                     <Card>
-                    <Col>
-                    <Form.Control placeholder="Apa yang anda pikirkan sekarang?" />
-                    <Button variant="primary">Primary</Button>{' '}
-                    <Button variant="secondary">Secondary</Button>{' '}
-                    <Button variant="success">Success</Button>{' '}
+                    <Col sm={12}>
+                    <Form.Control placeholder="Apa yang anda pikirkan sekarang?"  className="mb-3 mt-3" />
+                    <Button variant="primary">Foto/Video</Button>{' '}
+                    <Button variant="secondary">Tandai Orang</Button>{' '}
+                    <Button variant="success">Perasaan/Aktivitas</Button>{' '}
                     </Col>
                     </Card>
                     <Col>
-                    <Form.Control placeholder="Tentang" />
+                    <Form.Control size="lg" placeholder="Tentang" disabled />
                     </Col>
                 </Form.Row>
                 </Form>
