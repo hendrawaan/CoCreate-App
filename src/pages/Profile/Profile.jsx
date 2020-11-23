@@ -19,11 +19,7 @@ import {
   FaMapMarkerAlt,
   FaMapPin,
   FaPhone,
-
-
   FaPlusCircle, FaRestroom,
-
-
   FaTimes, FaUser
 } from "react-icons/fa";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
@@ -177,7 +173,6 @@ export const Profile = ({ location }) => {
       }
     })
     x.forEach(function (item, i) {
-      //console.log(typeof item.id_kategori)
       dispatch(setMyFeedsCategory(item, user.token))
     })
     setShowAddCategory(!showAddCategory)
@@ -218,7 +213,7 @@ export const Profile = ({ location }) => {
       <Card style={{ width: "18rem", height: 300 }}>
         <Card.Header>Feeds</Card.Header>
         <div className="scroll-card">
-          {dataFeeds?.map(function (item, i) {
+          {dataFeeds.length !== 0 ? (dataFeeds?.map(function (item, i) {
             return (
               <Button
                 onClick={() => history.push("feed/" + item.id)}
@@ -234,7 +229,7 @@ export const Profile = ({ location }) => {
                 </p>
               </Button>
             );
-          })}
+          })) : <p className="text-center">No Posts Yet</p>}
         </div>
       </Card>
     );
@@ -242,8 +237,7 @@ export const Profile = ({ location }) => {
   const contentCategory = () => {
     return (<>
       <h5>Followed Category
-      {isUser && (<Button variant="light" onClick={() => setShowAddCategory(!showAddCategory)}><FaPlusCircle /></Button>)} </h5>
-      
+    {isUser && (<Button variant="light" onClick={() => setShowAddCategory(!showAddCategory)}>{!showAddCategory ? <FaPlusCircle /> : <FaTimes />}</Button>)} </h5>
       {(showAddCategory && filterCategory && dataMyCategory) ? (<>
         <DropdownMultiselect options={filterCategory}
           handleOnChange={(selected) => {
@@ -254,8 +248,9 @@ export const Profile = ({ location }) => {
           return <Badge
             variant={listVariant[Math.floor(Math.random() * listVariant.length)]}
             key={i}>{item.nama_kategori_feed}
-            <FaTimes
-              onClick={() => deleteCategoryHandler(item.id_kategori, item.nama_kategori_feed)} />
+            {isUser ? <FaTimes
+              onClick={() => deleteCategoryHandler(item.id_kategori, item.nama_kategori_feed)} /> : ""}
+
           </Badge>
         }))
       }
