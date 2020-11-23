@@ -15,7 +15,9 @@ import {
   UPDATE_PROFILE,
   VERIFIKASI,
   GET_MY_CATEGORY,
-  ADD_MY_CATEGORY
+  ADD_MY_CATEGORY,
+  GET_USER_CATEGORY,
+  GET_USER_FEEDS
 } from "./api-list";
 
 const api = {
@@ -200,13 +202,13 @@ export const updateFeedCategory = async (modifiedCategory, token) =>
 export const getMyOwnPost = async (token) =>
   await api.get(GET_MY_POST, { Authorization: token });
 
-  /**
- * Mengambil informasi post milik sendiri
- * @param {string} endpoint id dari postingan
- * @returns json objek
- */
+/**
+* Mengambil informasi post milik sendiri
+* @param {string} endpoint id dari postingan
+* @returns json objek
+*/
 export const getMyCategory = async (token) =>
-await api.get(GET_MY_CATEGORY, { Authorization: token });
+  await api.get(GET_MY_CATEGORY, { Authorization: token });
 
 /**
  * Menambahkan kategori saya
@@ -217,3 +219,17 @@ export const addMyCategory = async (data, token) =>
   await api.post(ADD_MY_CATEGORY, JSON.stringify(data), {
     Authorization: token
   });
+/**
+* Mengambil informasi category user lain
+* @param {string} token Data token yang akan digunakan untuk Authorization
+* @returns json objek
+*/
+export const getAnotherUserCategory = async (token, id) =>
+  await api.get(GET_USER_CATEGORY + id, { Authorization: token });
+/**
+* Mengambil informasi feeds user lain
+* @param {string} token Data token yang akan digunakan untuk Authorization
+* @returns json objek
+*/
+export const getAnotherUserFeeds = async (token, id) =>
+  await api.get(GET_USER_FEEDS + id, { Authorization: token });

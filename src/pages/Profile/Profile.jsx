@@ -30,7 +30,10 @@ import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import { useHistory } from "react-router-dom";
 import { profileimg } from "../../assets/images";
 import { InputGroupCustom, LoadingIndicator } from "../../components";
-import { getMyFeeds, getMyFeedsCategory, getFeedsCetegory, setMyFeedsCategory } from "../../store/feed";
+import {
+  getMyFeeds, getMyFeedsCategory, getFeedsCetegory, setMyFeedsCategory
+  , getUserCategory, getUserFeeds
+} from "../../store/feed";
 
 import {
   clearProfileState,
@@ -85,44 +88,53 @@ export const Profile = ({ location }) => {
     });
   };
 
-  const dataFeeds = feed?.myFeeds;
+  const dataFeeds = pathend !== "profile" ? feed?.userFeeds : feed?.myFeeds;
   const dataProfile =
     pathend !== "profile" ? profile?.otherUser : profile?.user;
-  let dataMyCategory = feed?.myCategoryFeeds
+  let dataMyCategory = pathend !== "profile" ? feed?.userCategory : feed?.myCategoryFeeds
+  //let [dataCategory, setDataCategory] = useState(feed?.categoryFeeds)
   let dataCategory = feed?.categoryFeeds
   useEffect(() => {
-    dispatch(getFeedsCetegory())
     if (pathend !== "profile") {
       dispatch(getOtherUserProfile(user.token, parseInt(pathend)));
+      dispatch(getUserFeeds(user.token, parseInt(pathend)))
+      dispatch(getFeedsCetegory())
+      dispatch(getUserCategory(user.token, parseInt(pathend)))
       setIsuser(false);
     } else {
       dispatch(getProfile(user.token));
+      dispatch(getFeedsCetegory())
       dispatch(getMyFeedsCategory(user.token))
+      dispatch(getMyFeeds(user.token));
       setIsuser(true);
     }
   }, [dispatch, location]);
   useEffect(() => {
-    let data = []
-    dataCategory = feed?.categoryFeeds.filter(function (item) {
-      for (var key in dataMyCategory) {
-        if (item === undefined || item.id_kategori == dataMyCategory[key].id_kategori)
-          return false;
-      }
-      return true;
-    });
     let x = []
-    dataCategory.forEach(function (item) {
-      x.push({
-        value: String(item.id_kategori),
-        key: item.nama_kategori,
-        label: item.nama_kategori
+    let data
+    if (dataCategory) {
+      dataCategory = feed?.categoryFeeds.filter(function (item) {
+        for (var key in dataMyCategory) {
+          if (item === undefined || item.id_kategori == dataMyCategory[key].id_kategori)
+            return false;
+        }
+        return true;
       })
-    })
-    console.log(x)
-    setFilterCategory(x)
-  }, [dataCategory])
+      dataCategory.forEach(function (item) {
+        x.push({
+          value: String(item.id_kategori),
+          key: item.nama_kategori,
+          label: item.nama_kategori
+        })
+      })
+      setFilterCategory(x)
+    }
+    console.log(dataFeeds)
+    console.log(dataMyCategory)
+  }, [feed, location])
+
   useEffect(() => {
-    dispatch(getMyFeeds(user.token));
+
     setFormProfile({
       name: dataProfile?.name,
       birth: Number(moment.unix(dataProfile?.birth).format("YYYY-MM-DD")),
@@ -168,6 +180,9 @@ export const Profile = ({ location }) => {
       dispatch(setMyFeedsCategory(item, user.token))
     })
     setShowAddCategory(!showAddCategory)
+  }
+  const deleteCategoryHandler = (id_kategori, nama_kategori_feed) => {
+    dispatch(setMyFeedsCategory({ id_kategori, nama_kategori_feed }, user.token))
   }
   const uploadPhotoHandler = (e) => { };
   const updatePasswordHandler = (e) => {
@@ -226,9 +241,8 @@ export const Profile = ({ location }) => {
   const contentCategory = () => {
     return (<>
       <h5>Followed Category
-        {isUser ? <Button variant="light" onClick={() => setShowAddCategory(!showAddCategory)}><FaPlusCircle /></Button> : ""}</h5>
-
-      {showAddCategory ? (<>
+        {isUser ? <Button variant="light" onClick={() => setShowAddCategory(!showAddCategory)}><FaPlusCircle /></Button> : ""} </h5>
+      {(showAddCategory && filterCategory) ? (<>
         <DropdownMultiselect options={filterCategory}
           handleOnChange={(selected) => {
             setFormCategory(selected)
@@ -239,7 +253,7 @@ export const Profile = ({ location }) => {
             variant={listVariant[Math.floor(Math.random() * listVariant.length)]}
             key={i}>{item.nama_kategori_feed}
             <FaTimes
-              onClick={() => setMyFeedsCategory([item.id_kategori, item.nama_kategori_feed], user.token)} />
+              onClick={() => deleteCategoryHandler(item.id_kategori, item.nama_kategori_feed)} />
           </Badge>
         })
       }
@@ -530,14 +544,14 @@ export const Profile = ({ location }) => {
                 </Row>
                 <Row>
                   <Col md={2}></Col>
-                  <Col md={4}>{isUser ? contentCategory() : ""}</Col>
+                  <Col md={4}> {contentCategory()}</Col>
                 </Row>
               </Container>
               {/*Container fungsi*/}
               <Container>
                 <Row>
                   {/*Menu Konten*/}
-                  {(showEdit === false) & isUser ? (
+                  {(showEdit === false) ? (
                     <Col md={4} className="card-menu">
                       {contentFeeds()}
                     </Col>

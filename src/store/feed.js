@@ -5,7 +5,9 @@ import {
     getListFeedTrending,
     getMyOwnPost,
     getMyCategory,
-    addMyCategory
+    addMyCategory,
+    getAnotherUserCategory,
+    getAnotherUserFeeds
 } from "../api/";
 
 const feedSlice = createSlice({
@@ -79,7 +81,7 @@ export const getFeedsCetegory = () => async(dispatch) => {
                 dispatch(
                     onSuccess({
                         identifier: "categoryFeeds",
-                        stateValue: listResponse.data["kategori feed"],
+                        stateValue: listResponse.data["kategori_feed"],
                     })
                 );
                 break;
@@ -102,7 +104,7 @@ export const getMyFeedsCategory = (token) => async(dispatch) => {
                 dispatch(
                     onSuccess({
                         identifier: "myCategoryFeeds",
-                        stateValue: listResponse.data["kategori follow"],
+                        stateValue: listResponse.data["kategori_follow"],
                     })
                 );
                 break;
@@ -184,6 +186,52 @@ export const setMyFeedsCategory = ({ id_kategori, follow }, token) => async(disp
     }
 };
 
+/**
+ * Action untuk mengambil data feeds user lain
+ */
+export const getUserFeeds = (token, id) => async(dispatch) => {
+    try {
+        dispatch(onProcess());
+        const listResponse = await getAnotherUserFeeds(token, id);
+        switch (listResponse.code) {
+            case 200:
+                dispatch(
+                    onSuccess({
+                        identifier: "userFeeds",
+                        stateValue: listResponse.data["feeds"],
+                    })
+                );
+                break;
+            default:
+                throw new Error("Uppss.. Terjadi kesalahan.");
+        }
+    } catch (e) {
+        dispatch(onFailed(e.message));
+    }
+};
+/**
+ * Action untuk mengambil data category user lain
+ */
+export const getUserCategory = (token, id) => async(dispatch) => {
+    try {
+        dispatch(onProcess());
+        const listResponse = await getAnotherUserCategory(token, id);
+        switch (listResponse.code) {
+            case 200:
+                dispatch(
+                    onSuccess({
+                        identifier: "userCategory",
+                        stateValue: listResponse.data["kategori_follow"],
+                    })
+                );
+                break;
+            default:
+                throw new Error("Uppss.. Terjadi kesalahan.");
+        }
+    } catch (e) {
+        dispatch(onFailed(e.message));
+    }
+};
 /**
  * Action untuk membersihkan data feed.
  */
