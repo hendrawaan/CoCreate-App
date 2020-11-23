@@ -42,7 +42,7 @@ export const TableUser = () => {
   return (
     <Fragment>
       {loading && <LoadingIndicator />}
-      <Table striped bordered hover>
+      <Table responsive striped bordered hover>
         <thead>
           <tr>
             <th>No</th>
