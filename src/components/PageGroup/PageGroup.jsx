@@ -18,8 +18,8 @@ import {
     group,
 } from "../../assets/images/";
 import { 
-    CgProfile,
-} from "react-icons/cg";
+    FaRegUserCircle,
+} from "react-icons/fa";
 import { 
     BiUserPlus,
 } from "react-icons/bi";
@@ -32,6 +32,9 @@ import {
 import { 
     HiSearch,
 } from "react-icons/hi";
+import { 
+    MdMoreVert,
+} from "react-icons/md";
 
 import './PageGroup.css'
 
@@ -39,10 +42,10 @@ export default class PageGroup extends Component {
     render() {
         // var styles ={"background-image": "../../assets/images/group/group.jpg"}
         return (
-            <Container Fluid className="mt-2">
-                <Image src={group} fluid style={{ height: '300px' , width: '100%' }} />
-                <h5>Nama Group</h5>
-                <p>Privasi Group. 1 anggota</p>
+            <Container className="mt-2" bg="white">
+                <Image src={group} style={{ height: '300px' , width: '100%' }} />
+                <h5 className="head-title">Nama Group</h5>
+                <p className="subhead-title">Privasi Group. 1 anggota</p>
                 <hr></hr>
                 <Navbar bg="light" expand="lg">
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -55,7 +58,8 @@ export default class PageGroup extends Component {
                     </Nav>
                     <div inline>
                     <div type="text" className="mr-sm-2" />
-                    <Button variant="outline-dark"><HiSearch /></Button>
+                    <Button variant="light"><HiSearch /></Button>
+                    <Button variant="light"><MdMoreVert /></Button>
                     </div>
                 </Navbar.Collapse>
                 </Navbar>
@@ -65,19 +69,19 @@ export default class PageGroup extends Component {
                 <Form.Row>
                     <Card>
                     <Col sm={12}>
-                        <Col>
-                        <CgProfile />
-                        </Col>
-                        <Col>
-                        <Form.Control placeholder="Apa yang anda pikirkan sekarang? "  className="mb-3 mt-3" />
-                        </Col>
-                    <Button size="sm" variant="outline-none-dark"><IoIosImages />Foto/Video</Button>{' '}
-                    <Button size="sm" variant="outline-none-dark"><BiUserPlus />Tandai Orang</Button>{' '}
-                    <Button size="sm" variant="outline-none-dark"><GoSmiley />Perasaan/Aktivitas</Button>{' '}
+                        <Form inline>
+                        <FaRegUserCircle />
+                            <Form.Control type="text" placeholder="Apa yang anda pikirkan?" className=" ml-sm-2 mb-3 mt-3" />
+                        </Form>
+                    <Button size="sm" variant="outline-none-dark" className="lite-title mr-sm-1"><IoIosImages />Foto/Video</Button>{' '}
+                    <Button size="sm" variant="outline-none-dark" className="lite-title mr-sm-1"><BiUserPlus />Tandai Orang</Button>{' '}
+                    <Button size="sm" variant="outline-none-dark" className="lite-title"><GoSmiley />Perasaan/Aktivitas</Button>{' '}
                     </Col>
                     </Card>
                     <Col>
+                    <Col>
                     <Form.Control size="lg" placeholder="Tentang" disabled className="mt-2" />
+                    </Col>
                     </Col>
                 </Form.Row>
                 </Form>
