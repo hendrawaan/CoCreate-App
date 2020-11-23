@@ -152,7 +152,7 @@ export const Profile = ({ location }) => {
   const contentFeeds = () => {
     return (
       <Card style={{ width: "18rem", height: 300 }}>
-        <Card.Header>Feeds</Card.Header>
+        <Card.Header>My Post</Card.Header>
         <div className="scroll-card">
           {dataFeeds?.map(function(item, i) {
             return (

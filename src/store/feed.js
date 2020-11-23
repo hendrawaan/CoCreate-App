@@ -15,7 +15,7 @@ const feedSlice = createSlice({
     onProcess: (state) => {
       state.loading = true;
     },
-    onSuccess: (state, {payload}) => {
+    onSuccess: (state, { payload }) => {
       state.error = null;
       state.loading = false;
       state.feed = { ...state.feed, [payload.identifier]: payload.stateValue };
@@ -24,7 +24,7 @@ const feedSlice = createSlice({
       state.error = payload;
       state.loading = false;
     },
-    onClear: (state, {payload}) => {
+    onClear: (state, { payload }) => {
       state.feed = { [payload.identifier]: null };
     },
   },
@@ -75,7 +75,7 @@ export const getFeedsCetegory = () => async (dispatch) => {
         dispatch(
           onSuccess({
             identifier: "categoryFeeds",
-            stateValue: listResponse.data["kategori feed"],
+            stateValue: listResponse.data["kategori_feed"],
           })
         );
         break;

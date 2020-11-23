@@ -6,10 +6,10 @@ import { NavLink, useHistory } from "react-router-dom";
 import { logoSmall } from "../../assets/images";
 import { logout } from "../../store/user";
 
-export const NavApp = (props) => {
+export const NavApp = props => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSelector(state => state.user);
 
   const { navItems } = props;
   const decodeToken = user ? jwt_decode(user.token) : false;
@@ -26,9 +26,9 @@ export const NavApp = (props) => {
       <Container>
         <Navbar.Brand href="/">
           <Image
+            className="mx-3"
             src={logoSmall}
             alt="logo"
-            roundedCircle
             style={{ height: 70 }}
           />
           CoCreate
@@ -36,20 +36,18 @@ export const NavApp = (props) => {
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ml-auto">
-            {
-              decodeToken?.type_user === 1 &&
-              (<Nav.Link as={NavLink} exact to="/admin">
+            {decodeToken?.type_user === 1 && (
+              <Nav.Link as={NavLink} exact to="/admin">
                 Admin
-              </Nav.Link>)
-            }
-            {
-              navItems.filter((item) => user || !item.isProtected)
-                .map((item, index) => (
-                  <Nav.Link as={NavLink} exact to={item.link} key={index}>
-                    {item.label}
-                  </Nav.Link>
-                ))
-            }
+              </Nav.Link>
+            )}
+            {navItems
+              .filter(item => user || !item.isProtected)
+              .map((item, index) => (
+                <Nav.Link as={NavLink} exact to={item.link} key={index}>
+                  {item.label}
+                </Nav.Link>
+              ))}
           </Nav>
           <Button
             variant="primary"

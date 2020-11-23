@@ -24,11 +24,13 @@ import { getProfile } from "../../store/profile";
 import moment from "moment";
 import { logout } from "../../store/user";
 import Add from "./Add";
+import { useHistory } from "react-router-dom";
 
 export function Home() {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.user);
   const { profile } = useSelector(state => state.profile);
+  const history = useHistory();
 
   const [filter, setFilter] = useState(0);
   const [showcomment, setShowcomment] = useState(-1);
@@ -115,8 +117,7 @@ export function Home() {
       method: "GET",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
-        Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InplYXN0YW5rLmhhcml0c0BnbWFpbC5jb20iLCJpZCI6NSwidHlwZV91c2VyIjoyLCJ1c2VybmFtZSI6Imhhcml0cyJ9.259aG9HQASMkelpXEyPkdp8z5ZEkekxGKA7qVcb6Vbg"
+        Authorization: user.token
       }
     })
       .then(res => res.json())
@@ -126,22 +127,20 @@ export function Home() {
       });
   }, []);
 
-  // useEffect(() => {
-  //   fetch("http://kelompok6.dtstakelompok1.com/api/v1/kategori/list/follow", {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-type": "application/json; charset=UTF-8",
-  //       Authorization:
-  //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InplYXN0YW5rLmhhcml0c0BnbWFpbC5jb20iLCJpZCI6NSwidHlwZV91c2VyIjoyLCJ1c2VybmFtZSI6Imhhcml0cyJ9.259aG9HQASMkelpXEyPkdp8z5ZEkekxGKA7qVcb6Vbg"
-  //     }
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => {
-
-  //       console.log("category", data);
-  //       setMyCategory(data.data.['kategori follow']);
-  //     });
-  // }, []);
+  useEffect(() => {
+    fetch("http://kelompok6.dtstakelompok1.com/api/v1/kategori/list/follow", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: user.token
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("category", data);
+        setMyCategory(data.data.kategori_follow);
+      });
+  }, []);
 
   // console.log("feeds", feeds);
   console.log("realFeeds", realFeeds);
@@ -176,18 +175,18 @@ export function Home() {
                         <div>
                           <ListGroup.Item>{profileData?.name}</ListGroup.Item>
                           <ListGroup.Item>{profileData?.email}</ListGroup.Item>
-                          <ListGroup.Item>
+                          {/* <ListGroup.Item>
                             {profileData?.verification === "False"
                               ? " belum "
                               : " sudah "}{" "}
                             terverifikasi
-                          </ListGroup.Item>
+                          </ListGroup.Item> */}
                         </div>
                       )}
                     </ListGroup>
                   </Card>
                 </div>
-                <div className="p-2">
+                {/* <div className="p-2">
                   <Button variant="light" style={{ width: "100%" }}>
                     <FaHome /> Home
                   </Button>
@@ -202,10 +201,8 @@ export function Home() {
                     <MdEvent />
                     Profile
                   </Button>
-                </div>
-                <div className="p-2">
-                  <Add />
-                </div>
+                </div> */}
+                <div className="p-2"></div>
               </div>
               <hr />
             </Col>
@@ -229,6 +226,9 @@ export function Home() {
             <Col>
               <div className="d-flex flex-row">
                 <div>
+                  <Add />
+                </div>
+                {/* <div>
                   <Button variant="light" onClick={() => setFilter(0)}>
                     <GrTechnology />
                     <p className="px-2" style={{ float: "right" }}>
@@ -259,7 +259,7 @@ export function Home() {
                       Lifestyle
                     </p>
                   </Button>
-                </div>
+                </div> */}
               </div>
             </Col>
             <Col>
@@ -312,14 +312,18 @@ export function Home() {
                               </Row>
                             </Card.Title>
                             <hr />
-                            <Card.Text>
-                              <p>{items.isi_feed}</p>
+                            <Card.Text
+                              style={{
+                                height: 100,
+                                overflow: "hidden",
+                                textOverflow: "ellipsis"
+                              }}
+                            >
+                              {items.isi_feed}
                             </Card.Text>
                             <Button
                               variant="outline-primary"
-                              onClick={() =>
-                                (window.location = "./detailpost/" + items.id)
-                              }
+                              onClick={() => history.push("feed/" + items.id)}
                             >
                               Read More
                             </Button>
