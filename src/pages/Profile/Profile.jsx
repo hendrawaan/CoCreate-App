@@ -1,35 +1,42 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
-  Badge, Button,
+  Badge,
+  Button,
   Card,
   Col,
   Container,
   Form,
   Image,
+  ListGroup,
   Nav,
   Row
 } from "react-bootstrap";
 import {
   FaCalendar,
   FaEnvelope,
-  FaFileAlt,
   FaIdCard,
   FaKey,
   FaMapMarkerAlt,
   FaMapPin,
   FaPhone,
-  FaPlusCircle, FaRestroom,
-  FaTimes, FaUser
+  FaPlus,
+  FaRestroom,
+  FaTimes,
+  FaUser
 } from "react-icons/fa";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { profileimg } from "../../assets/images";
 import { InputGroupCustom, LoadingIndicator } from "../../components";
+import { SimpleFeed } from "../../components/SimpleFeed/SimpleFeed";
 import {
-  getFeedsCetegory, getMyFeeds, getMyFeedsCategory,
-  getUserCategory, getUserFeeds, setMyFeedsCategory
+  getFeedsCetegory,
+  getMyFeeds,
+  getMyFeedsCategory,
+  getUserCategory,
+  getUserFeeds,
+  setMyFeedsCategory
 } from "../../store/feed";
 import {
   clearProfileState,
@@ -39,7 +46,7 @@ import {
   updateProfile
 } from "../../store/profile";
 import { logout } from "../../store/user";
-import { listGender, listMenu, listNav, listVariant } from "./List";
+import { listGender, listNav, listVariant } from "./List";
 import "./Profile.css";
 
 export const Profile = ({ location }) => {
@@ -50,7 +57,6 @@ export const Profile = ({ location }) => {
   const { feed } = useSelector((state) => state.feed);
 
   const [navKey, setKey] = useState(1);
-  const history = useHistory();
   const [formProfile, setFormProfile] = useState({
     name: "",
     birth: 0,
@@ -62,14 +68,13 @@ export const Profile = ({ location }) => {
   });
   const [formPassword, setFormPassword] = useState();
   const [formCategory, setFormCategory] = useState();
-  const [filterCategory, setFilterCategory] = useState()
+  const [filterCategory, setFilterCategory] = useState();
   const [isUser, setIsuser] = useState(false);
-  const [hiddenbar, setHiddenBar] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showAddCategory, setShowAddCategory] = useState(false);
-  const updateProfiles = e => {
-    let value = e.target.value
-    let name = e.target.name
+  const updateProfiles = (e) => {
+    let value = e.target.value;
+    let name = e.target.name;
 
     setFormProfile({
       ...formProfile,
@@ -88,50 +93,50 @@ export const Profile = ({ location }) => {
   const dataFeeds = pathend !== "profile" ? feed?.userFeeds : feed?.myFeeds;
   const dataProfile =
     pathend !== "profile" ? profile?.otherUser : profile?.user;
-  let dataMyCategory = pathend !== "profile" ? feed?.userCategory : feed?.myCategoryFeeds
-  //let [dataCategory, setDataCategory] = useState(feed?.categoryFeeds)
-  let dataCategory = feed?.categoryFeeds
+  let dataMyCategory =
+    pathend !== "profile" ? feed?.userCategory : feed?.myCategoryFeeds;
+  let dataCategory = feed?.categoryFeeds;
   useEffect(() => {
     if (pathend !== "profile") {
       dispatch(getOtherUserProfile(user.token, parseInt(pathend)));
-      dispatch(getUserFeeds(user.token, parseInt(pathend)))
-      dispatch(getFeedsCetegory())
-      dispatch(getUserCategory(user.token, parseInt(pathend)))
+      dispatch(getUserFeeds(user.token, parseInt(pathend)));
+      dispatch(getFeedsCetegory());
+      dispatch(getUserCategory(user.token, parseInt(pathend)));
       setIsuser(false);
     } else {
       dispatch(getProfile(user.token));
-      dispatch(getFeedsCetegory())
-      dispatch(getMyFeedsCategory(user.token))
+      dispatch(getFeedsCetegory());
+      dispatch(getMyFeedsCategory(user.token));
       dispatch(getMyFeeds(user.token));
       setIsuser(true);
     }
   }, [dispatch, location]);
   useEffect(() => {
-    let x = []
-    let data
+    let x = [];
+    let data;
     if (dataCategory) {
       dataCategory = feed?.categoryFeeds.filter(function (item) {
         for (var key in dataMyCategory) {
-          if (item === undefined || item.id_kategori == dataMyCategory[key].id_kategori)
+          if (
+            item === undefined ||
+            item.id_kategori == dataMyCategory[key].id_kategori
+          )
             return false;
         }
         return true;
-      })
+      });
       dataCategory.forEach(function (item) {
         x.push({
           value: String(item.id_kategori),
           key: item.nama_kategori,
-          label: item.nama_kategori
-        })
-      })
-      setFilterCategory(x)
+          label: item.nama_kategori,
+        });
+      });
+      setFilterCategory(x);
     }
-    console.log(dataFeeds)
-    console.log(dataMyCategory)
-  }, [feed, location])
+  }, [feed, location]);
 
   useEffect(() => {
-
     setFormProfile({
       name: dataProfile?.name,
       birth: Number(moment.unix(dataProfile?.birth).format("YYYY-MM-DD")),
@@ -161,26 +166,36 @@ export const Profile = ({ location }) => {
     }, 2000);
   };
   const selectedCategoryHandler = () => {
-    let x = []
-    filterCategory.forEach(function (item) {
-      for (let index = 0; index < formCategory.length; index++) {
-        if (formCategory[index] == item.key && formCategory[index] !== undefined) {
-          x.push({
-            id_kategori: parseInt(item.value),
-            follow: true
-          })
+    if (filterCategory && formCategory) {
+      let x = [];
+      filterCategory.forEach(function (item) {
+        for (let index = 0; index < formCategory.length; index++) {
+          if (
+            formCategory[index] === item.key &&
+            formCategory[index] !== undefined
+          ) {
+            x.push({
+              id_kategori: parseInt(item.value),
+              follow: true,
+            });
+          }
         }
-      }
-    })
-    x.forEach(function (item, i) {
-      dispatch(setMyFeedsCategory(item, user.token))
-    })
-    setShowAddCategory(!showAddCategory)
-  }
+      });
+      x.forEach(function (item, i) {
+        dispatch(setMyFeedsCategory(item, user.token));
+      });
+      setShowAddCategory(!showAddCategory);
+    } else {
+      alert("Silahkan pilih salah satu kategori");
+    }
+  };
+
   const deleteCategoryHandler = (id_kategori, nama_kategori_feed) => {
-    dispatch(setMyFeedsCategory({ id_kategori, nama_kategori_feed }, user.token))
-  }
-  const uploadPhotoHandler = (e) => { };
+    dispatch(
+      setMyFeedsCategory({ id_kategori, nama_kategori_feed }, user.token)
+    );
+  };
+
   const updatePasswordHandler = (e) => {
     if (formPassword !== null) {
       if (
@@ -198,64 +213,84 @@ export const Profile = ({ location }) => {
       alert("Password tidak boleh kosong");
     }
   };
-  const contentBio = () => {
-    return (
-      <Card>
-        <Card.Header as="h5">Short Bio</Card.Header>
-        <Card.Body>
-          <Card.Text>{dataProfile?.short_bio}</Card.Text>
-        </Card.Body>
-      </Card>
-    );
-  };
-  const contentFeeds = () => {
-    return (
-      <Card style={{ width: "18rem", height: 300 }}>
-        <Card.Header>Feeds</Card.Header>
-        <div className="scroll-card">
-          {dataFeeds?.map(function (item, i) {
-            return (
-              <Button
-                onClick={() => history.push("feed/" + item.id)}
-                className="text-left"
-                key={i}
-                variant="light"
-              >
-                <p>
-                  <FaFileAlt /> {item.judul}
-                </p>
-                <p className="feed-calendar">
-                  {moment.unix(item.waktu).format("DD-MM-YYYY")}
-                </p>
-              </Button>
-            );
-          })}
-        </div>
-      </Card>
-    );
-  };
-  const contentCategory = () => {
-    return (<>
-      <h5>Followed Category
-    {isUser && (<Button variant="light" onClick={() => setShowAddCategory(!showAddCategory)}>{!showAddCategory ? <FaPlusCircle /> : <FaTimes />}</Button>)} </h5>
-      {(showAddCategory && filterCategory && dataMyCategory) ? (<>
-        <DropdownMultiselect options={filterCategory}
-          handleOnChange={(selected) => {
-            setFormCategory(selected)
-          }}
-          name="Category" /> <Button onClick={() => selectedCategoryHandler()} variant="primary">Set</Button></>)
-        : dataMyCategory && (dataMyCategory.map((item, i) => {
-          return <Badge
-            variant={listVariant[Math.floor(Math.random() * listVariant.length)]}
-            key={i}>{item.nama_kategori_feed}
-            {isUser ? <FaTimes
-              onClick={() => deleteCategoryHandler(item.id_kategori, item.nama_kategori_feed)} /> : ""}
 
-          </Badge>
-        }))
-      }
-    </>)
-  }
+  const ContentFeeds = () => {
+    return (
+      <Col md={8} lg={7}>
+        <h5 className="mb-4">My Feeds</h5>
+        <ListGroup className="w-100">
+          {dataFeeds?.map(function (item, i) {
+            return <SimpleFeed key={i} {...item} />;
+          })}
+        </ListGroup>
+      </Col>
+    );
+  };
+
+  const contentCategory = () => {
+    return (
+      <Col md={{ span: 4 }} lg={{ span: 3, offset: 1 }}>
+        <h5 className="mb-4">Interested</h5>
+
+        {isUser && filterCategory && (
+          <>
+            <h6>Add Category</h6>
+            <div className="d-flex flex-row">
+              <DropdownMultiselect
+                options={filterCategory}
+                handleOnChange={(selected) => {
+                  setFormCategory(selected);
+                }}
+                name="Category"
+                className="flex-fill"
+                placeholderMultipleChecked="Selected"
+              />
+              <Button
+                onClick={() => selectedCategoryHandler()}
+                variant="primary"
+              >
+                <FaPlus />
+              </Button>
+            </div>
+          </>
+        )}
+
+        {dataMyCategory && (
+          <>
+            <h6 className="mt-3">Followed</h6>
+
+            {dataMyCategory.map((item, i) => {
+              return (
+                <Badge
+                  className="m-1"
+                  variant={
+                    listVariant[Math.floor(Math.random() * listVariant.length)]
+                  }
+                  key={i}
+                  pill
+                >
+                  {item.nama_kategori_feed}
+
+                  {isUser && (
+                    <FaTimes
+                      className="ml-2"
+                      onClick={() =>
+                        deleteCategoryHandler(
+                          item.id_kategori,
+                          item.nama_kategori_feed
+                        )
+                      }
+                    />
+                  )}
+                </Badge>
+              );
+            })}
+          </>
+        )}
+      </Col>
+    );
+  };
+
   const contentEditProfile = () => {
     return (
       <Card>
@@ -378,42 +413,6 @@ export const Profile = ({ location }) => {
     );
   };
 
-  const contentUploadPhoto = () => {
-    return (
-      <Card>
-        <Row>
-          <Card.Body>
-            <Col md={11}>
-              <p className="text-style">
-                Your profile photo will be used on your profile and throughout
-                the site. If there is a Gravatar associated with your account
-                email we will use that, or you can upload an image from your
-                computer, but please note that there is a 500Kb file size limit.
-              </p>
-              <p className="text-style">
-                Click below to select a JPG, GIF or PNG format photo from your
-                computer and then click 'Upload Image' to proceed.
-              </p>
-            </Col>
-            <Col md={6}>
-              <Form className="form-upload" onSubmit={uploadPhotoHandler}>
-                <Form.File
-                  id="browse-photo"
-                  label="Select Photo"
-                  custom
-                  style={{ marginBottom: "10px" }}
-                />
-                <Button type="submit" className="btn-primary">
-                  Upload
-                </Button>{" "}
-              </Form>
-            </Col>
-          </Card.Body>
-        </Row>
-      </Card>
-    );
-  };
-
   const contentUpdatePassword = () => {
     return (
       <Card>
@@ -456,140 +455,103 @@ export const Profile = ({ location }) => {
 
   return (
     <>
-      {
-        dataProfile
-          ? (
-            <Container
-              fluid
-              style={{ backgroundColor: "#F1F6F9", padding: 0, minHeight: 700 }}
-            >
-              {/*Navbar*/}
-              <Container fluid style={{ backgroundColor: "#14274E" }}>
-                <div
-                  className={`${!hiddenbar ? "collapse" : ""} navbar-collapse`}
-                  id="navbarsExample09"
+      {dataProfile ? (
+        <Container className="vh-fit vw-100 mt-5 pb-5">
+          <Row>
+            <Col md={{ span: 8, offset: 1 }}>
+              <Row>
+                <Col md={2}>
+                  <Image
+                    src={profileimg}
+                    alt="profile"
+                    roundedCircle
+                    style={{ maxWidth: 60 }}
+                  />
+                </Col>
+                <Col md={8} className="personal-info">
+                  <h2>{dataProfile?.name}</h2>
+                  <h4 className="profile-text">@{dataProfile?.username}</h4>
+                  <h5 className="mt-4">Profile</h5>
+                  <Row>
+                    <Col md={6}>
+                      <p className="profile-text">
+                        <FaRestroom className="mr-2" /> {dataProfile?.gender}
+                      </p>
+                      <p className="profile-text">
+                        <FaPhone className="mr-2" /> {dataProfile?.phone}
+                      </p>
+                    </Col>
+                    <Col md={6}>
+                      <p className="profile-text">
+                        <FaCalendar className="mr-2" />
+                        {dataProfile?.birth &&
+                          moment.unix(dataProfile?.birth).format("L")}
+                      </p>
+                      <p className="profile-text">
+                        <FaEnvelope className="mr-2" /> {dataProfile?.email}
+                      </p>
+                    </Col>
+                  </Row>
+                  <p className="profile-text mt-2">
+                    <FaMapPin className="mr-2" /> {dataProfile?.postcode}
+                  </p>
+                  <p className="profile-text">
+                    <FaMapMarkerAlt className="mr-2" /> {dataProfile?.address}
+                  </p>
+                  <h5 className="mt-4">Short Bio</h5>
+                  <i>{dataProfile?.short_bio}</i>
+                </Col>
+              </Row>
+            </Col>
+
+            <Col md={2}>
+              {isUser && (
+                <Button
+                  variant={showEdit === false ? "primary" : "secondary"}
+                  size="sm"
+                  onClick={() => setShowEdit(!showEdit)}
                 >
-                  {listMenu.map(function (item, i) {
+                  {showEdit === false ? "Edit Profile" : "Cancel"}
+                </Button>
+              )}
+            </Col>
+          </Row>
+
+          <Row className="mt-5">
+            {showEdit === true ? (
+              <Col md={12}>
+                <Nav fill variant="tabs" defaultActiveKey={navKey}>
+                  {listNav.map(function (item, i) {
                     return (
-                      <a key={i} className="nav-link text-light" href="/{ item.link }">
-                        {item.name}
-                      </a>
+                      <Nav.Item key={i}>
+                        <Nav.Link
+                          eventKey={item.key}
+                          onClick={() => setKey(item.key)}
+                        >
+                          {item.name}
+                        </Nav.Link>
+                      </Nav.Item>
                     );
                   })}
-                </div>
-              </Container>
-              {/*Container atas */}
-              <Container fluid>
-                <Row className="profile-container">
-                  <Col md={1}></Col>
-                  <Col md={6}>
-                    <Row>
-                      <Col md={1}></Col>
-                      <Col md={2}>
-                        <Image
-                          src={profileimg}
-                          alt="profile"
-                          roundedCircle
-                          style={{ maxWidth: 60 }}
-                        />
-                      </Col>
-                      <Col md={6} className="personal-info">
-                        <h2>{dataProfile?.name}</h2>
-                        <p style={{ color: "grey" }}>@{dataProfile?.username}</p>
-                        <Row>
-                          <Col md={6}>
-                            <p style={{ color: "grey" }}>
-                              <FaRestroom /> {dataProfile?.gender}
-                            </p>
-                            <p style={{ color: "grey" }}>
-                              <FaPhone /> {dataProfile?.phone}
-                            </p>
-                          </Col>
-                          <Col md={6}>
-                            <p style={{ color: "grey" }}>
-                              <FaCalendar />{" "}
-                              {dataProfile?.birth && moment.unix(dataProfile?.birth).format("L")}
-                            </p>
-                            <p style={{ color: "grey" }}>
-                              <FaMapPin /> {dataProfile?.postcode}
-                            </p>
-                          </Col>
-                        </Row>
-                        <br />
-                        <p style={{ color: "grey" }}>
-                          <FaEnvelope /> {dataProfile?.email}
-                        </p>
-                        <p style={{ color: "grey" }}>
-                          <FaMapMarkerAlt /> {dataProfile?.address}
-                        </p>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col md={2}>
-                    {isUser ? (
-                      <Button
-                        variant={showEdit === false ? "primary" : "secondary"}
-                        size="sm"
-                        onClick={() => setShowEdit(!showEdit)}
-                      >
-                        {showEdit === false ? "Edit Profile" : "Cancel"}
-                      </Button>
-                    ) : (
-                        ""
-                      )}
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={2}></Col>
-                  <Col md={4}> {contentCategory()}</Col>
-                </Row>
-              </Container>
-              {/*Container fungsi*/}
-              <Container>
-                <Row>
-                  {/*Menu Konten*/}
-                  {(showEdit === false) ? (
-                    <Col md={4} className="card-menu">
-                      {contentFeeds()}
-                    </Col>
-                  ) : (
-                      ""
-                    )}
-                  {showEdit === true ? (
-                    <Col md={12}>
-                      <Nav fill variant="tabs" defaultActiveKey={navKey}>
-                        {listNav.map(function (item, i) {
-                          return (
-                            <Nav.Item key={i}>
-                              <Nav.Link
-                                eventKey={item.key}
-                                onClick={() => setKey(item.key)}
-                              >
-                                {item.name}
-                              </Nav.Link>
-                            </Nav.Item>
-                          );
-                        })}
-                      </Nav>
-                      {/*Menu Edit*/}
-                      {navKey === 1 ? (
-                        contentEditProfile()
-                      ) : // navKey === 2 ? contentUploadPhoto() :
-                        navKey === 3 ? (
-                          contentUpdatePassword()
-                        ) : (
-                            <div></div>
-                          )}
-                    </Col>
-                  ) : (
-                      <Col md={6}> {contentBio()}</Col>
-                    )}
-                </Row>
-              </Container>
-            </Container>
-          )
-          : (<LoadingIndicator />)
-      }
+                </Nav>
+
+                {navKey === 1 ? (
+                  contentEditProfile()
+                ) : (
+                  navKey === 3 && contentUpdatePassword()
+                )}
+              </Col>
+            ) : (
+              <>
+                {contentCategory()}
+                <ContentFeeds />
+              </>
+            )}
+          </Row>
+        </Container>
+      ) : (
+        <LoadingIndicator />
+      )}
     </>
   );
 };
