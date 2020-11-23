@@ -9,12 +9,6 @@ import './Home.css'
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // const FeedPost = () => {
-  // const [post, setPost] = useState(false);
-
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
-
   return (
     <>
       <Button variant="light" style={{ width: "100%" }} onClick={handleShow}>

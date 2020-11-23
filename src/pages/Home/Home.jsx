@@ -188,7 +188,7 @@ export default function Home() {
 
           <Row>
             <Col>
-              <Card className="mb-3">
+              <Card className="mb-3 mt-2">
                 <h3 className="text-center">Postingan</h3>
                 <Form className="container">
                     <Form.Group controlId="postFeed">
@@ -213,7 +213,7 @@ export default function Home() {
                     </Col>
                 </Form>
               </Card >
-              <Feed title={<PostFeed desc="Deskripsi Postingan #1 Dengan Feed" />} />
+              <Feed title={<PostFeed />} />
             </Col>
           </Row>
         </Col>
