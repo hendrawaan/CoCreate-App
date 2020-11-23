@@ -17,3 +17,4 @@ export const listMenu = [
     { name: "List Project", icon: <FaList />, link: "" },
     { name: "Collaboration", icon: <FaUserFriends />, link: "" }
 ];
+export const listVariant = ["primary", "light", "secondary", "warning", "success", "warning", "info", "dark"]

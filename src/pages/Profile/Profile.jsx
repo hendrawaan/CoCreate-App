@@ -4,6 +4,7 @@ import { useParams, useLocation } from "react-router-dom";
 import moment from "moment";
 import "./Profile.css";
 import {
+  Badge,
   Button,
   Card,
   Col,
@@ -22,13 +23,23 @@ import {
   FaMapMarkerAlt,
   FaMapPin,
   FaPhone,
+  FaPlusCircle,
   FaRestroom,
+  FaTimes,
   FaUser
 } from "react-icons/fa";
+import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import { useHistory } from "react-router-dom";
 import { profileimg } from "../../assets/images";
 import { InputGroupCustom, LoadingIndicator } from "../../components";
-import { getMyFeeds } from "../../store/feed";
+import {
+  getFeedsCetegory,
+  getMyFeeds,
+  getMyFeedsCategory,
+  getUserCategory,
+  getUserFeeds,
+  setMyFeedsCategory
+} from "../../store/feed";
 import {
   clearProfileState,
   getOtherUserProfile,
@@ -37,14 +48,16 @@ import {
   updateProfile
 } from "../../store/profile";
 import { logout } from "../../store/user";
-import { listGender, listMenu, listNav } from "./List";
+import { listGender, listMenu, listNav, listVariant } from "./List";
 import "./Profile.css";
+
 export const Profile = ({ location }) => {
   const pathend = location.pathname.split("/").pop();
   const dispatch = useDispatch();
   const { profile } = useSelector(state => state.profile);
   const { user } = useSelector(state => state.user);
   const { feed } = useSelector(state => state.feed);
+
   const [navKey, setKey] = useState(1);
   const history = useHistory();
   const [formProfile, setFormProfile] = useState({
@@ -57,12 +70,16 @@ export const Profile = ({ location }) => {
     short_bio: ""
   });
   const [formPassword, setFormPassword] = useState();
+  const [formCategory, setFormCategory] = useState();
+  const [filterCategory, setFilterCategory] = useState();
   const [isUser, setIsuser] = useState(false);
   const [hiddenbar, setHiddenBar] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showAddCategory, setShowAddCategory] = useState(false);
   const updateProfiles = e => {
     let value = e.target.value;
     let name = e.target.name;
+
     setFormProfile({
       ...formProfile,
       [name]: value
@@ -76,22 +93,57 @@ export const Profile = ({ location }) => {
       [name]: value
     });
   };
-  const dataFeeds = feed?.myFeeds;
+
+  const dataFeeds = pathend !== "profile" ? feed?.userFeeds : feed?.myFeeds;
   const dataProfile =
     pathend !== "profile" ? profile?.otherUser : profile?.user;
+  let dataMyCategory =
+    pathend !== "profile" ? feed?.userCategory : feed?.myCategoryFeeds;
+  //let [dataCategory, setDataCategory] = useState(feed?.categoryFeeds)
+  let dataCategory = feed?.categoryFeeds;
   useEffect(() => {
     if (pathend !== "profile") {
       dispatch(getOtherUserProfile(user.token, parseInt(pathend)));
+      dispatch(getUserFeeds(user.token, parseInt(pathend)));
+      dispatch(getFeedsCetegory());
+      dispatch(getUserCategory(user.token, parseInt(pathend)));
       setIsuser(false);
     } else {
       dispatch(getProfile(user.token));
+      dispatch(getFeedsCetegory());
+      dispatch(getMyFeedsCategory(user.token));
+      dispatch(getMyFeeds(user.token));
       setIsuser(true);
     }
   }, [dispatch, location]);
+  useEffect(() => {
+    let x = [];
+    let data;
+    if (dataCategory) {
+      dataCategory = feed?.categoryFeeds.filter(function(item) {
+        for (var key in dataMyCategory) {
+          if (
+            item === undefined ||
+            item.id_kategori == dataMyCategory[key].id_kategori
+          )
+            return false;
+        }
+        return true;
+      });
+      dataCategory.forEach(function(item) {
+        x.push({
+          value: String(item.id_kategori),
+          key: item.nama_kategori,
+          label: item.nama_kategori
+        });
+      });
+      setFilterCategory(x);
+    }
+    console.log(dataFeeds);
+    console.log(dataMyCategory);
+  }, [feed, location]);
 
   useEffect(() => {
-    dispatch(getMyFeeds(user.token));
-
     setFormProfile({
       name: dataProfile?.name,
       birth: Number(moment.unix(dataProfile?.birth).format("YYYY-MM-DD")),
@@ -102,7 +154,6 @@ export const Profile = ({ location }) => {
       short_bio: dataProfile?.short_bio
     });
   }, [dispatch]);
-
   useEffect(() => {
     return () => {
       dispatch(clearProfileState());
@@ -120,6 +171,31 @@ export const Profile = ({ location }) => {
     setTimeout(function() {
       window.location.reload();
     }, 2000);
+  };
+  const selectedCategoryHandler = () => {
+    let x = [];
+    filterCategory.forEach(function(item) {
+      for (let index = 0; index < formCategory.length; index++) {
+        if (
+          formCategory[index] == item.key &&
+          formCategory[index] !== undefined
+        ) {
+          x.push({
+            id_kategori: parseInt(item.value),
+            follow: true
+          });
+        }
+      }
+    });
+    x.forEach(function(item, i) {
+      dispatch(setMyFeedsCategory(item, user.token));
+    });
+    setShowAddCategory(!showAddCategory);
+  };
+  const deleteCategoryHandler = (id_kategori, nama_kategori_feed) => {
+    dispatch(
+      setMyFeedsCategory({ id_kategori, nama_kategori_feed }, user.token)
+    );
   };
   const uploadPhotoHandler = e => {};
   const updatePasswordHandler = e => {
@@ -175,7 +251,63 @@ export const Profile = ({ location }) => {
       </Card>
     );
   };
-
+  const contentCategory = () => {
+    return (
+      <>
+        <h5>
+          Followed Category
+          {isUser && (
+            <Button
+              variant="light"
+              onClick={() => setShowAddCategory(!showAddCategory)}
+            >
+              {!showAddCategory ? <FaPlusCircle /> : <FaTimes />}
+            </Button>
+          )}{" "}
+        </h5>
+        {showAddCategory && filterCategory && dataMyCategory ? (
+          <>
+            <DropdownMultiselect
+              options={filterCategory}
+              handleOnChange={selected => {
+                setFormCategory(selected);
+              }}
+              name="Category"
+            />{" "}
+            <Button onClick={() => selectedCategoryHandler()} variant="primary">
+              Set
+            </Button>
+          </>
+        ) : (
+          dataMyCategory &&
+          dataMyCategory.map((item, i) => {
+            return (
+              <Badge
+                variant={
+                  listVariant[Math.floor(Math.random() * listVariant.length)]
+                }
+                key={i}
+              >
+                {item.nama_kategori_feed}
+                {isUser ? (
+                  <FaTimes
+                    onClick={() =>
+                      deleteCategoryHandler(
+                        item.id_kategori,
+                        item.nama_kategori_feed
+                      )
+                    }
+                  />
+                ) : (
+                  ""
+                )}
+              </Badge>
+            );
+          })
+        )}
+      </>
+    );
+  };
   const contentEditProfile = () => {
     return (
       <Card>
@@ -462,12 +594,16 @@ export const Profile = ({ location }) => {
                 )}
               </Col>
             </Row>
+            <Row>
+              <Col md={2}></Col>
+              <Col md={4}> {contentCategory()}</Col>
+            </Row>
           </Container>
           {/*Container fungsi*/}
           <Container>
             <Row>
               {/*Menu Konten*/}
-              {(showEdit === false) & isUser ? (
+              {showEdit === false ? (
                 <Col md={4} className="card-menu">
                   {contentFeeds()}
                 </Col>
