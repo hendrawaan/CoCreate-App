@@ -8,7 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Add = () => {
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setTitle("");
+    setPostType();
+    setCategory("");
+    setIsi("");
+  };
   const handleShow = () => setShow(true);
   const { user } = useSelector(state => state.user);
   const [title, setTitle] = useState("");
@@ -40,26 +46,20 @@ const Add = () => {
       alert(
         `Submitting title: ${title} and postType: ${postType} and categoryType: ${category} and isi: ${isi} and time: ${postTime}`
       );
-      // fetch("http://kelompok6.dtstakelompok1.com/api/v1/feed/add", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-type": "application/json; charset=UTF-8",
-      //     Authorization: user.token
-      //   },
-      //   body: JSON.stringify({
-      //     judul: title,
-      //     id_kat_feed: category,
-      //     id_jen_feed: postType,
-      //     isi_feed: isi,
-      //     waktu: postTime
-      //   })
-      // }).then(res => res.json());
-      // handleClose();
-      // setTitle("");
-      // setPostType();
-      // setCategory("");
-      // setIsi("");
-      // setPostTime();
+      fetch("http://kelompok6.dtstakelompok1.com/api/v1/feed/add", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          Authorization: user.token
+        },
+        body: JSON.stringify({
+          judul: title,
+          id_kat_feed: category,
+          id_jen_feed: postType,
+          isi_feed: isi,
+          waktu: postTime
+        })
+      }).then(res => res.json());
       handleClose();
     } else didMountRef.current = true;
   }, [postTime]);
@@ -105,7 +105,7 @@ const Add = () => {
                   <Form.Control
                     as="select"
                     value={category}
-                    onChange={e => setCategory(e.target.value)}
+                    onChange={e => setCategory(parseInt(e.target.value))}
                   >
                     <option>Choose Category...</option>
                     <option value={1}>Teknologi</option>
@@ -117,7 +117,7 @@ const Add = () => {
                   <Form.Control
                     as="select"
                     value={postType}
-                    onChange={e => setPostType(e.target.value)}
+                    onChange={e => setPostType(parseInt(e.target.value))}
                   >
                     <option>Choose Post Type...</option>
                     <option value={1}>Artikel</option>

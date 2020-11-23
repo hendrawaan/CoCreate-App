@@ -38,71 +38,6 @@ export function Home() {
   const [realFeeds, setRealFeeds] = useState([]);
   const [myCategory, setMyCategory] = useState([{ id: 1 }, { id: 2 }]);
   const [comment, setComments] = useState([]);
-  const [feeds, setFeeds] = useState([
-    {
-      id: 1,
-      title: "Berkembang dalam Industri 4.0",
-      tag: "Teknologi",
-      posted_by: "Harits",
-      liked: 25,
-      comment: 5,
-      isLikedByUser: false
-    },
-    {
-      id: 2,
-      title: "Ayo mulai belajar React Redux",
-      tag: "Teknologi",
-      posted_by: "Arif",
-      liked: 15,
-      comment: 3,
-      isLikedByUser: false
-    },
-    {
-      id: 3,
-      title: "Bahaya duduk di depan komputer lebih dari 45 menit!",
-      tag: "Kesehatan",
-      posted_by: "Ruli",
-      liked: 45,
-      comment: 7,
-      isLikedByUser: false
-    },
-    {
-      id: 4,
-      title: "Jangan lupa sarapan!",
-      tag: "Kesehatan",
-      posted_by: "Rian",
-      liked: 23,
-      comment: 3,
-      isLikedByUser: false
-    },
-    {
-      id: 5,
-      title: "Menabung Emas. Halal dan kaya di masa tua",
-      tag: "Keuangan",
-      posted_by: "Raziq",
-      liked: 54,
-      comment: 6,
-      isLikedByUser: false
-    },
-    {
-      id_post: 6,
-      title: "Belajar Laravel",
-      tag: "Teknologi",
-      posted_by: "Raziq",
-      liked: 12,
-      comment: 5,
-      isLikedByUser: false
-    },
-    {
-      id_post: 7,
-      title: "Belajar Flutter",
-      tag: "Teknologi",
-      posted_by: "Raziq",
-      liked: 23,
-      comment: 10,
-      isLikedByUser: false
-    }
-  ]);
 
   useEffect(() => {
     if (user) {
@@ -127,20 +62,20 @@ export function Home() {
       });
   }, []);
 
-  useEffect(() => {
-    fetch("http://kelompok6.dtstakelompok1.com/api/v1/kategori/list/follow", {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-        Authorization: user.token
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log("category", data);
-        setMyCategory(data.data.kategori_follow);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch("http://kelompok6.dtstakelompok1.com/api/v1/kategori/list/follow", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-type": "application/json; charset=UTF-8",
+  //       Authorization: user.token
+  //     }
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log("category", data);
+  //       setMyCategory(data.data.kategori_follow);
+  //     });
+  // }, []);
 
   // console.log("feeds", feeds);
   console.log("realFeeds", realFeeds);
