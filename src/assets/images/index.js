@@ -5,6 +5,7 @@ import carouselThird from './home/thirdslide.png';
 import logo from './home/logo.png';
 import loginIllustration from './illustration/login-illustration.svg'
 import logoSmall from './logo/logo-small.png'
+import group from './group/group.jpg'
 
 export {
     homeLogo,
@@ -13,5 +14,6 @@ export {
     carouselThird,
     logo,
     loginIllustration,
-    logoSmall
+    logoSmall,
+    group
 }

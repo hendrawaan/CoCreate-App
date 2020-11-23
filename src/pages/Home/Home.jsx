@@ -29,6 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "../../store/profile";
 import { logout } from "../../store/user";
 import Add from "./Add";
+import PageGroup from "../../components/PageGroup/PageGroup"
 
 /* Hanya untuk testing */
 export default function Home() {
@@ -46,8 +47,9 @@ export default function Home() {
   };
 
   return (
-    
-    <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
+    <>
+    <PageGroup />
+    {/* <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
       <Container fluid style={{ backgroundColor: "#14274E" }}>
         <Row className="align-items-center" style={{ padding: 10 }}>
           <Col md={8}>
@@ -218,6 +220,7 @@ export default function Home() {
           </Row>
         </Col>
       </Row>
-    </Container>
+    </Container> */}
+    </>
   );
 }

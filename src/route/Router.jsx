@@ -11,7 +11,6 @@ const Router = () => {
         <Route exact path="/admin" component={PagesAdmin} />
         <Route exact path="/" component={Home} />
         <Route exact path="/profile" component={Profile} />
-        <Route exact path="/home" component={Home} />
       </Switch>
     </BrowserRouter>
   );
