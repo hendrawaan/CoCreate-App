@@ -26,7 +26,7 @@ export const FeedCategory = () => {
 
   return (
     <Fragment>
-      {category && (
+      {feed?.categoryFeeds && category && (
         <ModalFeed
           category={category.nama_kategori}
           show={modalShow}
@@ -70,7 +70,7 @@ export const FeedCategory = () => {
           />
         </Card.Header>
         <ListGroup variant="flush">
-          {feed.categoryFeeds &&
+          {feed?.categoryFeeds &&
             feed.categoryFeeds.map((item, index) => (
               <ListGroup.Item
                 action
