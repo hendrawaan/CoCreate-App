@@ -67,17 +67,17 @@ export default class PageGroup extends Component {
                 <Form className="mt-2">
                 
                 <Form.Row>
-                    <Card>
+                    <Card.Header>
                     <Col sm={12}>
                         <Form inline>
-                        <FaRegUserCircle />
-                            <Form.Control type="text" placeholder="Apa yang anda pikirkan?" className=" ml-sm-2 mb-3 mt-3" />
+                        <FaRegUserCircle style={{width: '32', height: '32'}} className="mr-sm-1" />
+                            <Form.Control as="textarea" placeholder="Apa yang anda pikirkan sekarang?" className=" ml-sm-2 mb-3 mt-3" style={{width: '320px'}} />
                         </Form>
                     <Button size="sm" variant="outline-none-dark" className="lite-title mr-sm-1"><IoIosImages />Foto/Video</Button>{' '}
                     <Button size="sm" variant="outline-none-dark" className="lite-title mr-sm-1"><BiUserPlus />Tandai Orang</Button>{' '}
                     <Button size="sm" variant="outline-none-dark" className="lite-title"><GoSmiley />Perasaan/Aktivitas</Button>{' '}
                     </Col>
-                    </Card>
+                    </Card.Header>
                     <Col>
                     <Col>
                     <Form.Control size="lg" placeholder="Tentang" disabled className="mt-2" />
