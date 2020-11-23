@@ -213,7 +213,7 @@ export const Profile = ({ location }) => {
       <Card style={{ width: "18rem", height: 300 }}>
         <Card.Header>Feeds</Card.Header>
         <div className="scroll-card">
-          {dataFeeds.length !== 0 ? (dataFeeds?.map(function (item, i) {
+          {dataFeeds?.map(function (item, i) {
             return (
               <Button
                 onClick={() => history.push("feed/" + item.id)}
@@ -229,7 +229,7 @@ export const Profile = ({ location }) => {
                 </p>
               </Button>
             );
-          })) : <p className="text-center">No Posts Yet</p>}
+          })}
         </div>
       </Card>
     );
