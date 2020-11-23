@@ -1,10 +1,14 @@
 import {
   ADD_FEED_CATEGORY,
+  ADD_MY_CATEGORY,
   ADD_USER,
   DAFTAR_KATEGORI_FEED,
   GET_DETAIL_FEED,
+  GET_MY_CATEGORY,
   GET_MY_POST,
   GET_PROFILE,
+  GET_USER_CATEGORY,
+  GET_USER_FEEDS,
   GET_USER_PROFILE,
   GOOGLE_LOGIN_CALLBACK,
   LIST_FEED_TRENDING,
@@ -13,11 +17,7 @@ import {
   UPDATE_FEED_CETEGORY,
   UPDATE_PASSWORD,
   UPDATE_PROFILE,
-  VERIFIKASI,
-  GET_MY_CATEGORY,
-  ADD_MY_CATEGORY,
-  GET_USER_CATEGORY,
-  GET_USER_FEEDS
+  VERIFIKASI
 } from "./api-list";
 
 const api = {
@@ -150,7 +150,6 @@ export const changeUserVerification = async (params, token) =>
     Authorization: token,
   });
 
-
 /**
  * Mengambil daftar feed yang trending
  * @param {object} params Data id user dan status verifikasinya
@@ -203,10 +202,10 @@ export const getMyOwnPost = async (token) =>
   await api.get(GET_MY_POST, { Authorization: token });
 
 /**
-* Mengambil informasi post milik sendiri
-* @param {string} endpoint id dari postingan
-* @returns json objek
-*/
+ * Mengambil informasi post milik sendiri
+ * @param {string} endpoint id dari postingan
+ * @returns json objek
+ */
 export const getMyCategory = async (token) =>
   await api.get(GET_MY_CATEGORY, { Authorization: token });
 
@@ -217,19 +216,21 @@ export const getMyCategory = async (token) =>
  */
 export const addMyCategory = async (data, token) =>
   await api.post(ADD_MY_CATEGORY, JSON.stringify(data), {
-    Authorization: token
+    Authorization: token,
   });
+
 /**
-* Mengambil informasi category user lain
-* @param {string} token Data token yang akan digunakan untuk Authorization
-* @returns json objek
-*/
+ * Mengambil informasi category user lain
+ * @param {string} token Data token yang akan digunakan untuk Authorization
+ * @returns json objek
+ */
 export const getAnotherUserCategory = async (token, id) =>
   await api.get(GET_USER_CATEGORY + id, { Authorization: token });
+
 /**
-* Mengambil informasi feeds user lain
-* @param {string} token Data token yang akan digunakan untuk Authorization
-* @returns json objek
-*/
+ * Mengambil informasi feeds user lain
+ * @param {string} token Data token yang akan digunakan untuk Authorization
+ * @returns json objek
+ */
 export const getAnotherUserFeeds = async (token, id) =>
   await api.get(GET_USER_FEEDS + id, { Authorization: token });
