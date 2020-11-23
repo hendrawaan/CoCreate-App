@@ -4,11 +4,13 @@ import admin from './admin';
 import feed from './feed';
 import profile from './profile';
 import user from './user';
+
 const reducer = combineReducers({
-  admin,
-  user,
-  profile,
-  feed,
+    admin,
+    user,
+    profile,
+    feed,
+
 })
 
 const store = configureStore({

@@ -12,12 +12,14 @@ import {
 } from "react-bootstrap";
 import { FaHeart, FaRegCommentDots, FaRegHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+
 import { useHistory } from "react-router-dom";
 import { profileimg } from "../../assets/images";
 import { LoadingIndicator } from "../../components";
 import { clearFeedState, getFeed } from "../../store/feed";
 import { comment } from "./data";
 import "./DetailPost.css";
+
 
 export const DetailPost = ({ location }) => {
   const pathend = location.pathname.split("/").pop();
@@ -162,4 +164,4 @@ export const DetailPost = ({ location }) => {
       }
     </>
   );
-};
+}
