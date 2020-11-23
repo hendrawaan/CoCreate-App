@@ -1,15 +1,14 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
-  Button,
+  Badge, Button,
   Card,
   Col,
   Container,
   Form,
   Image,
   Nav,
-  Row,
-  Badge
+  Row
 } from "react-bootstrap";
 import {
   FaCalendar,
@@ -20,21 +19,22 @@ import {
   FaMapMarkerAlt,
   FaMapPin,
   FaPhone,
-  FaRestroom,
-  FaUser,
-  FaPlusCircle,
-  FaTimes
+
+
+  FaPlusCircle, FaRestroom,
+
+
+  FaTimes, FaUser
 } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { profileimg } from "../../assets/images";
 import { InputGroupCustom, LoadingIndicator } from "../../components";
 import {
-  getMyFeeds, getMyFeedsCategory, getFeedsCetegory, setMyFeedsCategory
-  , getUserCategory, getUserFeeds
+  getFeedsCetegory, getMyFeeds, getMyFeedsCategory,
+  getUserCategory, getUserFeeds, setMyFeedsCategory
 } from "../../store/feed";
-
 import {
   clearProfileState,
   getOtherUserProfile,
@@ -45,6 +45,7 @@ import {
 import { logout } from "../../store/user";
 import { listGender, listMenu, listNav, listVariant } from "./List";
 import "./Profile.css";
+
 export const Profile = ({ location }) => {
   const pathend = location.pathname.split("/").pop();
   const dispatch = useDispatch();
@@ -241,21 +242,22 @@ export const Profile = ({ location }) => {
   const contentCategory = () => {
     return (<>
       <h5>Followed Category
-        {isUser ? <Button variant="light" onClick={() => setShowAddCategory(!showAddCategory)}><FaPlusCircle /></Button> : ""} </h5>
-      {(showAddCategory && filterCategory) ? (<>
+      {isUser && (<Button variant="light" onClick={() => setShowAddCategory(!showAddCategory)}><FaPlusCircle /></Button>)} </h5>
+      
+      {(showAddCategory && filterCategory && dataMyCategory) ? (<>
         <DropdownMultiselect options={filterCategory}
           handleOnChange={(selected) => {
             setFormCategory(selected)
           }}
           name="Category" /> <Button onClick={() => selectedCategoryHandler()} variant="primary">Set</Button></>)
-        : dataMyCategory.map((item, i) => {
+        : dataMyCategory && (dataMyCategory.map((item, i) => {
           return <Badge
             variant={listVariant[Math.floor(Math.random() * listVariant.length)]}
             key={i}>{item.nama_kategori_feed}
             <FaTimes
               onClick={() => deleteCategoryHandler(item.id_kategori, item.nama_kategori_feed)} />
           </Badge>
-        })
+        }))
       }
     </>)
   }
