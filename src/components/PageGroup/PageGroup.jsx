@@ -15,8 +15,23 @@ import {
 } from 'react-bootstrap'
 
 import {
-    group
+    group,
 } from "../../assets/images/";
+import { 
+    CgProfile,
+} from "react-icons/cg";
+import { 
+    BiUserPlus,
+} from "react-icons/bi";
+import { 
+    IoIosImages,
+} from "react-icons/io";
+import { 
+    GoSmiley,
+} from "react-icons/go";
+import { 
+    HiSearch,
+} from "react-icons/hi";
 
 import './PageGroup.css'
 
@@ -40,7 +55,7 @@ export default class PageGroup extends Component {
                     </Nav>
                     <div inline>
                     <div type="text" className="mr-sm-2" />
-                    <Button variant="outline-success"></Button>
+                    <Button variant="outline-dark"><HiSearch /></Button>
                     </div>
                 </Navbar.Collapse>
                 </Navbar>
@@ -50,14 +65,19 @@ export default class PageGroup extends Component {
                 <Form.Row>
                     <Card>
                     <Col sm={12}>
-                    <Form.Control placeholder="Apa yang anda pikirkan sekarang?"  className="mb-3 mt-3" />
-                    <Button variant="primary">Foto/Video</Button>{' '}
-                    <Button variant="secondary">Tandai Orang</Button>{' '}
-                    <Button variant="success">Perasaan/Aktivitas</Button>{' '}
+                        <Col>
+                        <CgProfile />
+                        </Col>
+                        <Col>
+                        <Form.Control placeholder="Apa yang anda pikirkan sekarang? "  className="mb-3 mt-3" />
+                        </Col>
+                    <Button size="sm" variant="outline-none-dark"><IoIosImages />Foto/Video</Button>{' '}
+                    <Button size="sm" variant="outline-none-dark"><BiUserPlus />Tandai Orang</Button>{' '}
+                    <Button size="sm" variant="outline-none-dark"><GoSmiley />Perasaan/Aktivitas</Button>{' '}
                     </Col>
                     </Card>
                     <Col>
-                    <Form.Control size="lg" placeholder="Tentang" disabled />
+                    <Form.Control size="lg" placeholder="Tentang" disabled className="mt-2" />
                     </Col>
                 </Form.Row>
                 </Form>
