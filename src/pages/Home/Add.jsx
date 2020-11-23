@@ -22,6 +22,7 @@ const Add = () => {
   const [postType, setPostType] = useState();
   const [category, setCategory] = useState();
   const [postTime, setPostTime] = useState();
+  const [categoryList, setCategoryList] = useState([]);
   const didMountRef = useRef(false);
 
   // const FeedPost = () => {
@@ -37,15 +38,12 @@ const Add = () => {
   };
 
   const handleSubmit = evt => {
-    evt.preventDefault();
+    // evt.preventDefault();
     getTimeNow();
   };
 
   useEffect(() => {
     if (didMountRef.current) {
-      alert(
-        `Submitting title: ${title} and postType: ${postType} and categoryType: ${category} and isi: ${isi} and time: ${postTime}`
-      );
       fetch("http://kelompok6.dtstakelompok1.com/api/v1/feed/add", {
         method: "POST",
         headers: {
@@ -63,6 +61,20 @@ const Add = () => {
       handleClose();
     } else didMountRef.current = true;
   }, [postTime]);
+
+  useEffect(() => {
+    fetch("http://kelompok6.dtstakelompok1.com/api/v1/kategori/list", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("category", data);
+        setCategoryList(data.data.kategori_feed);
+      });
+  }, [show]);
 
   const sendBody = {};
 
@@ -107,9 +119,12 @@ const Add = () => {
                     value={category}
                     onChange={e => setCategory(parseInt(e.target.value))}
                   >
-                    <option>Choose Category...</option>
-                    <option value={1}>Teknologi</option>
-                    <option value={2}>Finance</option>
+                    <option value={0}>Choose Category...</option>
+                    {categoryList.map((items, index) => (
+                      <option key={index} value={items.id_kategori}>
+                        {items.nama_kategori}
+                      </option>
+                    ))}
                   </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} controlId="formGridState">

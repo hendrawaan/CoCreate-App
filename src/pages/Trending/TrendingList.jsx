@@ -4,7 +4,7 @@ import { ListGroup } from "react-bootstrap";
 import { FaComment, FaHeart } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 
-export const TrendingList = (props) => {
+export const TrendingList = props => {
   const history = useHistory();
   const {
     id,
@@ -13,7 +13,7 @@ export const TrendingList = (props) => {
     waktu,
     jumlah_liker,
     username,
-    jumlah_comment,
+    jumlah_comment
   } = props;
 
   return (
@@ -23,7 +23,7 @@ export const TrendingList = (props) => {
       onClick={() => history.push("feed/" + id)}
     >
       <small className="text-dark">
-        {moment.unix(waktu).format("DD MMM YYYY hh:mm")}
+        {moment.unix(waktu).format("DD MMM YYYY HH:mm")}
       </small>
       <h5 className="trending-feeds">{judul}</h5>
       <h6>@{username}</h6>

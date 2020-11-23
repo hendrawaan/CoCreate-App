@@ -596,7 +596,9 @@ export const Profile = ({ location }) => {
             </Row>
             <Row>
               <Col md={2}></Col>
-              <Col md={4}> {contentCategory()}</Col>
+              <Col className="my-3" md={4}>
+                {contentCategory()}
+              </Col>
             </Row>
           </Container>
           {/*Container fungsi*/}

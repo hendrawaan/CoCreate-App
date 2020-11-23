@@ -60,7 +60,7 @@ export function Home() {
         console.log(data);
         setRealFeeds(data.data.feeds);
       });
-  }, []);
+  }, [Add]);
 
   // useEffect(() => {
   //   fetch("http://kelompok6.dtstakelompok1.com/api/v1/kategori/list/follow", {
@@ -79,7 +79,7 @@ export function Home() {
 
   // console.log("feeds", feeds);
   console.log("realFeeds", realFeeds);
-  console.log("realCategory", myCategory);
+  // console.log("realCategory", myCategory);
 
   const commentClick = id_post => {
     console.log("showcomment before:", showcomment);
@@ -230,19 +230,19 @@ export function Home() {
                             <Card.Title>
                               <Row className="d-flex align-items-center justify-content-center">
                                 <Col md={2} className="">
-                                  <CgProfile size={50} />
+                                  <CgProfile size={40} />
                                 </Col>
                                 <Col md={10} className="">
                                   <p>{items.judul}</p>
                                 </Col>
                               </Row>
                               <Row className="d-flex flex-row align-items-center justify-content-center">
-                                <p style={{ fontSize: 15 }}>
+                                <p style={{ fontSize: 10 }}>
                                   Posted By: {items.name_user} |{" "}
                                   {moment
                                     .unix(items.waktu)
-                                    .format("YYYY-MM-DD hh:mm")}{" "}
-                                  | {items.id_kat_feed}
+                                    .format("YYYY-MM-DD HH:mm")}{" "}
+                                  | {items.nama_kategori}
                                 </p>
                               </Row>
                             </Card.Title>
