@@ -14,11 +14,11 @@ export const FeedCategory = () => {
   const dispatch = useDispatch();
 
   const [modalShow, setModalShow] = useState(false);
-  const [category,  setCategory]  = useState();
+  const [category, setCategory] = useState();
   const [feedsItem, setFeedsItem] = useState({});
 
-  const { loading, feed } = useSelector((state) => state.feed);
-  const { user } = useSelector((state) => state.user);
+  const { loading, feed } = useSelector(state => state.feed);
+  const { user } = useSelector(state => state.user);
 
   useEffect(() => {
     dispatch(getFeedsCetegory());
@@ -30,7 +30,7 @@ export const FeedCategory = () => {
         <ModalFeed
           category={category.nama_kategori}
           show={modalShow}
-          onChange={(e) => {
+          onChange={e => {
             setFeedsItem(e.target.value);
           }}
           onSubmit={() => {
@@ -39,7 +39,7 @@ export const FeedCategory = () => {
                 updateFeedCategoryAction(
                   {
                     id_kategori: category.id_kategori,
-                    nama_kategori: feedsItem,
+                    nama_kategori: feedsItem
                   },
                   user.token
                 )
@@ -70,8 +70,8 @@ export const FeedCategory = () => {
           />
         </Card.Header>
         <ListGroup variant="flush">
-          {feed.categoryFeeds &&
-            feed.categoryFeeds.map((item, index) => (
+          {feedsItem.categoryFeeds &&
+            feedsItem.categoryFeeds.map((item, index) => (
               <ListGroup.Item
                 action
                 key={index}

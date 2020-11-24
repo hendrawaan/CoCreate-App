@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PostFeed from "./PostFeed";
 import Feed from "./Feed";
 import {
@@ -9,7 +9,8 @@ import {
   Card,
   ListGroup,
   InputGroup,
-  FormControl
+  FormControl,
+  Form
 } from "react-bootstrap";
 import { homeLogo } from "../../assets/images";
 import { FaHome } from "react-icons/fa";
@@ -31,9 +32,12 @@ function Post() {
   const { user } = useSelector(state => state.user);
   const [filter, setFilter] = useState(0);
   const history = useHistory();
-  const [showcomment, setShowcomment] = useState(-1);
+  const [selectedElement, toggleElement] = useState(-1);
   const [likes, setLikes] = useState([]);
+  const [comment, setComments] = useState([]);
+  const [idFeedComment, setIdFeedComment] = useState([]);
   const [clickedcomment, setClickedcomment] = useState();
+  const didMountRef = useRef(false);
 
   const getPost = () => {
     fetch("http://kelompok6.dtstakelompok1.com/api/v1/feeds/user", {
@@ -55,35 +59,55 @@ function Post() {
   }, [likes]);
 
   useEffect(() => {
-    console.log("like di effect", likes);
-    fetch("http://kelompok6.dtstakelompok1.com/api/v1/feeds/like", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-        Authorization: user.token
-      },
-      body: JSON.stringify(likes)
-    }).then(res => res.json());
+    if (didMountRef.current) {
+      console.log("like di effect", likes);
+      fetch("http://kelompok6.dtstakelompok1.com/api/v1/feeds/like", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          Authorization: user.token
+        },
+        body: JSON.stringify(likes)
+      }).then(res => res.json());
+    } else didMountRef.current = true;
   }, [likes]);
 
-  const commentClick = id_post => {
-    console.log("showcomment before:", showcomment);
-    setShowcomment({ showcomment: showcomment === id_post ? -1 : id_post });
-    console.log("di fungsi klik post:", id_post);
-    console.log("di fungsi klik showcomment:", showcomment);
+  useEffect(() => {
+    if (didMountRef.current) {
+      fetch("http://kelompok6.dtstakelompok1.com/api/v1/feeds/comment/add", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          Authorization: user.token
+        },
+        body: JSON.stringify(comment)
+      }).then(res => res.json());
+    } else didMountRef.current = true;
+  }, [setComments]);
+
+  const commentClick = index => {
+    console.log(index);
+    toggleElement(selectedElement === index ? -1 : index);
   };
 
-  const likeClick = id => {
-    setLikes({ id_feed: id, like: true });
-    console.log("ini id", likes);
+  const commentSubmit = evt => {
+    evt.preventDefault();
+    console.log(comment);
+    console.log(idFeedComment);
+  };
+
+  const likeClick = (id, isLike) => {
+    const isLiked = !isLike ? true : false;
+    setLikes({ id_feed: id, like: isLiked });
+    console.log("ini likes di likeclick", likes);
   };
 
   return realFeeds
     .filter(filtering =>
       filter === 0 ? filtering.id_kat_feed : filtering.id_kat_feed === filter
     )
-    .map(items => (
-      <Col md={6} key={items.id}>
+    .map((items, index) => (
+      <Col md={6} key={index}>
         <Card className="my-4">
           <Card.Body>
             <Card.Title>
@@ -127,12 +151,7 @@ function Post() {
           </Card.Footer>
           <Card.Footer>
             <Button
-              variant="danger"
-              // {
-              //   !items.isLikedByUser
-              //     ? "outline-secondary"
-              //     : "danger"
-              // }
+              variant={!items.is_like ? "outline-secondary" : "danger"}
               className="m-1 btn-alert"
               // onClick={() => {
               //   setFeeds(prevFeeds =>
@@ -155,36 +174,48 @@ function Post() {
               //     )
               //   );
               // }}
-              onClick={() => setLikes({ id_feed: items.id, like: true })}
+              // onClick={() => setLikes({ id_feed: items.id, like: true })}
+              onClick={() => {
+                likeClick(items.id, items.is_like);
+              }}
             >
-              <AiOutlineHeart />{" "}
-              {/* {!items.isLikedByUser ? "Like" : "Liked"} */}
-              Like
+              <AiOutlineHeart /> {!items.is_like ? "Like" : "Liked"}
             </Button>
             <Button
               variant="warning"
               className="m-1"
-              onClick={() => {
-                commentClick(items.id_post);
-                console.log("dari klik:", items.id);
-              }}
+              // onClick={() => {
+              //   commentClick(items.id);
+              //   console.log("dari klik:", items.id);
+              // }}
+              // onClick={() => setShowcomment(true)}
+              onClick={() => commentClick(index)}
             >
               <BiCommentDots /> Comment
             </Button>
           </Card.Footer>
-          {showcomment === -1 ? (
+          {selectedElement === index ? (
             <Card.Footer className="">
-              <InputGroup className="mb-3">
-                <InputGroup.Prepend>
-                  <InputGroup.Text id="basic-addon1">
-                    <CgProfile />
-                  </InputGroup.Text>
-                </InputGroup.Prepend>
-                <FormControl
-                  placeholder="Tulis komentar..."
-                  aria-label="Comment"
-                />
-              </InputGroup>
+              <Form onSubmit={commentSubmit}>
+                <InputGroup className="mb-3">
+                  <FormControl
+                    className="input"
+                    as="input"
+                    placeholder="Tulis komentar..."
+                    aria-label="Comment"
+                    value={comment}
+                    onChange={e => setComments(e.target.value)}
+                  />
+                  <input
+                    type="hidden"
+                    id="custId"
+                    name="custId"
+                    value={idFeedComment}
+                    onChange={e => setIdFeedComment(items.id)}
+                  ></input>
+                </InputGroup>
+                <Button type="submit">Submit</Button>
+              </Form>
             </Card.Footer>
           ) : null}
         </Card>
@@ -259,17 +290,17 @@ export function Home() {
   // console.log("realFeeds", realFeeds);
   // console.log("realCategory", myCategory);
 
-  const commentClick = id_post => {
-    console.log("showcomment before:", showcomment);
-    setShowcomment({ showcomment: showcomment === id_post ? -1 : id_post });
-    console.log("di fungsi klik post:", id_post);
-    console.log("di fungsi klik showcomment:", showcomment);
-  };
+  // const commentClick = id_post => {
+  //   console.log("showcomment before:", showcomment);
+  //   setShowcomment({ showcomment: showcomment === id_post ? -1 : id_post });
+  //   console.log("di fungsi klik post:", id_post);
+  //   console.log("di fungsi klik showcomment:", showcomment);
+  // };
 
-  const likeClick = id => {
-    setLike({ id_feed: id, like: true });
-    console.log("ini id", like);
-  };
+  // const likeClick = id => {
+  //   setLike({ id_feed: id, like: true });
+  //   console.log("ini id", like);
+  // };
 
   return (
     <Container fluid style={{ backgroundColor: "#F1F6F9", padding: 0 }}>
@@ -325,7 +356,7 @@ export function Home() {
               <hr />
             </Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Col>
               <Card>
                 <Card.Header as="h4">My Event</Card.Header>
@@ -337,7 +368,7 @@ export function Home() {
               </Card>
               <hr />
             </Col>
-          </Row>
+          </Row> */}
         </Col>
         <Col md={9} style={{ paddingTop: 50, paddingRight: 50 }}>
           <Row>
@@ -346,7 +377,7 @@ export function Home() {
                 <div>
                   <Add />
                 </div>
-                <div>
+                {/* <div>
                   <Button
                     className="ml-4"
                     variant="primary"
@@ -354,7 +385,7 @@ export function Home() {
                   >
                     Create Group
                   </Button>
-                </div>
+                </div> */}
                 {/* <div>
                   <Button variant="light" onClick={() => setFilter(0)}>
                     <GrTechnology />
