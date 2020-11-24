@@ -8,7 +8,8 @@ export const GoogleLoginCallBack = () => {
   const dispatch = useDispatch();
   const { user, error } = useSelector((state) => state.user);
   useEffect(() => {
-    dispatch(loginWithGoogle(window.location.search));
+    const token = window.location.search.replace("?t=", '');
+    dispatch(loginWithGoogle(token));
   }, [dispatch]);
 
   if(user) {

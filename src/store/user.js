@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginToApi, loginWithGoogleOATH, registeringUser } from "../api/";
+import { loginToApi, registeringUser } from "../api/";
 
 const initialUser = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
@@ -75,18 +75,10 @@ export const login = ({ email, password }) => async (dispatch) => {
  * storage.
  * @param {object} param url params
  */
-export const loginWithGoogle = (params) => async (dispatch) => {
+export const loginWithGoogle = (token) => async (dispatch) => {
   try {
     dispatch(onProcess());
-    const loginResponse = await loginWithGoogleOATH(params);
-
-    switch (loginResponse.code) {
-      case 200:
-        dispatch(loginSucces(loginResponse.data));
-        break;
-      default:
-        throw new Error("Uppss.. Terjadi kesalahan.");
-    }
+    dispatch(loginSucces({ token: token }));
   } catch (e) {
     dispatch(onFailed(e.message));
   }
