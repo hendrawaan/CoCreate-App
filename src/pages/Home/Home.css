@@ -1,0 +1,14 @@
+.form-add-post input, .form-add-post textarea {
+    outline: none;
+    border: 1px solid#14274E;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 12px;
+    color:  #607DBB;
+}
+.label-form {
+    font-weight: bold;
+}
