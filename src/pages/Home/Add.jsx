@@ -25,12 +25,6 @@ const Add = () => {
   const [categoryList, setCategoryList] = useState([]);
   const didMountRef = useRef(false);
 
-  // const FeedPost = () => {
-  // const [post, setPost] = useState(false);
-
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
-
   const getTimeNow = () => {
     const date = Date.now();
     const timeStamp = Math.floor(date / 1000);
