@@ -22,6 +22,7 @@ export const FeedCategory = () => {
 
   useEffect(() => {
     dispatch(getFeedsCetegory());
+    
   }, [dispatch]);
 
   return (
@@ -70,8 +71,8 @@ export const FeedCategory = () => {
           />
         </Card.Header>
         <ListGroup variant="flush">
-          {feedsItem.categoryFeeds &&
-            feedsItem.categoryFeeds.map((item, index) => (
+          {feed?.categoryFeeds &&
+            feed?.categoryFeeds.map((item, index) => (
               <ListGroup.Item
                 action
                 key={index}
