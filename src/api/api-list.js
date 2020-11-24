@@ -54,3 +54,9 @@ export const ADD_MY_CATEGORY = '/api/v1/kategori/set'
 export const GET_USER_CATEGORY = '/api/v1/kategori/list/follow/'
     // Get Another User Feeds
 export const GET_USER_FEEDS = '/api/v1/feeds/user/all/'
+    // Set Like 
+export const SET_LIKE_FEEDS = '/api/v1/feeds/like'
+    // Delete Comment
+export const DELETE_COMMENT_FEEDS = '/api/v1/feeds/comment/delete'
+    // Add Coment
+export const ADD_COMMENT_FEEDS = '/api/v1/feeds/comment/add'

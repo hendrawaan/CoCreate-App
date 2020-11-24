@@ -17,7 +17,10 @@ import {
   GET_MY_CATEGORY,
   ADD_MY_CATEGORY,
   GET_USER_CATEGORY,
-  GET_USER_FEEDS
+  GET_USER_FEEDS,
+  ADD_COMMENT_FEEDS,
+  DELETE_COMMENT_FEEDS,
+  SET_LIKE_FEEDS
 } from "./api-list";
 
 const api = {
@@ -233,3 +236,31 @@ export const getAnotherUserCategory = async (token, id) =>
 */
 export const getAnotherUserFeeds = async (token, id) =>
   await api.get(GET_USER_FEEDS + id, { Authorization: token });
+  /**
+ * Set Like Post
+ * @param {objek} data 
+ * @returns json objek
+ */
+export const setLikeFeeds = async (data, token) =>
+await api.post(SET_LIKE_FEEDS, JSON.stringify(data), {
+  Authorization: token
+});
+ /**
+ * delete comment Post
+ * @param {objek} data 
+ * @returns json objek
+ */
+export const deleteCommentFeeds = async (data, token) =>
+await api.post(DELETE_COMMENT_FEEDS, JSON.stringify(data), {
+  Authorization: token
+});
+ /**
+ * add comment Post
+ * @param {objek} data 
+ * @returns json objek
+ */
+export const addCommentFeeds = async (data, token) =>
+await api.post(ADD_COMMENT_FEEDS, JSON.stringify(data), {
+  Authorization: token
+});
+

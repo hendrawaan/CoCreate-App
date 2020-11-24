@@ -211,7 +211,7 @@ function Post() {
                     id="custId"
                     name="custId"
                     value={idFeedComment}
-                    onChange={e => setIdFeedComment(items.id)}
+                    onChange={setIdFeedComment(items.id)}
                   ></input>
                 </InputGroup>
                 <Button type="submit">Submit</Button>
