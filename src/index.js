@@ -8,8 +8,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
-  </Provider>,
+  <App />
+</Provider>,
+
   document.getElementById("root")
 )
 

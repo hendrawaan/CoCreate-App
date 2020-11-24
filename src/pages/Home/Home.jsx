@@ -346,6 +346,15 @@ export function Home() {
                 <div>
                   <Add />
                 </div>
+                <div>
+                  <Button
+                    className="ml-4"
+                    variant="primary"
+                    onClick={() => history.push("group")}
+                  >
+                    Create Group
+                  </Button>
+                </div>
                 {/* <div>
                   <Button variant="light" onClick={() => setFilter(0)}>
                     <GrTechnology />

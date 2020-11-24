@@ -9,7 +9,8 @@ import {
   NotFound,
   Profile,
   Trending,
-  DetailPost
+  DetailPost,
+  Group
 } from "../pages";
 import { AdminHome } from "../pages";
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -18,7 +19,8 @@ const Router = () => {
   const navItems = [
     { label: "Home", link: "/", isProtected: false },
     { label: "Profile", link: "/profile", isProtected: true },
-    { label: "Trending", link: "/trending", isProtected: true }
+    { label: "Trending", link: "/trending", isProtected: true },
+    { label: "Group", link: "/group", isProtected: true }
   ];
 
   return (
@@ -33,6 +35,7 @@ const Router = () => {
         <ProtectedRoute exact path="/trending" component={Trending} />
         <ProtectedRoute exact path="/admin" component={Admin} />
         <ProtectedRoute exact path="/feed/:id" component={DetailPost} />
+        <ProtectedRoute exact path="/group" component={Group} />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>

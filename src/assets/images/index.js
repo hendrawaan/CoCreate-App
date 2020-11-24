@@ -3,6 +3,7 @@ import notFoundIlustration from "./illustration/not-found-illustration.jpg";
 import logoSmall from "./logo/logo-small.png";
 import profileimg from "./placeholder/profile-default.jpg";
 import sampleUser from "./placeholder/sample-user.jpg";
+import group from './group/group.jpg'
 
 export {
   loginIllustration,
@@ -10,5 +11,6 @@ export {
   notFoundIlustration,
   profileimg,
   sampleUser,
+  group
 };
 

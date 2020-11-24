@@ -6,4 +6,4 @@ export * from "./Login/Login";
 export * from "./NotFound/NotFound";
 export * from "./profile/Profile";
 export * from "./Trending/Trending";
-
+export * from "./Group/Group";
