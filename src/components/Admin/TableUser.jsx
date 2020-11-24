@@ -60,16 +60,18 @@ export const TableUser = () => {
             userList.map((user, index) => {
               const { email, name, id, verification } = user;
               return (
-                <tr
-                  key={index}
-                  style={{cursor: "pointer"}}
-                  onClick={() =>
-                    history.push("/profile/" + id)
-                  }
-                >
+                <tr>
                   <td>{index + 1}</td>
                   <td>{email}</td>
-                  <td>{name}</td>
+                  <td
+                    key={index}
+                    style={{cursor: "pointer"}}
+                    onClick={() =>
+                      history.push("/profile/" + id)
+                    }
+                  >
+                    {name}
+                  </td>
                   <td className="text-center">
                     {
                       verification
