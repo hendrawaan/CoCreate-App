@@ -306,7 +306,7 @@ export const addCommentFeed = ({ id_feed, isi_komentar }, token) => async(dispat
         const response = await addCommentFeeds({ id_feed, isi_komentar }, token);
         switch (response.code) {
             case 200:
-                dispatch(getFeed(id_feed));
+                dispatch(getFeedComment(id_feed));
                 dispatch(onSuccess());
                 break;
             default:
