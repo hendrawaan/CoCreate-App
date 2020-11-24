@@ -2,10 +2,12 @@ import React, { Fragment, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { CgCheck, CgCloseO } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { getUsersList, setUsersVerification } from "../../store/admin";
 import { LoadingIndicator } from "../LoadingIndicator/LoadingIndicator";
 
 export const TableUser = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { userList, loading } = useSelector((state) => state.admin);
@@ -42,7 +44,7 @@ export const TableUser = () => {
   return (
     <Fragment>
       {loading && <LoadingIndicator />}
-      <Table striped bordered hover>
+      <Table responsive striped bordered hover>
         <thead>
           <tr>
             <th>No</th>
@@ -58,7 +60,13 @@ export const TableUser = () => {
             userList.map((user, index) => {
               const { email, name, id, verification } = user;
               return (
-                <tr key={index}>
+                <tr
+                  key={index}
+                  style={{cursor: "pointer"}}
+                  onClick={() =>
+                    history.push("/profile/" + id)
+                  }
+                >
                   <td>{index + 1}</td>
                   <td>{email}</td>
                   <td>{name}</td>

@@ -4,13 +4,13 @@ import { GrApps, GrArticle, GrGroup, GrProjects, GrUser } from "react-icons/gr";
 import { VscSearchStop } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { LoadingIndicator } from "../../components";
+import { SimpleFeed } from "../../components/SimpleFeed/SimpleFeed";
 import {
   getFeedsCetegory,
   getFeedsTrendingList
 } from "../../store/feed";
 import { clearProfileState } from "../../store/profile";
 import "./Trending.css";
-import { TrendingList } from "./TrendingList";
 
 export function Trending({location}) {
   const dispatch = useDispatch();
@@ -97,7 +97,7 @@ export function Trending({location}) {
             <ListGroup className="w-100">
               {feedList &&
                 feedList.map((item, index) => (
-                  <TrendingList key={index} {...item} />
+                  <SimpleFeed key={index} {...item} />
                 ))}
             </ListGroup>
           </Col>

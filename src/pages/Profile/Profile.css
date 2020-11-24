@@ -28,6 +28,10 @@
     padding: 20px;
 }
 
+.profile-text {
+    color: grey;
+}
+
 html,
 body,
 #app,
@@ -79,5 +83,11 @@ body,
     height: 300px;
 }
 
+.dropdown-menu {
+    max-height: 250px;
+    overflow-y: auto;
+}
 
-/*Mobile*/
+.dropdown {
+    flex: 1 1 auto !important;
+}

@@ -1,10 +1,10 @@
 import moment from "moment";
 import React from "react";
-import { ListGroup } from "react-bootstrap";
+import { Badge, ListGroup } from "react-bootstrap";
 import { FaComment, FaHeart } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 
-export const TrendingList = props => {
+export const SimpleFeed = props => {
   const history = useHistory();
   const {
     id,
@@ -13,7 +13,8 @@ export const TrendingList = props => {
     waktu,
     jumlah_liker,
     username,
-    jumlah_comment
+    jumlah_comment,
+    nama_kategori
   } = props;
 
   return (
@@ -22,11 +23,13 @@ export const TrendingList = props => {
       action
       onClick={() => history.push("feed/" + id)}
     >
-      <small className="text-dark">
+      <small className="text-dark d-block">
         {moment.unix(waktu).format("DD MMM YYYY HH:mm")}
       </small>
-      <h5 className="trending-feeds">{judul}</h5>
-      <h6>@{username}</h6>
+      <Badge variant="primary">{nama_kategori}</Badge>
+      <h4 className="trending-feeds">{judul}</h4>
+
+      {username && <h6>@{username}</h6>}
       <p className="trending-feeds">{isi_feed}</p>
       <p>
         <span className="mr-4">

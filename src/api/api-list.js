@@ -48,15 +48,17 @@ export const GET_MY_POST = '/api/v1/user/feeds'
 
 // Get My Category
 export const GET_MY_CATEGORY = '/api/v1/kategori/list/follow'
-    // add Category
+
+// add Category
 export const ADD_MY_CATEGORY = '/api/v1/kategori/set'
-    // Get Another User Category
+
+// Get Another User Category
 export const GET_USER_CATEGORY = '/api/v1/kategori/list/follow/'
-    // Get Another User Feeds
+// Get Another User Feeds
 export const GET_USER_FEEDS = '/api/v1/feeds/user/all/'
-    // Set Like 
+// Set Like 
 export const SET_LIKE_FEEDS = '/api/v1/feeds/like'
-    // Delete Comment
+// Delete Comment
 export const DELETE_COMMENT_FEEDS = '/api/v1/feeds/comment/delete'
-    // Add Coment
+// Add Coment
 export const ADD_COMMENT_FEEDS = '/api/v1/feeds/comment/add'

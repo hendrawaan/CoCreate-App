@@ -16,7 +16,7 @@ export const AdminHome = () => {
   return (
     <Card
       className="mx-auto shadow"
-      style={{ maxWidth: "420px" }}>
+      style={{ maxWidth: "420px", backgroundColor: "#f1f6f9"}}>
       <Row noGutters>
         <Col xs={4}>
           <Card.Img
